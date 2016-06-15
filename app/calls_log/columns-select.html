@@ -1,0 +1,10 @@
+<div class="dropdown keep-on">
+    <button data-toggle="dropdown"><i class="fa fa-gear"></i></button>
+    <div class="dropdown-menu keep-on">
+        <h5 class="text-center">Select Columns to View</h5>
+        <div class="list-group list-group-sm">
+            <label class="list-group-item" ng-repeat="x in columns.childs"><input type="checkbox" ng-model="x.isOn"/> {{x.title}}</label>
+        </div>
+        <label class="btn btn-link"><input ng-click="handleChkAll(columns,'isOn')" ng-model="columns.checked" type="checkbox"/>Select All</label>
+    </div>
+</div>

@@ -1,0 +1,16 @@
+<div class="modal-header">
+    <h3 class="modal-title">Export <small>{{obj.caseName +" / "+obj.identityName+" / "+obj.lineName}}</small></h3>
+</div>
+<div class="modal-body">    
+    <div class="row">
+        <div class="col-md-12"><label for="">Export File Name:</label><input class="form-control" type="text" ng-model="exp.name"></div>
+        <div class="col-md-12">
+            <label>Export File Path:</label>
+            <input type="file" ng-bind="exp.path" class="form-control"/>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="ok()">Export</button>
+    <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+</div>

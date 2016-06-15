@@ -1,0 +1,68 @@
+<div ng-controller="CallLogCtrl as vm">
+    <h1 class="page-header">
+        <div class="container"><i class="fa fa-headphones fa-1x"></i> Calls log</div>
+    </h1>
+    <h2>Calls Log List</h2>
+    <div class="row">
+        <div class="col-md-12">        
+            <div class="-table-responsive -no-vertical-overflow">
+                <table class="table table-white table-hover table-striped with-actions-bar">
+                    <caption class="no-padding">
+                        <div class="row col-md-1" ng-include="'/app/calls_log/advanced-filter.html'"></div>
+                        <div class="row col-md-3" ng-include="'/app/calls_log/lines-filter.html'"></div>
+                        <div class="row col-md-6" ng-include="'/app/calls_log/duration-filter.html'"></div>
+                        <div class="col-md-1 text-right navbar-right" ng-include="'/app/calls_log/columns-select.html'"></div>
+                    </caption>
+                    <thead>
+                        <tr>
+                            <th width="100"></th>
+                            <th ng-repeat="col in columns.childs | filter:{isOn:true}">{{col.title}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-show="vm.filteredCallsLog.length==0">
+                            <td colspan="20" class="text-center">No Records Found</td>
+                        </tr>
+                        <tr ng-click="vm.editObj=x;" ng-repeat="x in vm.filteredCallsLog | filter:paginate " ng-class="{'active':vm.editObj==x}">
+                            <td>
+                                <span class="dropdown">
+                                    <a href="" data-toggle="dropdown" title="{{vm.getIcon(x.isMarked).title}}"><i class="fa" ng-class="vm.getIcon(x.isMarked).icon"></i><i class="caret"></i></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="" class="btn btn-link" ng-click="x.isMarked=10"><i class="fa fa-circle-o"></i> Un Marked</a></li>
+                                        <li><a href="" class="btn btn-link" ng-click="x.isMarked=11"><i class="fa fa-exclamation"></i> Important</a></li>
+                                        <li><a href="" class="btn btn-link" ng-click="x.isMarked=12"><i class="fa fa-search"></i> Revise Later</a></li>
+                                        <li><a href="" class="btn btn-link" ng-click="x.isMarked=13"><i class="fa fa-check"></i> Reviewed</a></li>
+                                        <li><a href="" class="btn btn-link" ng-click="x.isMarked=14"><i class="fa fa-times"></i> Irrelevent</a></li>
+                                    </ul>
+                                </span>
+                                <a href="" class="btn btn-link" title="{{vm.getIcon(x.isLocked).title}}" ng-click="x.isLocked=!x.isLocked"><i class="fa" ng-class="vm.getIcon(x.isLocked).icon"></i></a>
+                            </td>
+                            <td ng-repeat="col in columns.childs  | filter:{isOn:true}">
+                                <span class="btn btn-link" ng-bind="x[col.prop]" ng-show="col.type==undefined"></span>
+                                <span class="btn btn-link" ng-bind="x[col.prop]|date:'dd/MM/yyyy'" ng-show="col.type=='date'"></span>
+                                <span class="btn btn-link" ng-bind="x[col.prop]|date:'hh:mm'" ng-show="col.type=='time'"></span>
+                            </td>
+                            <td class="actions-bar">
+                                <a href="" class="btn btn-link" tooltip-placement="top" uib-tooltip="Export Record Data" ng-click="openPopup(x,'/app/calls_log/popup-export.html','exportCallLogCtrl','sm');"><i class="fa fa-external-link-square"></i></a>
+                                <a href="" class="btn btn-link" tooltip-placement="top" uib-tooltip="Play Audio File"><i class="fa fa-play-circle"></i></a>
+                                <a href="" class="btn btn-link" tooltip-placement="top" uib-tooltip="Open Transcribe Window" ng-click="openPopup(x,'/app/calls_log/popup-transcribe.html','callLogFullViewCtrl','lg')"><i class="fa icon-paste"></i></a>
+                                <a href="" class="btn btn-link" tooltip-placement="top" uib-tooltip="Delete Record"><i class="fa fa-trash"></i></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="20">
+                                <span class="btn btn-link pull-left">Records Count {{vm.filteredCallsLog.length}}</span>
+                                <uib-pagination boundary-links="true" total-items="vm.filteredCallsLog.length" 
+                ng-model="currentPage" class="pagination-sm" max-size="6" previous-text="&lsaquo;" 
+                next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+    <ng-include src="'/app/calls_log/quick-preview.html'"></ng-include>
+</div>

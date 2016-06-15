@@ -1,0 +1,81 @@
+<div class="dropdown keep-on" uib-dropdown auto-close="disabled" on-toggle="toggled(open)">
+    <button uib-dropdown-toggle><i class="fa fa-filter"></i></button>
+    <div class="dropdown-menu keep-on calls-log-search" uib-dropdown-menu>
+        <form ng-submit="">
+            <h3 class="col-md-12">Advanced Calls Log Search</h3>
+            <!--<div class="form-group col-md-6">
+                <label for="">From</label>
+                <p class="input-group">
+                  <input type="text" class="form-control" 
+uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" 
+datepicker-options="dateOptions" ng-required="true" close-text="Close" 
+alt-input-formats="altInputFormats" />
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
+                  </span>
+                </p>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="">To</label>
+                <p class="input-group">
+                  <input type="text" class="form-control" 
+uib-datepicker-popup="{{format}}" ng-model="dt2" is-open="popup2.opened" 
+datepicker-options="dateOptions" ng-required="true" close-text="Close" 
+alt-input-formats="altInputFormats" />
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
+                  </span>
+                </p>
+            </div>
+            <div class="form-group col-md-12">
+                <label for="">Line</label>
+                <div class="input-group">
+                    <input type="text" class="form-control"><span class="input-group-addon"><i class="fa fa-search"></i></span>
+                </div>
+            </div>-->
+            <div class="col-md-12">
+<!--
+                <div class="panel-group" ng-init="toggleView=false">
+                  <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a href="" ng-click="toggleView=!toggleView">
+                          Advanced Criteria
+                        </a>
+                      </h4>
+                    </div>
+-->
+                    <div class="panel-collapse collapse in" ng-class="{'in':toggleView}">
+                        <div class="panel-body">
+                            <div class="row" ng-repeat="f in advancedFilter">
+                                <div class="col-xs-4"><label for="">Attribute</label><select ng-model="f.attribute" ng-options="o.prop as o.title for o in columns.childs" class="form-control input-sm"></select></div>
+                                <div class="col-xs-2">
+                                    <label for="">Operator</label>
+                                    <select ng-model="f.operator" class="form-control input-sm">
+                                        <option value="">Operator</option>
+                                        <option value="1">=</option>
+                                        <option value="2">LIKE</option>
+                                        <option value="3"><</option>
+                                        <option value="4">></option>
+                                    </select>
+                                </div>
+                                <div class="col-xs-4"><label for="">Value</label><input ng-model="f.value" type="text" class="form-control input-sm"></div>
+                                <div class="col-xs-2">
+                                <label for="" class="btn-block">&nbsp;</label>
+                                <button type="button" ng-click="vm.pushNew('advancedFilter',{})" ng-show="$last" class="btn btn-success btn-xs"><i class="fa fa-plus"></i></button>
+                                <button type="button" ng-click="vm.popOut('advancedFilter',f)" ng-show="advancedFilter.length>1" class="btn btn-danger btn-xs"><i class="fa fa-minus"></i></button></div>
+                            </div>
+                        </div>
+                    </div>
+<!--
+                  </div>
+                </div>
+-->
+            </div>
+            <div class="col-md-12 text-right">
+                <hr/>
+                <button class="btn btn-primary">Search</button>
+            </div>
+        </form>
+    </div>
+</div>
