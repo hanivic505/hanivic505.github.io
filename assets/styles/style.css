@@ -31,10 +31,11 @@
 html{height: 100%;}
 body{
     padding-top:120px;
-    padding-bottom: 60px;
-    min-height: 100%;
+/*    padding-bottom: 60px;*/
+    height: 100%;
     font-family: "Open Sans",Arial,sans-serif;
     background: url("/assets/images/triangle-blue_svg.png") no-repeat 0 -60px,#e7e7e7 ;
+	overflow-x: hidden;
 }
 .bg-dark-blue{background: #001f54;}
 .bg-blue{background: #0340c6;}
@@ -249,3 +250,11 @@ ul.tree ul>li {
 }
 .navbar-nav.main-nav{width:100%;}
 .navbar-nav.main-nav>li{display:inline-block;float: none;}
+.forms{background: rgba(255,255,255,.5);padding: 0 15px 20px;}
+.btn-bar{border-top:solid 1px #ddd;padding-top: 15px;}
+.btn-bar *{float:right;margin-left: 15px;}
+.switch{width:62px;}
+.switch.checked small{left:32px;}
+.browser>*{border: solid 1px #ccc;height: 70%;}
+body>div.container-fluid,.h100{height: 100%;}
+.h90{height: 90%;}

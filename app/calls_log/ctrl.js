@@ -28,8 +28,9 @@ var app;
 				$uibModalInstance.dismiss('cancel');
 			};
         }]);
-		angular.module("IVRY-App").controller("CallLogCtrl", ["$scope", "$log", "linesFilter", "$uibModal", function ($scope, $log, linesFilter, $uibModal) {
+		angular.module("IVRY-App").controller("CallLogCtrl", ["$rootScope","$scope", "$log", "linesFilter", "$uibModal","linesTreeService", function ($rootScope,$scope, $log, linesFilter, $uibModal,linesTreeService) {
 			/*jslint node: true */
+			$rootScope.user="Analyst";
 			var _this = this,
 				idx = 1;
 			$scope.isOn = false;
@@ -141,114 +142,7 @@ var app;
 					}
 				}
 			}
-			$scope.linesTreeObj = [
-				{
-					title: 'Case Number 1',
-					checked: true,
-					childs: [
-						{
-							title: 'Identity Number 11',
-							checked: true,
-							childs: [
-								{
-									title: "Line Number 111",
-									checked: true,
-									id: 1206
-								},
-								{
-									title: "Line Number 112",
-									checked: true,
-									id: 1205
-								},
-								{
-									title: "Line Number 113",
-									checked: true,
-									id: 1204
-								}
-							]
-						},
-						{
-							title: 'Identity Number 12',
-							checked: true,
-							childs: [
-								{
-									title: "Line Number 121",
-									checked: true,
-									id: 1201
-								},
-								{
-									title: "Line Number 122",
-									checked: true,
-									id: 1202
-								},
-								{
-									title: "Line Number 123",
-									checked: true,
-									id: 1203
-								}
-							]
-						}
-					]
-				},
-				{
-					title: 'Case Number 2',
-					checked: false,
-					childs: [
-						{
-							title: 'Identity Number 21',
-							checked: false,
-							childs: [
-								{
-									title: "Line Number 211",
-									checked: false,
-									id: 1207
-								},
-								{
-									title: "Line Number 212",
-									checked: false,
-									id: 1208
-								},
-								{
-									title: "Line Number 213",
-									checked: false,
-									id: 1209
-								}
-							]
-						}
-					]
-				},
-				{
-					title: "Case 3",
-					checked: false
-				},
-				{
-					title: "Case 4",
-					checked: false,
-					childs: [
-						{
-							title: "Identity 41",
-							checked: false
-						}
-					]
-				},
-				{
-					title: "Case 5",
-					checked: false,
-					childs: [
-						{
-							title: "Identity 51",
-							checked: false,
-							childs: [
-								{
-									title: "Line 511",
-									checked: false,
-									id: 1210
-								}
-							]
-						}
-					]
-				}
-            ];
+			$scope.linesTreeObj = linesTreeService;
 			$scope.columns = {
 				childs: [
 					{
@@ -312,13 +206,12 @@ var app;
 					}
 				]
 			};
-
+			$scope.lines={};
 			this.filteredCallsLog = linesFilter(this.callsLog, $scope.lines);
 			//            console.log($scope.filteredCallslog);
 			//            $scope.$watchCollection("linesTreeObj",function(nVal,oVal){
 			////                console.log("linesTreeObj.checked",nVal);
 			//            });
-			$scope.lines = {};
 			$scope.$watch("lines", function (nVal) {
 				_this.filteredCallsLog = linesFilter(_this.callsLog, nVal);
 				//console.info(_this.filteredCallsLog);
@@ -347,19 +240,7 @@ var app;
 				});
 				return idx;
 			};
-			$scope.handleChkAll = function (obj, prop, isHandleTree) {
-				if (isHandleTree && obj.id !== undefined)
-					$scope.lines[obj.id] = obj.checked;
-				if (obj.childs)
-					for (var i = 0; i < obj.childs.length; i++) {
-						obj.childs[i][prop] = obj.checked;
-						if (isHandleTree && obj.childs[i].id !== undefined)
-							$scope.lines[obj.childs[i].id] = obj.checked;
-						if (obj.childs[i].childs)
-							$scope.handleChkAll(obj.childs[i], prop, isHandleTree);
-					}
-			};
-			$scope.handleChkAll($scope.linesTreeObj[0], "checked", true);
+
 			$scope.openPopup = function (_obj, tmpltURL, cntrl, size = "") {
 				var modalInstance = $uibModal.open({
 					animation: $scope.animationsEnabled,

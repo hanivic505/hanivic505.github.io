@@ -4,47 +4,57 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="/node_modules/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/assets/styles/icos.css">
-    <link rel="stylesheet" href="/node_modules/angular/angular-csp.css"/>
-    <link rel="stylesheet" href="/node_modules/angular-ui-bootstrap/dist/ui-bootstrap-csp.css"/>
-<!--    <link rel="stylesheet" href="/assets/libs/ng-scrollbar/ng-scrollbar.min.css"/>-->
-    <link rel="stylesheet" href="/node_modules/ng-tiny-scrollbar/dist/ng-tiny-scrollbar.min.css"/>
+	<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="/node_modules/font-awesome/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/assets/styles/icos.css">
+	<link rel="stylesheet" href="/node_modules/angular/angular-csp.css" />
+	<link rel="stylesheet" href="/node_modules/angular-ui-bootstrap/dist/ui-bootstrap-csp.css" />
+	<!--    <link rel="stylesheet" href="/assets/libs/ng-scrollbar/ng-scrollbar.min.css"/>-->
+	<link rel="stylesheet" href="/node_modules/angular-ui-switch/angular-ui-switch.min.css" />
 	<title ng-cloak ng-bind="'IVRY - '+$state.current.data.title"></title>
-    <script>document.write('<base href="' + document.location + '" />');</script>
-    <link rel="stylesheet" href="/assets/styles/style.css"/>
+	<script>
+		document.write('<base href="' + document.location + '" />');
+
+	</script>
+	<link rel="stylesheet" href="/assets/styles/style.css" />
 
 </head>
 
 <body>
-    <header ng-include="'/app/tplt/header.html'"></header>
+	<header ng-include="'/app/tplt/header.html'"></header>
 
-	<div class="container" ui-view></div>
+	<div class="container-fluid" ui-view></div>
 
 	<script src="/node_modules/jquery/dist/jquery.min.js"></script>
 	<script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 	<script src="/node_modules/angular/angular.min.js"></script>
-    <!-- main wavesurfer.js lib -->
-<!--    <script src="//cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/1.1.2/wavesurfer.min.js"></script>-->
-    <script src="/assets/libs/wavesurfer.js-master/dist/wavesurfer.min.js"></script>
-    <!-- wavesurfer.js regions -->
-<!--    <script src="//cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/1.1.2/plugin/wavesurfer.regions.min.js"></script>-->
-    <script src="/assets/libs/wavesurfer.js-master/dist/plugin/wavesurfer.regions.min.js"></script>
+	<!-- main wavesurfer.js lib -->
+	<!--    <script src="//cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/1.1.2/wavesurfer.min.js"></script>-->
+	<script src="/assets/libs/wavesurfer.js-master/dist/wavesurfer.min.js"></script>
+	<!-- wavesurfer.js regions -->
+	<!--    <script src="//cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/1.1.2/plugin/wavesurfer.regions.min.js"></script>-->
+	<script src="/assets/libs/wavesurfer.js-master/dist/plugin/wavesurfer.regions.min.js"></script>
 
-    <script src="/node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>
-    <script src="/node_modules/angular-animate/angular-animate.min.js"></script>
-    <script src="/node_modules/angular-touch/angular-touch.min.js"></script>
-    <script src="/node_modules/angular-sanitize/angular-sanitize.min.js"></script>
-    <script src="/node_modules/angular-local-storage/dist/angular-local-storage.min.js"></script>
-    <script src="/node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js"></script>
-    <script src="/node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
-<!--    <script src="/assets/libs/ng-scrollbar/ng-scrollbar.min.js"></script>-->
-    <script src="/node_modules/mb-scrollbar/mb-scrollbar.min.js"></script>
-    
-    <script src="/app/entities/callslog.js"></script>
-    <script src="/app/app.js"></script>
-    <script src="/app/calls_log/ctrl.js"></script>
+	<script src="/node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>
+	<script src="/node_modules/angular-animate/angular-animate.min.js"></script>
+	<script src="/node_modules/angular-touch/angular-touch.min.js"></script>
+	<script src="/node_modules/angular-sanitize/angular-sanitize.min.js"></script>
+	<script src="/node_modules/angular-local-storage/dist/angular-local-storage.min.js"></script>
+	<script src="/node_modules/angular-ui-bootstrap/dist/ui-bootstrap.js"></script>
+	<script src="/node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
+	<script src="/node_modules/angular-ui-switch/angular-ui-switch.min.js"></script>
+	<script src="/node_modules/ng-file-upload/dist/ng-file-upload-all.min.js"></script>
+
+
+	<script src="/app/entities/callslog.js"></script>
+	<script src="/app/entities/system.js"></script>
+	<script src="/app/entities/target.js"></script>
+	<script src="/app/app.js"></script>
+	<script src="/app/services/linesTreeService.js"></script>
+	<script src="/app/calls_log/ctrl.js"></script>
+	<script src="/app/system/ctrl.js"></script>
+	<script src="/app/target/ctrl.js"></script>
+	<script src="/app/components/tree-components.js"></script>
 </body>
 
 </html>

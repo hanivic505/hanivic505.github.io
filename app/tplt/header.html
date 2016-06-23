@@ -1,35 +1,66 @@
-<nav class="navbar navbar-default navbar-fixed-top bg-dark-blue fg-white" role="navigation">
-   <div class="row">
-       <div class="container">
-            <a class="navbar-brand" href="#">IVRY</a>
-            <ul class="nav navbar-nav">
-                <li><a href="" class="btn-icon">&nbsp;<i class="fa fa-home fa-2x"></i></a></li>
-                <li>
-                    <a href="" class="btn-icon-stacked">&nbsp;
+<nav ng-controller="MainMenuCtrl" class="navbar navbar-default navbar-fixed-top bg-dark-blue fg-white" role="navigation">
+	<div class="row">
+		<div class="container-fluid">
+			<div class="col-md-3">
+				<a class="navbar-brand" href="#">IVRY</a>
+				<ul class="nav navbar-nav">
+					<li><a href="" class="btn-icon">&nbsp;<i class="fa fa-home fa-2x"></i></a></li>
+					<li>
+						<a href="" class="btn-icon-stacked">&nbsp;
                         <i class="fa fa-comment"></i>
                         <i class="icon-phone"></i>
                     </a>
-                </li>
-            </ul>
-            <div class="col-md-7" ng-if="true">
-                <ul class="nav navbar-nav main-nav text-center">
-                    <li class="active">
-                        <a href="#"><i class="fa fa-headphones"></i> Call Logs</a>
-                    </li>
-                </ul>
-           </div>
-           <div class="col-md-3">
-               <span class="navbar-text fg-white">Welcome, Hany Darwish</span>
-               <ul class="nav navbar-nav navbar-right">
-                   <li class="dropdown">
-                       <a data-toggle="dropdown"><i class="fa fa-bars"></i></a>
-                       <ul class="dropdown-menu">
-                           <li><a href="#/manuals">User Manuals</a></li>
-                           <li><a href="">Logout</a></li>
-                       </ul>
-                   </li>
-               </ul>
-           </div>
-       </div>
-   </div>
+					</li>
+				</ul>
+			</div>
+			<div class="col-md-6" ng-if="user=='Analyst'">
+				<ul class="nav navbar-nav main-nav text-center">
+					<li class="active">
+						<a href="#/calls-log"><i class="fa fa-headphones"></i> Call Logs</a>
+					</li>
+				</ul>
+			</div>
+			<div class="col-md-6" ng-if="user=='SysAdmin'">
+				<ul class="nav navbar-nav main-nav text-center">
+					<li class="active">
+						<a href="#/system"><i class="fa fa-gears"></i> System</a>
+					</li>
+				</ul>
+			</div>
+			<div class="col-md-6" ng-if="user=='DepAdmin'">
+				<ul class="nav navbar-nav main-nav text-center">
+					<li>
+						<a href="#/target"><i class="fa fa-crosshairs"></i> Target</a>
+					</li>
+					<li>
+						<a href="#/teams"><i class="fa fa-users"></i> Teams</a>
+					</li>
+					<li>
+						<a href="#/users"><i class="fa fa-street-view"></i> Users</a>
+					</li>
+					<li>
+						<a href="#/rights"><i class="fa fa-crosshairs"></i> Rights</a>
+					</li>
+					<li>
+						<a href="#/calls-log"><i class="fa fa-headphones"></i> Call Logs</a>
+					</li>
+					<li>
+						<a href="#/audit-trails"><i class="fa fa-info"></i> Audit Trails</a>
+					</li>
+				</ul>
+			</div>
+			<div class="col-md-3">
+				<span class="navbar-text fg-white">Welcome, Hany Darwish</span>
+				<ul class="nav navbar-nav navbar-right">
+					<li class="dropdown">
+						<a data-toggle="dropdown"><i class="fa fa-bars"></i></a>
+						<ul class="dropdown-menu">
+							<li><a href="#/manuals">User Manuals</a></li>
+							<li><a href="">Logout</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
 </nav>

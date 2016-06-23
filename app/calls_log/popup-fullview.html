@@ -1,9 +1,9 @@
 <div class="modal-header">
-    <h3 class="modal-title">{{obj.caseName +" / "+obj.identityName+" / "+obj.lineName}}</h3>
+	<h3 class="modal-title">{{obj.caseName +" / "+obj.identityName+" / "+obj.lineName}}</h3>
 </div>
-<div class="modal-body">    
-    <div class="row">
-<!--
+<div class="modal-body">
+	<div class="row">
+		<!--
         <div class="col-md-6">
 
                 <label>Case:</label>
@@ -23,29 +23,33 @@
             </div>
         </div>
 -->
-        <div class="col-md-6">
-                <label>Date:</label>
-                <div for="" class="form-control-static" ng-bind="obj.startDate | date"></div>
-        </div>
-        <div class="col-md-6">
-                <label>Start Time:</label>
-                <div for="" class="form-control-static" ng-bind="obj.startDate | date:'hh:mm'"></div>
-        </div>
-        <div class="col-md-6">
-                <label>End Time:</label>
-                <div for="" class="form-control-static" ng-bind="obj.endDate | date:'hh:mm'"></div>
-        </div>
-        <div class="col-md-6">
-                <label>Duration:</label>
-                <div for="" class="form-control-static" ng-bind="vm.getTimeDiff(obj.endDate,obj.startDate)"></div>
-        </div>
-        <div class="col-md-12">
-                <label>Comment:</label>
-                <textarea ng-bind="obj.comment" class="form-control" rows="3"></textarea>
-        </div>
-    </div>
+		<div class="col-md-12">
+			<label>Date:</label>
+			<div for="" class="form-control-static" ng-bind="obj.startDate | date"></div>
+		</div>
+		<div class="col-md-6">
+			<label>Start Time:</label>
+			<div for="" class="form-control-static" ng-bind="obj.startDate | date:'hh:mm'"></div>
+		</div>
+		<div class="col-md-6">
+			<label>End Time:</label>
+			<div for="" class="form-control-static" ng-bind="obj.endDate | date:'hh:mm'"></div>
+		</div>
+		<div class="col-md-6">
+			<label>Duration:</label>
+			<div for="" class="form-control-static" ng-bind="vm.getTimeDiff(obj.endDate,obj.startDate)"></div>
+		</div>
+		<div class="col-md-12">
+			<label>Comment:</label>
+			<textarea ng-bind="obj.comment" class="form-control" rows="3"></textarea>
+		</div>
+		<div class="col-md-12">
+			<label>Transcribe:</label>
+			<textarea ng-bind="obj.transcribe" class="form-control" rows="8"></textarea>
+		</div>
+	</div>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
-    <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+	<button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+	<button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
 </div>

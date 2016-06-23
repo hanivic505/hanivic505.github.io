@@ -8,15 +8,24 @@ var app;
             this.$stateProvider.state('calls-log', {
                 url: '/calls-log',
                 templateUrl: '/app/calls_log/view.html',
-                data:{title:'Calls Log',authorizedRoles:[USER_ROLES.sysAdmin,USER_ROLES.depAdmin]},
-            });
+                data:{title:'Calls Log',
+					  authorizedRoles:[USER_ROLES.sysAdmin,USER_ROLES.depAdmin]},
+            }).state("system",{
+				url: "/system",
+				templateUrl: "/app/system/view.html",
+				data:{title:"System Settings",authorizedRoles:[USER_ROLES.sysAdmin]}
+			}).state("target",{
+				url:"/target",
+				templateUrl:"/app/target/view.html",
+				data:{title:"Target",authorizedRoles:[USER_ROLES.depAdmin,USER_ROLES.teamLead]}
+			});
             this.$urlRouterProvider.otherwise('/calls-log');
         }
         return Config;
     })();
     Config.$inject = ['$urlRouterProvider', '$stateProvider','USER_ROLES'];
     
-    var mainApp=angular.module("IVRY-App",['ui.router','ui.bootstrap','mb-scrollbar']);
+    var mainApp=angular.module("IVRY-App",['ui.router','ui.bootstrap','ngFileUpload','uiSwitch']);
     mainApp.config(Config);
 
     var initApp=function($rootScope,$state/*,AUTH_EVENTS,AuthService*/){
@@ -38,6 +47,10 @@ var app;
     initApp.$inject=["$rootScope","$state"/*,"AUTH_EVENTS","AuthService"*/];
     mainApp.run(initApp);
     
+	mainApp.controller("MainMenuCtrl",["$scope","$rootScope",function($scope,$rootScope){
+
+	}]);
+
     mainApp.filter("lines",function(){
         return function(value,selected){
             var filtered=[];
@@ -62,10 +75,10 @@ var app;
         notAuthorized: 'auth-not-authorized'
     }).constant('USER_ROLES', {
         all: '*',
-        sysAdmin: 'sysAdmin',
-        depAdmin: 'depAdmin',
-        teamLead: 'teamLead',
-        analyst: 'analyst'
+        sysAdmin: 'SysAdmin',
+        depAdmin: 'DepAdmin',
+        teamLead: 'TeamLead',
+        analyst: 'Analyst'
     });
 //    mainApp.factory('AuthService', function ($http, Session) {
 //        var authService = {};
