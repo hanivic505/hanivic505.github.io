@@ -1,12 +1,20 @@
 <ul class="tree">
-	<li ng-repeat="case in $ctrl.treeObj" ng-init="mIdx=$index" ng-init="case.expand=false">
-		<i class="fa" ng-class="{'fa-plus-square':!case.expand,'fa-minus-square':case.expand}" ng-click="case.expand=!case.expand"></i> <label><input type="checkbox" ng-change="handleChkAll(case,'checked',true)" ng-model="case.checked"> {{case.title}}</label>
+	<li class="tree-nav"><a href="" class=" btn btn-link" ng-click="$ctrl.toggleCollapsed()"><i class="fa fa-toggle-off" ng-class="{'fa-toggle-on':!$ctrl.collapsed}"></i> Expand All</a></li>
+<!--	<li class="tree-nav btn btn-link btn-sm" ng-class="{'active':$ctrl.collapsed}"><a href="" class="" ng-click="$ctrl.toggleCollapsed()">Collapse All</a></li>-->
+	<li ng-repeat="case in $ctrl.treeObj" ng-init="case.expand = !$ctrl.collapsed">
+		<i class="fa" ng-class="{'fa-plus-square':!case.expand,'fa-minus-square':case.expand}" ng-click="case.expand=!case.expand"></i>
+		<label ng-click="$ctrl.selectedNode={data:case,type:'case'}" ng-class="{'active':$ctrl.selectedNode.data==case}">
+			<input ng-if="$ctrl.multiSelect" type="checkbox" ng-change="handleChkAll(case,'checked',true)" ng-model="case.checked"> {{case.title}}</label>
 		<ul ng-show="case.expand">
-			<li ng-repeat="identity in case.childs" ng-init="sIdx=$index*mIdx+1" ng-init="identity.expand=false">
-				-<i class="fa" ng-class="{'fa-plus-square':!identity.expand,'fa-minus-square':identity.expand}" ng-click="identity.expand=!identity.expand"></i> <label><input type="checkbox" ng-change="handleChkAll(identity,'checked',true)" ng-model="identity.checked"> {{identity.title}}</label>
+			<li ng-repeat="identity in case.childs" ng-init="identity.expand=!$ctrl.collapsed">
+				-<i class="fa" ng-class="{'fa-plus-square':!identity.expand,'fa-minus-square':identity.expand}" ng-click="identity.expand=!identity.expand"></i>
+				<label ng-click="$ctrl.selectedNode={data:identity,type:'identity'}" ng-class="{'active':$ctrl.selectedNode.data==identity}">
+					<input ng-if="$ctrl.multiSelect" type="checkbox" ng-change="handleChkAll(identity,'checked',true)" ng-model="identity.checked"> {{identity.title}}</label>
 				<ul ng-show="identity.expand">
-					<li ng-repeat="line in identity.childs" ng-init="cIdx=(sIdx*$index)+1">
-						__ <label><input type="checkbox" ng-model="line.checked" ng-change="handleChkAll(line,'checked',true)"> {{line.title}}</label>
+					<li ng-repeat="line in identity.childs">
+						__
+						<label ng-click="$ctrl.selectedNode={data:line,type:'line'}" ng-class="{'active':$ctrl.selectedNode.data==line}">
+							<input ng-if="$ctrl.multiSelect" type="checkbox" ng-model="line.checked" ng-change="handleChkAll(line,'checked',true)"> {{line.title}}</label>
 					</li>
 				</ul>
 			</li>

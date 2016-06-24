@@ -6,12 +6,14 @@
 		<h2>Targets Browser</h2>
 		<div class="row h90">
 			<div class="col-md-12 browser h100">
-				<div class="col-md-3 h100">
+				<div class="col-md-3 h100 vertical-scroll">
 					<div class="row">
-						<div class="input-group">
-							<input type="text" class="form-control"><span class="input-group-btn"><button class="btn btn-default"><i class="fa fa-save"></i></button></span>
-						</div>
-						<tree tree-obj="linesTreeObj"></tree>
+						<form ng-submit="dbService.add(linesTreeObj,editObj)">
+							<div class="col-md-3 input-group pos-fixed">
+								<input type="text" ng-required="true" ng-model="editObj.title" placeholder="Enter New Case Name" class="form-control"><span class="input-group-btn"><button class="btn btn-default"><i class="fa fa-save"></i></button></span>
+							</div>
+						</form>
+						<tree tree-config="treeConfig"></tree>
 					</div>
 				</div>
 				<div class="col-md-6 h100"></div>

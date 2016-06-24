@@ -1,22 +1,48 @@
-angular.module("IVRY-App").component("tree",{
-	templateUrl:"/app/components/tree.html",
-	controller:treeComponent,
-	bindings:{treeObj:"=",lines:"="}
+angular.module("IVRY-App").component("tree", {
+	templateUrl: "/app/components/tree.html",
+	controller: treeComponent,
+	bindings: {
+		treeConfig:"="
+	}
 });
 
-function treeComponent($scope, $element, $attrs){
+function treeComponent($scope, $element, $attrs) {
 	var ctrl = this;
-	$scope.handleChkAll = function (obj, prop, isHandleTree=false) {
-		if (isHandleTree && obj.id !== undefined)
-			ctrl.lines[obj.id] = obj.checked;
-		if (obj.childs)
-			for (var i = 0; i < obj.childs.length; i++) {
-				obj.childs[i][prop] = obj.checked;
-				if (isHandleTree && obj.childs[i].id !== undefined)
-					ctrl.lines[obj.childs[i].id] = obj.checked;
-				if (obj.childs[i].childs)
-					$scope.handleChkAll(obj.childs[i], prop, isHandleTree);
-			}
+	this.collapsed = true;
+	this.selectedNode=this.treeConfig.selectedNode;
+	this.lines=this.treeConfig.lines;
+	this.treeObj=this.treeConfig.treeObj;
+	this.multiSelect = this.treeConfig.multiSelect == undefined ? false : this.treeConfig.multiSelect;
+
+	$scope.$watch(function () {
+		return ctrl.selectedNode;
+	}, function (nVal) {
+		$scope.$emit("treeNodeSelected",nVal);
+	});
+	this.toggleCollapsed = function () {
+		ctrl.collapsed = !ctrl.collapsed;
+		for (var i = 0, el = ctrl.treeObj; i < el.length; i++) {
+			el[i].expand = !ctrl.collapsed;
+			if (el[i].childs != undefined)
+				for (var j = 0, sEl = el[i].childs; j < sEl.length; j++) {
+					sEl[j].expand = !ctrl.collapsed;
+				}
+		}
 	};
-	$scope.handleChkAll(this.treeObj[0], "checked", true);
+	if (this.multiSelect) {
+		$scope.handleChkAll = function (obj, prop, isHandleTree = false) {
+			if (isHandleTree && obj.id !== undefined)
+				ctrl.lines[obj.id] = obj.checked;
+			if (obj.childs)
+				for (var i = 0; i < obj.childs.length; i++) {
+					obj.childs[i][prop] = obj.checked;
+					if (isHandleTree && obj.childs[i].id !== undefined)
+						ctrl.lines[obj.childs[i].id] = obj.checked;
+					if (obj.childs[i].childs)
+						$scope.handleChkAll(obj.childs[i], prop, isHandleTree);
+				}
+		};
+		if (ctrl.lines != undefined)
+			$scope.handleChkAll(this.treeObj[0], "checked", true);
+	}
 }

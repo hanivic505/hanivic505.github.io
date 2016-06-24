@@ -206,7 +206,14 @@ var app;
 					}
 				]
 			};
-			$scope.lines={};
+			$scope.treeConfig={
+					lines:{},
+					treeObj:linesTreeService,
+					multiSelect:true,
+					selectedNode:null
+				};
+			$scope.lines=$scope.treeConfig.lines;
+
 			this.filteredCallsLog = linesFilter(this.callsLog, $scope.lines);
 			//            console.log($scope.filteredCallslog);
 			//            $scope.$watchCollection("linesTreeObj",function(nVal,oVal){
