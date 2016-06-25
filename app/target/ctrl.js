@@ -9,7 +9,8 @@ var app;
 					lines:{},
 					treeObj:linesTreeService,
 					multiSelect:false,
-					selectedNode:null
+					selectedNode:null,
+					allowEdit:true
 				};
 				$scope.linesTreeObj = linesTreeService;
 				$scope.dbService=dbService;

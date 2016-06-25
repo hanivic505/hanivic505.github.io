@@ -16,8 +16,14 @@
 						<tree tree-config="treeConfig"></tree>
 					</div>
 				</div>
-				<div class="col-md-6 h100"></div>
-				<div class="col-md-3 h100"></div>
+				<div class="col-md-6 h100 vertical-scroll" ng-switch="treeConfig.selectedNode.type">
+
+					<manage-case ng-switch-when="case" data="treeConfig.selectedNode.data"></manage-case>
+					<manage-identity ng-switch-when="identity" data="treeConfig.selectedNode.data"></manage-identity>
+					<manage-line ng-switch-when="line" data="treeConfig.selectedNode.data"></manage-line>
+
+				</div>
+				<div class="col-md-3 h100 vertical-scroll"></div>
 			</div>
 		</div>
 	</div>

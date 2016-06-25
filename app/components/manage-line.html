@@ -1,0 +1,67 @@
+<h3>Manage Line <small>{{$ctrl.data.title}}</small></h3>
+<form ng-submit="">
+	<div class="row">
+		<div class="form-group col-md-6">
+			<label for="">Line Title</label>
+			<input ng-model="$ctrl.editObj.title" type="text" placeholder="Line Title" class="form-control">
+		</div>
+		<div class="form-group col-md-6">
+			<label for="">Line Number</label>
+			<input ng-model="$ctrl.editObj.number" type="tel" placeholder="Line Number" class="form-control">
+		</div>
+		<div class="form-group col-md-6">
+			<label for="">Line Type</label>
+			<select ng-model="$ctrl.editObj.type" class="form-control"></select>
+		</div>
+		<div class="form-group col-md-6">
+			<label for="">VIP?</label>
+			<switch ng-model="$ctrl.editObj.isVIP" class="pull-right" on="Yes" off="No"></switch>
+		</div>
+		<div class="form-group col-md-6">
+			<label for="">Record Calls?</label>
+			<switch ng-model="$ctrl.editObj.isRecordCalls" class="pull-right" on="Yes" off="No"></switch>
+		</div>
+		<div class="form-group col-md-12">
+			<label for="">Recording Period</label>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="input-group">
+						<div class="input-group-addon">From</div>
+						<input ng-model="$ctrl.editObj.recordingDate.from" type="date" placeholder="From" class="form-control">
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="input-group">
+						<div class="input-group-addon">To</div>
+						<input ng-model="$ctrl.editObj.recordingDate.to" type="date" placeholder="To" class="form-control">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group col-md-12">
+			<label for="">Recording Time</label>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="input-group">
+						<div class="input-group-addon">From</div>
+						<input ng-model="$ctrl.editObj.recordingTime.from" type="time" placeholder="From" class="form-control">
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<div class="input-group">
+						<div class="input-group-addon">To</div>
+						<input ng-model="$ctrl.editObj.recordingTime.to" type="time" placeholder="To" class="form-control">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="form-group col-md-12">
+			<label for="">Comment</label>
+			<textarea ng-model="$ctrl.editObj.comment" placeholder="Line Comment" class="form-control"></textarea>
+		</div>
+	</div>
+	<div class="btn-bar">
+		<button class="btn btn-primary">Save</button>
+		<button class="btn btn-default" type="button" ng-click="">Cancel</button>
+	</div>
+</form>

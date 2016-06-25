@@ -9,13 +9,13 @@ angular.module("IVRY-App").component("tree", {
 function treeComponent($scope, $element, $attrs) {
 	var ctrl = this;
 	this.collapsed = true;
-	this.selectedNode=this.treeConfig.selectedNode;
+//	this.selectedNode=this.treeConfig.selectedNode;
 	this.lines=this.treeConfig.lines;
 	this.treeObj=this.treeConfig.treeObj;
 	this.multiSelect = this.treeConfig.multiSelect == undefined ? false : this.treeConfig.multiSelect;
-
+	this.allowEdit=this.treeConfig.allowEdit == undefined?false:this.treeConfig.allowEdit;
 	$scope.$watch(function () {
-		return ctrl.selectedNode;
+		return ctrl.treeConfig.selectedNode;
 	}, function (nVal) {
 		$scope.$emit("treeNodeSelected",nVal);
 	});
