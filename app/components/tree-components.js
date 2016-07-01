@@ -7,11 +7,13 @@ angular.module("IVRY-App").component("tree", {
 });
 
 function treeComponent($scope, $element, $attrs) {
+
 	var ctrl = this;
 	this.collapsed = true;
 //	this.selectedNode=this.treeConfig.selectedNode;
 	this.lines=this.treeConfig.lines;
 	this.treeObj=this.treeConfig.treeObj;
+//	this.filterBy=this.treeConfig.filterBy;
 	this.multiSelect = this.treeConfig.multiSelect == undefined ? false : this.treeConfig.multiSelect;
 	this.allowEdit=this.treeConfig.allowEdit == undefined?false:this.treeConfig.allowEdit;
 	$scope.$watch(function () {
@@ -29,6 +31,10 @@ function treeComponent($scope, $element, $attrs) {
 				}
 		}
 	};
+	this.setSelectedNode=function(obj,typ){
+		this.treeConfig.selectedNode={data:obj,type:typ}
+	};
+	// enable checkboxes to select multiple elements
 	if (this.multiSelect) {
 		$scope.handleChkAll = function (obj, prop, isHandleTree = false) {
 			if (isHandleTree && obj.id !== undefined)

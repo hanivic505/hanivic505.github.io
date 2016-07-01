@@ -8,6 +8,15 @@ angular.module("IVRY-App").component("manageCase", {
 
 function manageCaseComponent($scope, $element, $attrs) {
 	var ctrl = this;
-	this.editObj=angular.copy(this.data);
-	console.info(this.editObj);
+	$scope.$watch(function () {
+		return ctrl.data;
+	}, function (nVal) {
+		ctrl.load();
+	});
+	this.load = function () {
+		this.editObj = angular.copy(this.data);
+	};
+	this.cancel = function () {
+		this.editObj = angular.copy(this.data);
+	};
 }

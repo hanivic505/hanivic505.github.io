@@ -1,0 +1,28 @@
+<div class="modal-content">
+	<div class="modal-header">
+		<h4>User Access Rights <small ng-bind="modalObj.user.firstName + ' ' +modalObj.user.lastName"></small></h4>
+	</div>
+	<form ng-submit="ok()">
+		<div class="modal-body">
+			<div class="row">
+				<div class="col-xs-5 mh-350 vertical-scroll brdr-right">
+					<tree tree-config="treeConfigs"></tree>
+				</div>
+				<div class="col-xs-7">
+					<h5>User Assigned Access Rights<hr/></h5>
+					<div class="row">
+						<div class="col-md-4" ng-repeat="right in modalObj.rights">
+							<label for="" class="text-normal">
+								<input type="checkbox" /> {{right.name}}
+							</label>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-default" ng-click="cancel()" type="button">Cancel</button>
+			<button class="btn btn-default">Save</button>
+		</div>
+	</form>
+</div>

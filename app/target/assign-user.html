@@ -1,0 +1,59 @@
+<div class="modal-content">
+	<div class="modal-header">
+		<h4>Assign Team Members to Line <small ng-bind="modalObj.line.title"></small></h4>
+	</div>
+	<form action="">
+		<div class="modal-body">
+			<div class="row">
+				<div class="col-xs-6">
+					<label class="btn-block" for="">Assigned Team Analysts
+						<div class="pull-right">
+							<button class="btn btn-default btn-sm"><i class="fa fa-angle-right"></i></button>
+							<button class="btn btn-default btn-sm"><i class="fa fa-angle-double-right"></i></button>
+						</div>
+					</label>
+					<div class="multi-pile">
+						<table class="table table-striped table-hover table-condensed">
+							<tbody>
+								<tr ng-repeat="tm in modalObj.team.assigned">
+									<td>
+										<label class="btn-block">
+											<span ng-bind="tm.firstName+' '+tm.lastName"></span>
+											<input type="checkbox" class="pull-right" />
+										</label>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="col-xs-6">
+					<label for="" class="btn-block">Available Team Analysts
+						<div class="pull-right">
+							<button class="btn btn-default btn-sm"><i class="fa fa-angle-double-left"></i></button>
+							<button class="btn btn-default btn-sm"><i class="fa fa-angle-left"></i></button>
+						</div>
+					</label>
+					<div class="multi-pile">
+						<table class="table table-striped table-hover table-condensed">
+							<tbody>
+								<tr ng-repeat="tm in modalObj.team.available">
+									<td>
+										<label class="btn-block">
+											<span ng-bind="tm.firstName+' '+tm.lastName"></span>
+											<input type="checkbox" class="pull-right" />
+										</label>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-default">Cancel</button>
+			<button type="button" class="btn btn-primary">Save</button>
+		</div>
+	</form>
+</div>
