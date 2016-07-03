@@ -8,6 +8,16 @@ angular.module("IVRY-App").component("manageLine", {
 
 function manageLineComponent($scope, $element, $attrs, usersService) {
 	var ctrl = this;
+	this.editObj = {
+		isRecordCalls: false,
+		recordingDate: {
+			from: new Date()
+		}
+	};
+	$scope.popup1 = new app.DatePicker(false);
+	$scope.popup2 = new app.DatePicker(false, "dd/MM/yyyy", ctrl.editObj.recordingDate.from, new Date());
+
+
 	$scope.$watch(function () {
 		return ctrl.data;
 	}, function (nVal) {
@@ -20,9 +30,13 @@ function manageLineComponent($scope, $element, $attrs, usersService) {
 	this.cancel = function () {
 		this.editObj = angular.copy(this.data);
 	};
-	this.getStatusClass = function () {
+	this.getStatusClass = function (mode) {
 		var state = ctrl.data.status.state;
-		return state == 0 ? "label-danger" : state == 1 ? "label-success" : state == 2 ? "label-warning" : "label-default";
+		if (mode == 2)
+			return state == 0 ? "label-danger" : state == 1 ? "label-success" : state == 2 ? "label-warning" : "label-default";
+		else
+			return state == 0 ? "text-danger" : state == 1 ? "text-success" : state == 2 ? "text-warning" : "text-default";
+
 	};
 	this.loadAssignedUsers = function (line) {
 		$scope.$emit("lineNodeSelected", usersService);

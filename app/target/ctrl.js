@@ -19,12 +19,12 @@ var app;
 					$scope.editObj = null;
 				});
 				$scope.$on("treeNodeSelected", function (e, node) {
-					//					console.info("treeNodeSelected")
+					console.info("treeNodeSelected", e, node)
 					$scope.lineAssignedUsers = null;
 					$scope.selectedNode = node;
 				});
 				$scope.$on("lineNodeSelected", function (e, list) {
-					//					console.info("lineNodeSelected")
+					console.info("lineNodeSelected", e, list)
 					$scope.lineAssignedUsers = list;
 				});
 				$scope.openPopup = function (_obj, tmpltURL, cntrl, size = "") {
@@ -52,7 +52,7 @@ var app;
 
 		angular.module("IVRY-App").controller("TargetCtrl", ["$scope", "$rootScope", "$uibModal", "linesTreeService", "dbService", cntrlFn]);
 
-		angular.module("IVRY-App").controller("AssignUsersCtrl", ["$scope", "obj", function ($scope, obj) {
+		angular.module("IVRY-App").controller("AssignUsersCtrl", ["$scope", "$uibModalInstance", "obj", function ($scope, $uibModalInstance, obj) {
 			console.info("AssignUsersCtrl", obj);
 			$scope.modalObj = {
 				line: {
@@ -70,6 +70,13 @@ var app;
 				}
 			};
 			console.log($scope.modalObj);
+			$scope.ok = function () {
+				$uibModalInstance.close();
+			};
+
+			$scope.cancel = function () {
+				$uibModalInstance.dismiss('cancel');
+			};
 		}]);
 		angular.module("IVRY-App").controller("ACLCtrl", ["$scope", "$uibModalInstance", "linesTreeService", function ($scope, $uibModalInstance, linesTreeService) {
 			$scope.treeConfigs = {

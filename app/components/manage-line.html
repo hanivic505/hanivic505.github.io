@@ -1,4 +1,8 @@
-<h3>Manage Line <small>{{$ctrl.data.title}} <div class="pull-right"><label for="" class="label label-default">Recording Status <label for="" class="label" ng-class="$ctrl.getStatusClass()" ng-bind="$ctrl.data.status.text">OnLine</label></label></div></small></h3>
+<div class="row">
+	<div class="container-fluid">
+		<h3>Manage Line <small>{{$ctrl.data.title}} <div class="pull-right"><label for="" class="label label-default"><span class="fa-stack fa-2x"><i class="fa fa-circle fa-stack-2x" ng-class="$ctrl.getStatusClass(1)"></i><i class="fa fa-microphone fa-stack-1x fa-inverse"></i></span> Recording Status <label for="" class="label" ng-class="$ctrl.getStatusClass(2)" ng-bind="$ctrl.data.status.text">OnLine</label></label></div></small></h3>
+	</div>
+</div>
 <form ng-submit="">
 	<div class="row">
 		<div class="form-group col-md-6">
@@ -27,13 +31,19 @@
 				<div class="col-xs-6">
 					<div class="input-group">
 						<div class="input-group-addon">From</div>
-						<input ng-disabled="!$ctrl.editObj.isRecordCalls" ng-model="$ctrl.editObj.recordingDate.from" type="date" placeholder="From" class="form-control">
+						<input ng-disabled="!$ctrl.editObj.isRecordCalls" ng-model="$ctrl.editObj.recordingDate.from" type="text" class="form-control" uib-datepicker-popup="{{popup1.dateFormat}}" is-open="popup1.popup.opened" ng-change="popup1.updateDatePicker(popup2,$ctrl.editObj.recordingDate.from)" datepicker-options="popup1.dateOptions" close-text="Close">
+						<span class="input-group-btn">
+							<button type="button" class="btn btn-default" ng-click="popup1.open()"><i class="glyphicon glyphicon-calendar"></i></button>
+						</span>
 					</div>
 				</div>
 				<div class="col-xs-6">
 					<div class="input-group">
 						<div class="input-group-addon">Till</div>
-						<input ng-disabled="!$ctrl.editObj.isRecordCalls" ng-model="$ctrl.editObj.recordingDate.to" type="date" placeholder="To" class="form-control">
+						<input ng-disabled="!$ctrl.editObj.isRecordCalls" ng-model="$ctrl.editObj.recordingDate.to" type="text" class="form-control" uib-datepicker-popup="{{popup2.dateFormat}}" is-open="popup2.popup.opened" datepicker-options="popup2.dateOptions" close-text="Close">
+						<span class="input-group-btn">
+							<button type="button" class="btn btn-default" ng-click="popup2.open()"><i class="glyphicon glyphicon-calendar"></i></button>
+						</span>
 					</div>
 				</div>
 			</div>
@@ -44,13 +54,13 @@
 				<div class="col-xs-6">
 					<div class="input-group">
 						<div class="input-group-addon">From</div>
-						<input ng-disabled="!$ctrl.editObj.isRecordCalls" ng-model="$ctrl.editObj.recordingTime.from" type="time" placeholder="From" class="form-control">
+						<uib-timepicker ng-disabled="!$ctrl.editObj.isRecordCalls" show-spinners="false" ng-model="$ctrl.editObj.recordingTime.from" hour-step="1" minute-step="10" show-meridian="true"></uib-timepicker>
 					</div>
 				</div>
 				<div class="col-xs-6">
 					<div class="input-group">
 						<div class="input-group-addon">Till</div>
-						<input ng-disabled="!$ctrl.editObj.isRecordCalls" ng-model="$ctrl.editObj.recordingTime.to" type="time" placeholder="To" class="form-control">
+						<uib-timepicker ng-disabled="!$ctrl.editObj.isRecordCalls" show-spinners="false" ng-model="$ctrl.editObj.recordingTime.to" hour-step="1" minute-step="10" show-meridian="true"></uib-timepicker>
 					</div>
 				</div>
 			</div>

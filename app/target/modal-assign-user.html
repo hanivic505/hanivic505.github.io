@@ -2,7 +2,7 @@
 	<div class="modal-header">
 		<h4>Assign Team Members to Line <small ng-bind="modalObj.line.title"></small></h4>
 	</div>
-	<form action="">
+	<form ng-submit="ok()">
 		<div class="modal-body">
 			<div class="row">
 				<div class="col-xs-6">
@@ -52,8 +52,8 @@
 			</div>
 		</div>
 		<div class="modal-footer">
-			<button class="btn btn-default">Cancel</button>
-			<button type="button" class="btn btn-primary">Save</button>
+			<button type="button" class="btn btn-default" ng-click="cancel()">Cancel</button>
+			<button class="btn btn-primary">Save</button>
 		</div>
 	</form>
 </div>

@@ -6,7 +6,13 @@ var app;
 			function Case(caseName, comment) {
 				return {
 					caseName: caseName,
-					comment: comment
+					comment: comment,
+					addIdentity:function(identity){
+						this.childs.push(identity);
+					},
+					delete:function(){
+//						this=null;
+					}
 				}
 			}
 			return Case;
@@ -15,7 +21,13 @@ var app;
 			function Identity(identityName, comment) {
 				return {
 					identityName: identityName,
-					comment: comment
+					comment: comment,
+					addIdentity:function(line){
+						this.childs.push(line);
+					},
+					delete:function(){
+//						this=null;
+					}
 				}
 			}
 			return Identity;
@@ -29,7 +41,10 @@ var app;
 					recordingTime: recordingTime,
 					recordingPeriod: recordingPeriod,
 					isVip: isVip,
-					comment: comment
+					comment: comment,
+					delete:function(){
+//						this=null;
+					}
 				}
 			}
 			return Line;

@@ -2,24 +2,26 @@ angular.module("IVRY-App").component("tree", {
 	templateUrl: "/app/components/tree.html",
 	controller: treeComponent,
 	bindings: {
-		treeConfig:"="
+		treeConfig: "="
 	}
 });
 
-function treeComponent($scope, $element, $attrs) {
+function treeComponent($scope, $element, $attrs, dbService) {
 
 	var ctrl = this;
+	$scope.dbService = dbService;
 	this.collapsed = true;
-//	this.selectedNode=this.treeConfig.selectedNode;
-	this.lines=this.treeConfig.lines;
-	this.treeObj=this.treeConfig.treeObj;
-//	this.filterBy=this.treeConfig.filterBy;
+	//	this.selectedNode=this.treeConfig.selectedNode;
+	this.lines = this.treeConfig.lines;
+	//	this.treeObj=angular.copy(this.treeConfig.treeObj);
+	this.treeObj = this.treeConfig.treeObj;
+	//	this.filterBy=this.treeConfig.filterBy;
 	this.multiSelect = this.treeConfig.multiSelect == undefined ? false : this.treeConfig.multiSelect;
-	this.allowEdit=this.treeConfig.allowEdit == undefined?false:this.treeConfig.allowEdit;
+	this.allowEdit = this.treeConfig.allowEdit == undefined ? false : this.treeConfig.allowEdit;
 	$scope.$watch(function () {
 		return ctrl.treeConfig.selectedNode;
 	}, function (nVal) {
-		$scope.$emit("treeNodeSelected",nVal);
+		$scope.$emit("treeNodeSelected", nVal);
 	});
 	this.toggleCollapsed = function () {
 		ctrl.collapsed = !ctrl.collapsed;
@@ -31,8 +33,11 @@ function treeComponent($scope, $element, $attrs) {
 				}
 		}
 	};
-	this.setSelectedNode=function(obj,typ){
-		this.treeConfig.selectedNode={data:obj,type:typ}
+	this.setSelectedNode = function (obj, typ) {
+		ctrl.treeConfig.selectedNode = {
+			data: obj,
+			type: typ
+		}
 	};
 	// enable checkboxes to select multiple elements
 	if (this.multiSelect) {

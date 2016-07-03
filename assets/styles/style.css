@@ -429,7 +429,8 @@ ul.tree li {
 ul.tree li:hover {
 	background: rgba(200, 200, 200, .2);
 }
-li>.node-menu {
+li>.node-menu,
+.list-group-item>.node-menu {
 	width: 0;
 	height: 0;
 	opacity: 0;
@@ -438,17 +439,20 @@ li>.node-menu {
 	right: 0;
 	overflow: hidden;
 }
-li:hover>.node-menu {
+li:hover>.node-menu,
+.list-group-item:hover>.node-menu {
 	width: auto;
 	height: auto;
 	opacity: 1;
 }
-li>.node-menu>.btn {
+li>.node-menu>.btn,
+.list-group-item>.node-menu>.btn {
 	color: #000;
 	padding: 3px 6px;
 	transition: all ease-in-out .5s;
 }
-li>.node-menu>.btn:hover {
+li>.node-menu>.btn:hover,
+.list-group-item>.node-menu>.btn:hover {
 	background: #aaa;
 }
 .list-group-sm>.list-group-item {
@@ -505,6 +509,9 @@ body>div.container-fluid,
 .mh-350 {
 	max-height: 350px;
 }
+.mh-20-em {
+	max-height: 20.6em;
+}
 .brdr-left {
 	border-left: solid 1px #ddd;
 }
@@ -527,7 +534,14 @@ li {
 	background: #ccc;
 }
 .browser>div:nth-child(3) .list-group-item {
-	background: #eee;
+	background: rgba(255, 255, 255, .5);
+	transition: all ease-in-out .5s;
+}
+.browser>div:nth-child(3) .list-group-item .list-group>.list-group-item:hover {
+	background: #fff;
+}
+.browser>div:nth-child(3) .list-group-item .list-group {
+	margin: 0;
 }
 .browser>div:nth-child(3) i.fa-users {
 	position: absolute;
@@ -536,6 +550,9 @@ li {
 	font-size: 17em;
 	color: #ddd;
 	z-index: 0;
+}
+.browser>div:nth-child(3) .list-group-item>.node-menu {;
+	margin-top: -4px;
 }
 .multi-pile {
 	max-height: 12em;
@@ -549,4 +566,22 @@ li {
 	font-weight: normal;
 	margin: 0;
 }
-.text-normal{font-weight: normal;}
+.text-normal {
+	font-weight: normal;
+}
+.modal-header {
+	padding: 8px 15px;
+	border-bottom: 1px solid #f84;
+	background: #f84;
+	color: #fff;
+}
+.modal-footer {
+	background: #eee;
+}
+.modal-header small {
+	color: #f7f7f7;
+}
+.modal-backdrop.in {
+	filter: alpha(opacity=85);
+	opacity: .85;
+}

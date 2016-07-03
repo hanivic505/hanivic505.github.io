@@ -9,7 +9,7 @@
 				<div class="col-md-3 h100">
 					<div class="row h100 no-vertical-overflow">
 						<form ng-submit="dbService.add(linesTreeObj,editObj)">
-							<div class="-col-md-3 input-group -pos-fixed">
+							<div class="-col-md-3 input-group">
 								<input type="text" ng-required="true" ng-model="editObj.title" placeholder="Enter New Case Name" class="form-control"><span class="input-group-btn"><button class="btn btn-default"><i class="fa fa-save"></i></button></span>
 							</div>
 						</form>
@@ -25,16 +25,26 @@
 				</div>
 				<div class="col-md-3 h100 vertical-scroll"><i class="fa fa-users"></i>
 					<div ng-if="lineAssignedUsers">
-						<h5><b>Line Assigned Users <a href="" ng-click="openPopup(lineAssignedUsers,'/app/target/assign-user.html','AssignUsersCtrl')" class="btn btn-link fg-white"><i class="fa fa-plus-circle"></i></a></b></h5>
-						<ul class="list-group">
-							<li class="list-group-item" ng-repeat="x in lineAssignedUsers">
-								<a href="" ng-bind="x.firstName+' '+x.lastName"></a>
-								<span class="node-menu pull-right">
-									<a href="" class="btn btn-link" title="Manage Access Rights" ng-click="openPopup(x,'/app/target/acl.html','ACLCtrl','lg')"><i class="fa fa-shield"></i></a>
-									<a href="" class="btn btn-link" title="UnAssign this User"><i class="fa fa-trash"></i></a>
-								</span>
-							</li>
-						</ul>
+						<h5><b>Line Assigned Users <a href="" ng-click="openPopup(lineAssignedUsers,'/app/target/modal-assign-user.html','AssignUsersCtrl')" class="-btn -btn-link -fg-white"><span class="fa-stack"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-user-plus fa-stack-1x fa-inverse"></i></span></a></b></h5>
+						<div class="list-group">
+							<div class="list-group-item">
+								<div class="input-group">
+									<div class="input-group-addon">
+										<i class="fa fa-search"></i>
+									</div>
+									<input ng-model="fltrLineAssignedUsers" type="search" placeholder="Filter List" class="form-control">
+								</div>
+								<div class="list-group mh-20-em vertical-scroll">
+									<div class="list-group-item" ng-repeat="x in lineAssignedUsers | filter:fltrLineAssignedUsers">
+										<span ng-bind="x.firstName+' '+x.lastName"></span>
+										<span class="node-menu pull-right">
+											<a href="" class="btn btn-link" title="Manage Access Rights" ng-click="openPopup(x,'/app/target/modal-acl.html','ACLCtrl','lg')"><i class="fa fa-shield"></i></a>
+											<a href="" class="btn btn-link" title="UnAssign this User"><i class="fa fa-trash"></i></a>
+										</span>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
