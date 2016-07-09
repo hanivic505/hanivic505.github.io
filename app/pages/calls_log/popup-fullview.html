@@ -47,15 +47,15 @@
 		</div>
 		<div class="col-md-12">
 			<label>Comment:</label>
-			<textarea ng-bind="obj.comment" class="form-control" rows="3"></textarea>
+			<textarea ng-model="obj.comment" class="form-control" rows="3"></textarea>
 		</div>
 		<div class="col-md-12">
 			<label>Transcribe:</label>
-			<textarea ng-bind="obj.transcribe" class="form-control" rows="8"></textarea>
+			<textarea ng-model="obj.transcribe" class="form-control" rows="8"></textarea>
 		</div>
 	</div>
 </div>
 <div class="modal-footer">
-	<button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
 	<button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+	<button class="btn btn-primary" type="button" ng-click="ok()">Save</button>
 </div>

@@ -10,6 +10,7 @@ var app;
 	(function (CallsLogItem) {
 		angular.module("IVRY-App").controller("exportCallLogCtrl", ["$scope", "$uibModalInstance", "obj", function ($scope, $uibModalInstance, obj) {
 			$scope.obj = obj;
+			$scope.objType=Object.prototype.toString.call(obj);
 			$scope.ok = function () {
 				$uibModalInstance.close($scope.obj);
 			};
@@ -88,6 +89,7 @@ var app;
 					_this.isOn = true;
 				}
 			});
+			$scope.markAll={isMarked:10};
 			$scope.currentPage = 1;
 			$scope.numPerPage = 10;
 			$scope.advancedFilter = [{
@@ -108,7 +110,7 @@ var app;
 				var begin, end, index;
 				begin = ($scope.currentPage - 1) * $scope.numPerPage;
 				end = begin + $scope.numPerPage;
-				index = _this.filteredCallsLog.indexOf(value);
+				index = $scope.filteredCallsLog.indexOf(value);
 				return (begin <= index && index < end);
 			};
 
@@ -174,7 +176,7 @@ var app;
 						_this.wavesurfer.on('ready', function () {
 							// Enable creating regions by dragging
 							_this.wavesurfer.enableDragSelection();
-							$scope.duration=_this.wavesurfer.getDuration();
+							$scope.duration = _this.wavesurfer.getDuration();
 							$scope.$apply();
 						});
 						_this.wavesurfer.on('play', function () {
@@ -306,13 +308,13 @@ var app;
 			};
 			$scope.lines = $scope.treeConfig.lines;
 
-			this.filteredCallsLog = linesFilter(this.callsLog, $scope.lines);
+			$scope.filteredCallsLog = linesFilter(this.callsLog, $scope.lines);
 			//            console.log($scope.filteredCallslog);
 			//            $scope.$watchCollection("linesTreeObj",function(nVal,oVal){
 			////                console.log("linesTreeObj.checked",nVal);
 			//            });
 			$scope.$watch("lines", function (nVal) {
-				_this.filteredCallsLog = linesFilter(_this.callsLog, nVal);
+				$scope.filteredCallsLog = linesFilter(_this.callsLog, nVal);
 				//console.info(_this.filteredCallsLog);
 			}, true);
 			//			$scope.$watch("linesTreeObj", function (nVal) {
@@ -359,6 +361,41 @@ var app;
 
 			this.getTimeDiff = utilitiesServices.getTimeDiff;
 			this.getIcon = utilitiesServices.getIcon;
+
+			$scope.checkAll = false;
+			$scope.selectedItems = [];
+			$scope.selectAll = function () {
+				angular.forEach($scope.filteredCallsLog, function (item) {
+					item.Selected = $scope.checkAll;
+					if ($scope.checkAll) {
+						if ($scope.selectedItems.indexOf(item) == -1)
+							$scope.selectedItems.push(item);
+					} else
+						$scope.selectedItems.splice($scope.selectedItems.indexOf(item), 1);
+				});
+				console.info($scope.selectedItems.length, $scope.selectedItems);
+			};
+
+			$scope.checkIfAllSelected = function (item) {
+				$scope.checkAll = $scope.filteredCallsLog.every(function (item) {
+					return item.Selected == true;
+				});
+				if (item.Selected) {
+					if ($scope.selectedItems.indexOf(item) == -1)
+						$scope.selectedItems.push(item);
+				} else
+					$scope.selectedItems.splice($scope.selectedItems.indexOf(item), 1);
+				console.info($scope.selectedItems.length, $scope.selectedItems);
+			};
+			$scope.applyUpdates=function(obj,trgt){
+				console.info(obj,trgt,trgt.indexOf(obj))
+			};
+			$scope.markSelected=function(list,val){
+				angular.forEach(list,function(item){
+					item.isMarked=val;
+				});
+				console.info(list);
+			};
         }]);
 	})(CallsLogItem = app.CallsLogItem || (CallsLogItem = {}));
 })(app || (app = {}));

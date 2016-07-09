@@ -396,7 +396,7 @@ table.uib-daypicker {
 .quick-preview>.body>.scrollme {
 	height: 180px;
 }
-.quick-preview .label {
+.quick-preview .col-md-4 .label {
 	padding: 0;
 	font-weight: normal;
 	color: #999;
@@ -592,3 +592,26 @@ li {
 }
 th .form-control{width:auto;height: auto;padding: 2px 10px;}
 .margin-left{margin-left: 15px;}
+.text-normal{font-size: 1.2em;}
+.player-controls>.label{margin:8px 0;background: #ff0;color: #333;}
+h2 .btn-link {
+    transition: all ease-in-out .5s;
+    border-radius:8px;
+    background:#369;
+    color:#fff;
+    margin: -10px 6px 0 6px;
+}
+h2 .btn-link>span{
+    display:none;
+}
+h2 .btn-link:hover>span{
+    display:inline-block;
+}
+h2 .btn-link:hover{
+    background:#333;
+    color:#fff;
+}
+h2 .dropdown .btn {
+/*    margin-top: -10px;*/
+}
+.special-input{display: inline-block;width:300px;position: relative;top: 5px;}

@@ -49,9 +49,8 @@
 						</div>
 						<div class="-form-group">
 							<label for="" class="label">Comment:</label>
-							<textarea ng-bind="vm.editObj.comment" class="form-control" rows="3"></textarea>
-							<button class="btn btn-link btn-sm pull-right" uib-tooltip="Save"><i class="fa fa-2x fa-save fg-white"></i></button>
-
+							<textarea ng-model="vm.editObj.comment" class="form-control" rows="3"></textarea>
+							<button ng-click="applyUpdates(vm.editObj,filteredCallsLog)" class="btn btn-link btn-sm pull-right" uib-tooltip="Save"><i class="fa fa-2x fa-save fg-white"></i></button>
 						</div>
 					</div>
 				</form>
@@ -63,8 +62,8 @@
             <ng-wavesurfer split-channels="true" url="{{vm.editObj.audio}}" wave-color="#337ab7" progress-color="#23527c" height="64">
                         </ng-wavesurfer>
 -->
-			<div class="text-center">
-				<div class="pull-right btn"><span ng-bind="currentTime | wavesurferTimeFormat"></span> / <span ng-bind="duration|wavesurferTimeFormat"></span></div>
+			<div class="text-center player-controls">
+				<div class="pull-right label label-warning text-normal"><span ng-bind="currentTime | wavesurferTimeFormat"></span> / <span ng-bind="duration|wavesurferTimeFormat"></span></div>
 				<button class="btn btn-link btn-sm" ng-click="vm.wavesurfer.playPause()">
 					<span id="play" ng-show="paused" uib-tooltip="Play Audio">
 						<i class="fa fa-play-circle fa-2x fg-yellow"></i>
