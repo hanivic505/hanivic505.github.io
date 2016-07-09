@@ -3,7 +3,7 @@
     <div class="dropdown-menu keep-on">
         <h5 class="text-center">Select Columns to View</h5>
         <div class="list-group list-group-sm">
-            <label class="list-group-item" ng-repeat="x in columns.childs"><input type="checkbox" ng-model="x.isOn"/> {{x.title}}</label>
+            <div class="list-group-item clearfix" ng-repeat="x in columns.childs"><label class="pull-left" style="white-space:nowrap;margin-right:60px;"><input type="checkbox" ng-model="x.isOn"/> {{x.title}}</label> <input type="number" min="1" ng-model="x.order" class="form-control input-sm pull-right" style="width:50px;position:absolute;right:8px;top:2px"/></div>
         </div>
         <label class="btn btn-link"><input ng-click="handleChkAll(columns,'isOn')" ng-model="columns.checked" type="checkbox"/>Select All</label>
     </div>

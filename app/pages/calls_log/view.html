@@ -4,19 +4,19 @@
     </h1>
     <h2>Calls Log List</h2>
     <div class="row">
-        <div class="col-md-12">        
+        <div class="col-md-12">
             <div class="-table-responsive -no-vertical-overflow">
                 <table class="table table-white table-hover table-striped with-actions-bar">
                     <caption class="no-padding">
-                        <div class="row col-md-1" ng-include="'/app/calls_log/advanced-filter.html'"></div>
-                        <div class="row col-md-3" ng-include="'/app/calls_log/lines-filter.html'"></div>
-                        <div class="row col-md-6" ng-include="'/app/calls_log/duration-filter.html'"></div>
-                        <div class="col-md-1 text-right navbar-right" ng-include="'/app/calls_log/columns-select.html'"></div>
+                        <div class="row col-md-1" ng-include="'/app/pages/calls_log/advanced-filter.html'"></div>
+                        <div class="row col-md-3" ng-include="'/app/pages/calls_log/lines-filter.html'"></div>
+                        <div class="row col-md-6" ng-include="'/app/pages/calls_log/duration-filter.html'"></div>
+                        <div class="col-md-1 text-right navbar-right" ng-include="'/app/pages/calls_log/columns-select.html'"></div>
                     </caption>
                     <thead>
                         <tr>
                             <th width="100"></th>
-                            <th ng-repeat="col in columns.childs | filter:{isOn:true}">{{col.title}}</th>
+                            <th ng-repeat="col in columns.childs |orderBy:'order'|  filter:{isOn:true}">{{col.title}}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -37,15 +37,15 @@
                                 </span>
                                 <a href="" class="btn btn-link" title="{{vm.getIcon(x.isLocked).title}}" ng-click="x.isLocked=!x.isLocked"><i class="fa" ng-class="vm.getIcon(x.isLocked).icon"></i></a>
                             </td>
-                            <td ng-repeat="col in columns.childs  | filter:{isOn:true}">
+                            <td ng-repeat="col in columns.childs  |orderBy:'order'| filter:{isOn:true}">
                                 <span class="btn btn-link" ng-bind="x[col.prop]" ng-show="col.type==undefined"></span>
                                 <span class="btn btn-link" ng-bind="x[col.prop]|date:'dd/MM/yyyy'" ng-show="col.type=='date'"></span>
                                 <span class="btn btn-link" ng-bind="x[col.prop]|date:'hh:mm'" ng-show="col.type=='time'"></span>
                             </td>
                             <td class="actions-bar">
-                                <a href="" class="btn btn-link" tooltip-placement="top" uib-tooltip="Export Record Data" ng-click="openPopup(x,'/app/calls_log/popup-export.html','exportCallLogCtrl','sm');"><i class="fa fa-external-link-square"></i></a>
+                                <a href="" class="btn btn-link" tooltip-placement="top" uib-tooltip="Export Record Data" ng-click="openPopup(x,'/app/pages/calls_log/popup-export.html','exportCallLogCtrl','sm');"><i class="fa fa-external-link-square"></i></a>
                                 <a href="" class="btn btn-link" tooltip-placement="top" uib-tooltip="Play Audio File"><i class="fa fa-play-circle"></i></a>
-                                <a href="" class="btn btn-link" tooltip-placement="top" uib-tooltip="Open Transcribe Window" ng-click="openPopup(x,'/app/calls_log/popup-transcribe.html','callLogFullViewCtrl','lg')"><i class="fa icon-paste"></i></a>
+                                <a href="" class="btn btn-link" tooltip-placement="top" uib-tooltip="Open Transcribe Window" ng-click="openPopup(x,'/app/pages/calls_log/popup-transcribe.html','callLogFullViewCtrl','lg')"><i class="fa icon-paste"></i></a>
                                 <a href="" class="btn btn-link" tooltip-placement="top" uib-tooltip="Delete Record"><i class="fa fa-trash"></i></a>
                             </td>
                         </tr>
@@ -54,8 +54,8 @@
                         <tr>
                             <td colspan="20">
                                 <span class="btn btn-link pull-left">Records Count {{vm.filteredCallsLog.length}}</span>
-                                <uib-pagination boundary-links="true" total-items="vm.filteredCallsLog.length" 
-                ng-model="currentPage" class="pagination-sm" max-size="6" previous-text="&lsaquo;" 
+                                <uib-pagination boundary-links="true" total-items="vm.filteredCallsLog.length"
+                ng-model="currentPage" class="pagination-sm" max-size="6" previous-text="&lsaquo;"
                 next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>
                             </td>
                         </tr>
@@ -64,5 +64,5 @@
             </div>
         </div>
     </div>
-    <ng-include src="'/app/calls_log/quick-preview.html'"></ng-include>
+    <ng-include src="'/app/pages/calls_log/quick-preview.html'" ng-show="vm.isVisible"></ng-include>
 </div>

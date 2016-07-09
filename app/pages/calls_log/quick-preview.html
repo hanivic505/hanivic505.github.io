@@ -1,0 +1,89 @@
+<div class="quick-preview" ng-class="{'on':vm.isOn}">
+	<header>
+		<a uib-tooltip="Close" href="" class="close margin-left" ng-click="vm.isVisible=false"><i class="fa fa-times"></i></a>
+		<a uib-tooltip="Expand / Collapse" href="" class="close margin-left" ng-click="vm.isOn=!vm.isOn"><i class="fa" ng-class="{'fa-compress':vm.isOn,'fa-expand':!vm.isOn}"></i></a>
+		<a uib-tooltip="Open Full View Details" class="close" ng-click="openPopup(vm.editObj,'/app/pages/calls_log/popup-fullview.html','callLogFullViewCtrl','lg')">
+			<i class="fa fa-arrows-alt fg-white"></i>
+		</a>
+		<a href="" ng-click="vm.isOn=!vm.isOn">
+			<h4>Quick Preview</h4>
+		</a>
+	</header>
+	<div class="body">
+		<!--        <div class="col-md-6 scrollme" ng-scrollbar rebuild-on="rebuild:me">-->
+		<div class="col-md-6 scrollme">
+			<div class="row">
+				<form ng-submit="">
+					<div class="col-md-4">
+						<div class="-form-group">
+							<label for="" class="label">Case:</label>
+							<div for="" class="form-control-static" ng-bind="vm.editObj.caseName"></div>
+						</div>
+						<div class="-form-group">
+							<label for="" class="label">Identity:</label>
+							<div for="" class="form-control-static" ng-bind="vm.editObj.identityName"></div>
+						</div>
+						<div class="-form-group">
+							<label for="" class="label">Line:</label>
+							<div for="" class="form-control-static" ng-bind="vm.editObj.lineName"></div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="-form-group">
+							<label for="" class="label">Date:</label>
+							<div for="" class="form-control-static" ng-bind="vm.editObj.startDate | date"></div>
+						</div>
+						<div class="-form-group">
+							<label for="" class="label">Start Time:</label>
+							<div for="" class="form-control-static" ng-bind="vm.editObj.startDate | date:'hh:mm'"></div>
+						</div>
+						<div class="-form-group">
+							<label for="" class="label">End Time:</label>
+							<div for="" class="form-control-static" ng-bind="vm.editObj.endDate | date:'hh:mm'"></div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="-form-group">
+							<label for="" class="label">Duration:</label>
+							<div for="" class="form-control-static" ng-bind="vm.getTimeDiff(vm.editObj.endDate,vm.editObj.startDate)"></div>
+						</div>
+						<div class="-form-group">
+							<label for="" class="label">Comment:</label>
+							<textarea ng-bind="vm.editObj.comment" class="form-control" rows="3"></textarea>
+							<button class="btn btn-link btn-sm pull-right" uib-tooltip="Save"><i class="fa fa-2x fa-save fg-white"></i></button>
+
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div class="col-md-6 border-left">
+			<div id="waveform"></div>
+			<!--
+            <ng-wavesurfer split-channels="true" url="{{vm.editObj.audio}}" wave-color="#337ab7" progress-color="#23527c" height="64">
+                        </ng-wavesurfer>
+-->
+			<div class="text-center">
+				<button class="btn btn-link btn-sm" ng-click="vm.wavesurfer.playPause()">
+					<span id="play" ng-show="paused" uib-tooltip="Play Audio">
+						<i class="fa fa-play-circle fa-2x fg-yellow"></i>
+					</span>
+
+					<span id="pause" ng-show="!paused" uib-tooltip="Pause Audio">
+						<i class="fa fa-pause-circle fa-2x fg-yellow"></i>
+					</span>
+				</button>
+				<!--
+                <button type="button" uib-tooltip="Play Audio" class="btn btn-link" ng-click="vm.wavesurfer.playPause()">
+                    <i class="fa fa-play-circle fa-2x fg-yellow"></i>
+                </button>
+-->
+				<!--
+                <button type="button" class="btn btn-link" ng-click="vm.wavesurfer.playPause()">
+                    <i class="fa fa-retweet fa-2x fg-yellow"></i>
+                </button>
+-->
+			</div>
+		</div>
+	</div>
+</div>

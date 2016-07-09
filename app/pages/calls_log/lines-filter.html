@@ -1,0 +1,13 @@
+<div class="dropdown keep-on" uib-dropdown auto-close="disabled" on-toggle="toggled(open)">
+	<button uib-dropdown-toggle>
+		<i class="fa fa-eye"></i> <b>Viewing <span ng-bind="getLineName(lines)"></span> Line(s)</b>
+	</button>
+	<div class="dropdown-menu keep-on lines-tree" uib-dropdown-menu>
+		<tree tree-config="treeConfig"></tree>
+		<div class="text-center">
+			<hr/>
+			<button class="btn btn-default btn-sm" uib-dropdown-toggle><i class="fa fa-times"></i> Cancel</button>
+			<button class="btn btn-primary btn-sm" uib-dropdown-toggle><i class="fa fa-check"></i>OK</button>
+		</div>
+	</div>
+</div>

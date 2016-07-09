@@ -7,17 +7,25 @@ var app;
             this.$urlRouterProvider = $urlRouterProvider;
             this.$stateProvider.state('calls-log', {
                 url: '/calls-log',
-                templateUrl: '/app/calls_log/view.html',
+                templateUrl: '/app/pages/calls_log/view.html',
                 data:{title:'Calls Log',
 					  authorizedRoles:[USER_ROLES.sysAdmin,USER_ROLES.depAdmin]},
             }).state("system",{
 				url: "/system",
-				templateUrl: "/app/system/view.html",
+				templateUrl: "/app/pages/system/view.html",
 				data:{title:"System Settings",authorizedRoles:[USER_ROLES.sysAdmin]}
 			}).state("target",{
 				url:"/target",
-				templateUrl:"/app/target/view.html",
+				templateUrl:"/app/pages/target/view.html",
 				data:{title:"Target",authorizedRoles:[USER_ROLES.depAdmin,USER_ROLES.teamLead]}
+			}).state("teams",{
+				url: "/teams",
+				templateUrl: "/app/pages/teams/view.html",
+				data:{title:"Teams",authorizedRoles:[USER_ROLES.depAdmin]}
+			}).state("users",{
+				url: "/users",
+				templateUrl: "/app/pages/users/view.html",
+				data:{title:"Users",authorizedRoles:[USER_ROLES.depAdmin]}
 			});
             this.$urlRouterProvider.otherwise('/calls-log');
         }

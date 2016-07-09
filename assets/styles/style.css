@@ -373,13 +373,15 @@ table.uib-daypicker {
 }
 .quick-preview>header {
 	margin-bottom: 15px;
-	text-align: right;
+/*	text-align: right;*/
 }
 .quick-preview>header a,
 .quick-preview>header a:hover,
 .quick-preview>header a:focus {
 	color: #fff;
 	text-decoration: none;
+	font-weight: normal;
+	text-shadow: none;
 }
 .quick-preview>.body {
 	height: 0;
@@ -387,7 +389,9 @@ table.uib-daypicker {
 	overflow: hidden;
 }
 .quick-preview.on>.body {
-	height: 180px;
+	height: 195px;
+	border-top: solid 1px #555;
+	padding-top: 15px;
 }
 .quick-preview>.body>.scrollme {
 	height: 180px;
@@ -395,12 +399,13 @@ table.uib-daypicker {
 .quick-preview .label {
 	padding: 0;
 	font-weight: normal;
+	color: #999;
 }
 #waveform {
 	background: #fff;
 }
 .border-left {
-	border-left: solid 2px #fff;
+	border-left: solid 1px #555;
 }
 ul.tree,
 ul.tree ul {
@@ -585,3 +590,5 @@ li {
 	filter: alpha(opacity=85);
 	opacity: .85;
 }
+th .form-control{width:auto;height: auto;padding: 2px 10px;}
+.margin-left{margin-left: 15px;}

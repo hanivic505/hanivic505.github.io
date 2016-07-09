@@ -6,9 +6,9 @@
             <!--<div class="form-group col-md-6">
                 <label for="">From</label>
                 <p class="input-group">
-                  <input type="text" class="form-control" 
-uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened" 
-datepicker-options="dateOptions" ng-required="true" close-text="Close" 
+                  <input type="text" class="form-control"
+uib-datepicker-popup="{{format}}" ng-model="dt" is-open="popup1.opened"
+datepicker-options="dateOptions" ng-required="true" close-text="Close"
 alt-input-formats="altInputFormats" />
                   <span class="input-group-btn">
                     <button type="button" class="btn btn-default" ng-click="open1()"><i class="glyphicon glyphicon-calendar"></i></button>
@@ -18,9 +18,9 @@ alt-input-formats="altInputFormats" />
             <div class="form-group col-md-6">
                 <label for="">To</label>
                 <p class="input-group">
-                  <input type="text" class="form-control" 
-uib-datepicker-popup="{{format}}" ng-model="dt2" is-open="popup2.opened" 
-datepicker-options="dateOptions" ng-required="true" close-text="Close" 
+                  <input type="text" class="form-control"
+uib-datepicker-popup="{{format}}" ng-model="dt2" is-open="popup2.opened"
+datepicker-options="dateOptions" ng-required="true" close-text="Close"
 alt-input-formats="altInputFormats" />
                   <span class="input-group-btn">
                     <button type="button" class="btn btn-default" ng-click="open2()"><i class="glyphicon glyphicon-calendar"></i></button>
@@ -74,7 +74,8 @@ alt-input-formats="altInputFormats" />
             </div>
             <div class="col-md-12 text-right">
                 <hr/>
-                <button class="btn btn-primary">Search</button>
+                <button class="btn btn-default btn-sm" uib-dropdown-toggle><i class="fa fa-times"></i> Cancel</button>
+                <button class="btn btn-primary btn-sm" uib-dropdown-toggle><i class="fa fa-search"></i> Search</button>
             </div>
         </form>
     </div>

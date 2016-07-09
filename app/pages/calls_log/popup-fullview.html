@@ -8,21 +8,27 @@
 
                 <label>Case:</label>
                 <div for="" class="form-control-static" ng-bind="obj.caseName"></div>
-            </div>
         </div>
-        <div class="col-md-6">
-
-                <label>Identity:</label>
-                <div for="" class="form-control-static" ng-bind="obj.identityName"></div>
-            </div>
-        </div>
-        <div class="col-md-6">
-
-                <label>Line:</label>
-                <div for="" class="form-control-static" ng-bind="obj.lineName"></div>
-            </div>
-        </div>
--->
+ -->
+		<div class="col-md-6">
+			<label>Mark As:</label>
+			<div class="btn-group">
+				<button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<i class="fa" ng-class="getIcon(obj.isMarked).icon"></i> {{getIcon(obj.isMarked).title}} <span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu">
+					<li><a href="" ng-click="obj.isMarked=10"><i class="fa fa-circle-o"></i> Un Marked</a></li>
+					<li><a href="" ng-click="obj.isMarked=11"><i class="fa fa-exclamation"></i> Important</a></li>
+					<li><a href="" ng-click="obj.isMarked=12"><i class="fa fa-search"></i> Revise Later</a></li>
+					<li><a href="" ng-click="obj.isMarked=13"><i class="fa fa-check"></i> Reviewed</a></li>
+					<li><a href="" ng-click="obj.isMarked=14"><i class="fa fa-times"></i> Irrelevent</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<label>(un)Lock? :</label>
+			<a href="" class="btn btn-default btn-sm" title="{{getIcon(obj.isLocked).title}}" ng-click="obj.isLocked=!obj.isLocked"><i class="fa" ng-class="getIcon(obj.isLocked).icon"></i> {{getIcon(obj.isLocked).title}}</a>
+		</div>
 		<div class="col-md-12">
 			<label>Date:</label>
 			<div for="" class="form-control-static" ng-bind="obj.startDate | date"></div>

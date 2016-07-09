@@ -18,7 +18,7 @@ var app;
 				$uibModalInstance.dismiss('cancel');
 			};
         }]);
-		angular.module("IVRY-App").controller("callLogFullViewCtrl", ["$scope", "$uibModalInstance", "obj", function ($scope, $uibModalInstance, obj) {
+		angular.module("IVRY-App").controller("callLogFullViewCtrl", ["$scope", "$uibModalInstance", "utilitiesServices", "obj", function ($scope, $uibModalInstance, utilitiesServices, obj) {
 			$scope.obj = obj;
 			$scope.ok = function () {
 				$uibModalInstance.close($scope.obj);
@@ -27,19 +27,65 @@ var app;
 			$scope.cancel = function () {
 				$uibModalInstance.dismiss('cancel');
 			};
+			$scope.getIcon = utilitiesServices.getIcon;
         }]);
-		angular.module("IVRY-App").controller("CallLogCtrl", ["$rootScope","$scope", "$log", "linesFilter", "$uibModal","linesTreeService", function ($rootScope,$scope, $log, linesFilter, $uibModal,linesTreeService) {
+		angular.module("IVRY-App").controller('PlaylistController', function ($scope) {
+			var activeUrl = null;
+			var _this = this;
+			this.paused = true;
+
+			$scope.$on('wavesurferInit', function (e, wavesurfer) {
+				$scope.wavesurfer = wavesurfer;
+				console.info(wavesurfer);
+				$scope.wavesurfer.on('play', function () {
+					_this.paused = false;
+				});
+
+				$scope.wavesurfer.on('pause', function () {
+					_this.paused = true;
+				});
+
+				$scope.wavesurfer.on('finish', function () {
+					_this.paused = true;
+					$scope.wavesurfer.seekTo(0);
+					$scope.$apply();
+				});
+			});
+
+			$scope.play = function (url) {
+				if (!$scope.wavesurfer) {
+					return;
+				}
+
+				activeUrl = url;
+
+				$scope.wavesurfer.once('ready', function () {
+					$scope.wavesurfer.play();
+					$scope.$apply();
+				});
+
+				$scope.wavesurfer.load(activeUrl);
+			};
+
+			$scope.isPlaying = function (url) {
+				return url == activeUrl;
+			};
+		});
+		angular.module("IVRY-App").controller("CallLogCtrl", ["$rootScope", "$scope", "$log", "linesFilter", "$uibModal", "callLogService", "linesTreeService", "utilitiesServices", function ($rootScope, $scope, $log, linesFilter, $uibModal, callLogService, linesTreeService, utilitiesServices) {
 			/*jslint node: true */
-			$rootScope.user="Analyst";
+			$rootScope.user = "Analyst";
+			$scope.paused = true;
 			var _this = this,
 				idx = 1;
-			$scope.isOn = false;
+			this.isOn = false;
+			this.isVisible = false;
 			$scope.$watch(function () {
 				return _this.editObj;
 			}, function (nVal) {
 				if (nVal !== null) {
-					$scope.isOn = false;
-					$scope.isOn = true;
+					_this.isOn = false;
+					_this.isVisible = true;
+					_this.isOn = true;
 				}
 			});
 			$scope.currentPage = 1;
@@ -117,102 +163,133 @@ var app;
 					try {
 						_this.wavesurfer.destroy();
 					} catch (ex) {}
-					_this.wavesurfer = WaveSurfer.create({
-						container: '#waveform',
-						waveColor: 'violet',
-						progressColor: 'purple',
-						splitChannels: true,
-						height: 64
-					});
-					//this.wavesurfer.load('/app/audio/g711-ulaw-25s.wav');
-					//                    _this.wavesurfer.load("/assets/libs/wavesurfer.js-master/example/split-channels/stereo.mp3");
-					_this.wavesurfer.load(nVal.audio);
-					_this.wavesurfer.on('ready', function () {
-						// Enable creating regions by dragging
-						_this.wavesurfer.enableDragSelection();
-					});
-				}
-			});
-			var i, j, k;
-			for (i = 0; i < 3; i = i + 1) {
-				for (j = 0; j < 3; j = j + 1) {
-					for (k = 0; k < 3; k = k + 1) {
-						this.callsLog.push(new CallsLogItem("New Case Name" + (i + 1), "New Identity Name" + (((i + 1) * (j + 1))), "New Line Name" + idx, 1200 + i + j + k, new Date("5/28/2016 12:09"), new Date("5/28/2016 12:41"), 23, 13, false, "", "/assets/libs/wavesurfer.js-master/example/split-channels/stereo.mp3"));
-						idx = idx + 1;
+					if (nVal && nVal.audio) {
+						_this.wavesurfer = WaveSurfer.create({
+							container: '#waveform',
+							waveColor: 'violet',
+							progressColor: 'purple',
+							splitChannels: true,
+							height: 64
+						});
+						//this.wavesurfer.load('/app/audio/g711-ulaw-25s.wav');
+						//                    _this.wavesurfer.load("/assets/libs/wavesurfer.js-master/example/split-channels/stereo.mp3");
+						_this.wavesurfer.load(nVal.audio);
+						_this.wavesurfer.on('ready', function () {
+							// Enable creating regions by dragging
+							_this.wavesurfer.enableDragSelection();
+						});
+						_this.wavesurfer.on('play', function () {
+							$scope.paused = false;
+						});
+
+						_this.wavesurfer.on('pause', function () {
+							$scope.paused = true;
+						});
+
+						_this.wavesurfer.on('finish', function () {
+							$scope.paused = true;
+							_this.wavesurfer.seekTo(0);
+							$scope.$apply();
+						});
 					}
 				}
-			}
+			});
+			$scope.handleChkAll = function (obj, prop, isHandleTree = false) {
+				if (isHandleTree && obj.id !== undefined)
+					ctrl.lines[obj.id] = obj.checked;
+				if (obj.childs)
+					for (var i = 0; i < obj.childs.length; i++) {
+						obj.childs[i][prop] = obj.checked;
+						if (isHandleTree && obj.childs[i].id !== undefined)
+							ctrl.lines[obj.childs[i].id] = obj.checked;
+						if (obj.childs[i].childs)
+							$scope.handleChkAll(obj.childs[i], prop, isHandleTree);
+					}
+			};
+			//Dummy database creation
+			this.callsLog = callLogService;
 			$scope.linesTreeObj = linesTreeService;
 			$scope.columns = {
 				childs: [
 					{
 						title: 'Case Name',
 						prop: "caseName",
-						isOn: true
+						isOn: true,
+						order: 1
 					},
 					{
 						title: 'Identity Name',
 						prop: "identityName",
-						isOn: true
+						isOn: true,
+						order: 2
 					},
 					{
 						title: 'Line Name',
 						prop: "lineName",
-						isOn: true
+						isOn: true,
+						order: 3
 					},
 					{
 						title: 'Line ID',
 						prop: "lineId",
-						isOn: true
+						isOn: true,
+						order: 4
 					},
 					{
 						title: 'Date',
 						prop: "startDate",
 						isOn: true,
-						type: "date"
+						type: "date",
+						order: 5
 					},
 					{
 						title: 'Start Time',
 						prop: "startDate",
 						isOn: false,
-						type: "time"
+						type: "time",
+						order: 6
 					},
 					{
 						title: 'End Time',
 						prop: "endDate",
 						isOn: false,
-						type: "time"
+						type: "time",
+						order: 7
 					},
 					{
 						title: 'Duration',
 						prop: "duration",
 						isOn: false,
-						type: "time"
+						type: "time",
+						order: 8
 					},
 					{
 						title: 'Comment',
 						prop: "comment",
-						isOn: false
+						isOn: false,
+						order: 9
 					},
 					{
 						title: 'Calling Number (a_number)',
 						prop: "sipCallingParty",
-						isOn: false
+						isOn: false,
+						order: 10
 					},
 					{
 						title: 'Called Number (b_number)',
 						prop: "sipCalledParty",
-						isOn: false
+						isOn: false,
+						order: 11
 					}
 				]
 			};
-			$scope.treeConfig={
-					lines:{},
-					treeObj:linesTreeService,
-					multiSelect:true,
-					selectedNode:null
-				};
-			$scope.lines=$scope.treeConfig.lines;
+			$scope.treeConfig = {
+				lines: {},
+				treeObj: linesTreeService,
+				multiSelect: true,
+				selectedNode: null
+			};
+			$scope.lines = $scope.treeConfig.lines;
 
 			this.filteredCallsLog = linesFilter(this.callsLog, $scope.lines);
 			//            console.log($scope.filteredCallslog);
@@ -223,13 +300,13 @@ var app;
 				_this.filteredCallsLog = linesFilter(_this.callsLog, nVal);
 				//console.info(_this.filteredCallsLog);
 			}, true);
-			$scope.$watch("linesTreeObj", function (nVal) {
-				//                angular.forEach(nVal,function(val,key){
-				//                    if(nVal.checked)
-				//                        $scope.lines[nVal.lineId]=true;
-				//                });
-				//console.info(nVal,$scope.lines);
-			}, true);
+			//			$scope.$watch("linesTreeObj", function (nVal) {
+			//                angular.forEach(nVal,function(val,key){
+			//                    if(nVal.checked)
+			//                        $scope.lines[nVal.lineId]=true;
+			//                });
+			//console.info(nVal,$scope.lines);
+			//			}, true);
 			//            $scope.linesFilter=function(value,index){
 			//                //var filter=value.lineId && $scope.lines.indexOf(value.lineId) !== -1;
 			////                console.info(filter);
@@ -237,16 +314,7 @@ var app;
 			//                console.log(filter);
 			//                return filter;
 			//            };
-			$scope.getLineName = function (value) {
-				var idx = 0;
-				/* jshint node: true */
-				angular.forEach(value, function (val, key) {
-					if (val) {
-						idx = idx + 1;
-					}
-				});
-				return idx;
-			};
+			$scope.getLineName = utilitiesServices.getLineName;
 
 			$scope.openPopup = function (_obj, tmpltURL, cntrl, size = "") {
 				var modalInstance = $uibModal.open({
@@ -274,51 +342,8 @@ var app;
 				$scope[scopeListName].splice($scope[scopeListName].indexOf(obj), 1);
 			};
 
-			this.getTimeDiff = function (end, start) {
-				var hourDiff = end - start;
-				var diffHrs = Math.floor((hourDiff % 86400000) / 3600000);
-				var diffMins = Math.floor(((hourDiff % 86400000) % 3600000) / 60000);
-				//diffMins = diffMins + (diffHrs * 60);
-
-				//var timeDiff=end.getTime()-start.getTime();
-				return diffHrs + ":" + diffMins;
-			};
-			this.getIcon = function (param) {
-				var obj = {};
-				switch (param) {
-				case false:
-					obj.icon = "fa-unlock fg-red";
-					obj.title = "Unlocked";
-					break;
-				case true:
-					obj.icon = "fa-lock fg-green";
-					obj.title = "Locked";
-					break;
-				case 10:
-					obj.icon = "fa-circle-o";
-					obj.title = "UnMarked";
-					break;
-				case 11:
-					obj.icon = "fa-exclamation fg-red";
-					obj.title = "Important";
-					break;
-				case 12:
-					obj.icon = "fa-search";
-					obj.title = "Revise Later";
-					break;
-				case 13:
-					obj.icon = "fa-check fg-green";
-					obj.title = "Reviewed";
-					break;
-				case 14:
-					obj.icon = "fa-times fg-red";
-					obj.title = "Irrelevent";
-					break;
-				default:
-					break;
-				}
-				return obj;
-			};
+			this.getTimeDiff = utilitiesServices.getTimeDiff;
+			this.getIcon = utilitiesServices.getIcon;
         }]);
 	})(CallsLogItem = app.CallsLogItem || (CallsLogItem = {}));
 })(app || (app = {}));
