@@ -103,9 +103,6 @@ var app;
 				$log.log('Page changed to: ' + $scope.currentPage);
 			};
 
-			$scope.maxSize = 5;
-			$scope.bigTotalItems = 175;
-			$scope.bigCurrentPage = 1;
 
 			$scope.paginate = function (value) {
 				var begin, end, index;
@@ -177,6 +174,8 @@ var app;
 						_this.wavesurfer.on('ready', function () {
 							// Enable creating regions by dragging
 							_this.wavesurfer.enableDragSelection();
+							$scope.duration=_this.wavesurfer.getDuration();
+							$scope.$apply();
 						});
 						_this.wavesurfer.on('play', function () {
 							$scope.paused = false;
@@ -191,9 +190,25 @@ var app;
 							_this.wavesurfer.seekTo(0);
 							$scope.$apply();
 						});
+						_this.wavesurfer.on("audioprocess", function () {
+							$scope.currentTime = _this.wavesurfer.getCurrentTime();
+							$scope.$apply();
+						});
 					}
 				}
 			});
+			$scope.play = function (url) {
+				if (!_this.wavesurfer) {
+					return;
+				}
+
+				_this.wavesurfer.on('ready', function () {
+					_this.wavesurfer.play();
+					$scope.$apply();
+				});
+
+				_this.wavesurfer.load(url);
+			};
 			$scope.handleChkAll = function (obj, prop, isHandleTree = false) {
 				if (isHandleTree && obj.id !== undefined)
 					ctrl.lines[obj.id] = obj.checked;

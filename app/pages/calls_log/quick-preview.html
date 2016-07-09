@@ -64,6 +64,7 @@
                         </ng-wavesurfer>
 -->
 			<div class="text-center">
+				<div class="pull-right btn"><span ng-bind="currentTime | wavesurferTimeFormat"></span> / <span ng-bind="duration|wavesurferTimeFormat"></span></div>
 				<button class="btn btn-link btn-sm" ng-click="vm.wavesurfer.playPause()">
 					<span id="play" ng-show="paused" uib-tooltip="Play Audio">
 						<i class="fa fa-play-circle fa-2x fg-yellow"></i>
