@@ -1,6 +1,18 @@
 <div ng-controller="CallLogCtrl as vm">
 	<h1 class="page-header">
         <i class="fa fa-headphones fa-1x"></i> Calls log
+        	<div id="mini-player"></div>
+        <div class="mini-player" ng-if="!miniPaused">
+        	<div class="mini-controls">
+        		<label for="" class="label label-warning"> {{miniIsPlaying}}
+        			<a href="" class="btn btn-link" ng-click="vm.wavesurferMini.playPause()">
+						<span id="pause" ng-show="!miniPaused" uib-tooltip="Pause Audio">
+							<i class="fa fa-pause-circle fa-3x fg-yellow"></i>
+						</span>
+					</a>
+        		</label>
+        	</div>
+        </div>
     </h1>
 	<h2>Calls Log List <small class="text-warning" ng-if="selectedItems.length">You have selected {{selectedItems.length}} Items, What do you need to do?
 							   <div class="special-input"><span class="input-group input-group-sm"><span class="input-group-addon">Mark selected as</span>
@@ -61,7 +73,7 @@
 							</td>
 							<td class="actions-bar">
 								<a href="" class="btn btn-link" tooltip-placement="top" uib-tooltip="Export Record Data" ng-click="openPopup(x,'/app/pages/calls_log/popup-export.html','exportCallLogCtrl','sm');"><i class="fa fa-external-link-square"></i></a>
-								<a href="" class="btn btn-link" tooltip-placement="top" uib-tooltip="Play Audio File" ng-click="play(x.audio)"><i class="fa fa-play-circle"></i></a>
+								<a href="" class="btn btn-link" tooltip-placement="top" uib-tooltip="Play Audio File" ng-click="play(x)"><i class="fa fa-play-circle"></i></a>
 								<a href="" class="btn btn-link" tooltip-placement="top" uib-tooltip="Open Transcribe Window" ng-click="openPopup(x,'/app/pages/calls_log/popup-transcribe.html','callLogFullViewCtrl','lg')"><i class="fa icon-paste"></i></a>
 								<a href="" class="btn btn-link" tooltip-placement="top" uib-tooltip="Delete Record"><i class="fa fa-trash"></i></a>
 							</td>

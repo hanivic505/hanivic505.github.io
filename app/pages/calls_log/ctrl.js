@@ -11,6 +11,7 @@ var app;
 		angular.module("IVRY-App").controller("exportCallLogCtrl", ["$scope", "$filter", "$uibModalInstance", "obj", function ($scope, $filter, $uibModalInstance, obj) {
 			$scope.obj = obj;
 			$scope.objType = Object.prototype.toString.call(obj);
+			$scope.exported=false;
 			if ($scope.objType == "[object Object]")
 				$scope.exp = {
 					name: obj.lineName + '_' + $filter('date')(obj.startDate, 'dd.MM.yyyy.HH.mm') + '.wav'
@@ -18,7 +19,10 @@ var app;
 
 
 			$scope.ok = function () {
+				if($scope.exported)
 				$uibModalInstance.close($scope.obj);
+				else
+					$scope.exported=true;
 			};
 
 			$scope.cancel = function () {
@@ -78,9 +82,9 @@ var app;
 				return url == activeUrl;
 			};
 		});
-		angular.module("IVRY-App").controller("CallLogCtrl", ["$rootScope", "$scope", "$log", "linesFilter", "$uibModal", "callLogService", "linesTreeService", "utilitiesServices", "dbService", function ($rootScope, $scope, $log, linesFilter, $uibModal, callLogService, linesTreeService, utilitiesServices, dbService) {
+		angular.module("IVRY-App").controller("CallLogCtrl", ["$rootScope", "$scope", "$log","$filter", "linesFilter", "$uibModal", "callLogService", "linesTreeService", "utilitiesServices", "dbService", function ($rootScope, $scope, $log,$filter, linesFilter, $uibModal, callLogService, linesTreeService, utilitiesServices, dbService) {
 			/*jslint node: true */
-			$rootScope.user = "Analyst";
+			$rootScope.user = "DepAdmin";
 			$scope.paused = true;
 			var _this = this,
 				idx = 1;
@@ -110,10 +114,18 @@ var app;
 			};
 			$scope.advancedFilter = angular.copy(this.advFltr);
 			$scope.savedSearch = [];
+			$scope.search = {
+				title: ''
+			};
+			this.tglSave = false;
 			$scope.saveSearch = function (title) {
-				$scope.advancedFilter["title"] = "Filter " + ($scope.savedSearch.length + 1);
-				dbService.add($scope.savedSearch, $scope.advancedFilter);
-				$scope.advancedFilter = angular.copy(_this.advFltr);
+				if (title != '' && title != undefined) {
+					$scope.advancedFilter["title"] = title;
+					dbService.add($scope.savedSearch, $scope.advancedFilter);
+					$scope.advancedFilter = angular.copy(_this.advFltr);
+					_this.tglSave = false;
+					$scope.search.title = "";
+				}
 			};
 			$scope.loadSearch = function (obj) {
 				$scope.advancedFilter = angular.copy(obj);
@@ -181,6 +193,8 @@ var app;
 			this.editObj = null;
 			this.callsLog = [];
 			this.wavesurfer = {};
+			this.wavesurferMini = {};
+			$scope.miniPaused = true;
 			//this.wavesurfer.load('/app/audio/g711-ulaw-25s.wav');
 
 			$scope.$watch(function () {
@@ -192,6 +206,9 @@ var app;
 					_this.isOn = true;
 				}
 				if (nVal !== undefined || nVal !== null) {
+					try {
+						_this.wavesurferMini.stop();
+					} catch (ex) {}
 					try {
 						_this.wavesurfer.destroy();
 					} catch (ex) {}
@@ -219,6 +236,9 @@ var app;
 							$scope.$apply();
 						});
 						_this.wavesurfer.on('play', function () {
+							try {
+								_this.wavesurferMini.stop();
+							} catch (ex) {}
 							$scope.paused = false;
 						});
 
@@ -238,19 +258,40 @@ var app;
 					}
 				}
 			});
-			$scope.play = function (url) {
-				if (!_this.wavesurfer) {
+			$scope.play = function (obj) {
+				if (!_this.wavesurferMini) {
 					return;
 				}
+				try {
+					_this.wavesurfer.stop();
+				} catch (ex) {}
+//				try {
+//					_this.wavesurferMini.destroy();
+//				} catch (ex) {}
 
-				_this.wavesurfer.on('ready', function () {
-					_this.wavesurfer.play();
+				_this.wavesurferMini = WaveSurfer.create({
+					container: '#mini-player',
+					waveColor: 'gray',
+					progressColor: 'white',
+					splitChannels: false,
+					height: 32
+				});
+				_this.wavesurferMini.on('ready', function () {
+					_this.wavesurferMini.play();
 					$scope.$apply();
 				});
-				if (_this.wavesurfer.isPlaying())
-					_this.wavesurfer.stop();
-				else
-					_this.wavesurfer.load(url);
+
+				_this.wavesurferMini.on('play', function () {
+					$scope.miniPaused = false;
+					$scope.miniIsPlaying=obj.caseName+", "+obj.identityName+", "+obj.lineName+" : "+$filter("date")(obj.startDate,"dd/MM/yyyy HH:mm");
+					$scope.$apply();
+				});
+
+				_this.wavesurferMini.on('pause', function () {
+					$scope.miniPaused = true;
+					$scope.$apply();
+				});
+				_this.wavesurferMini.load(obj.audio);
 			};
 			$scope.handleChkAll = function (obj, prop, isHandleTree = false) {
 				if (isHandleTree && obj.id !== undefined)

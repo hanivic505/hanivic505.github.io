@@ -95,7 +95,21 @@
 				<div class="row">
 					<div class="col-xs-6">
 						<div class="row">
-							<a href="" ng-click="saveSearch()" class="col-xs-4"><span class="fa-stack"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-save fa-inverse fa-stack-1x"></i></span> Save</a>
+							<div class="dropdown col-xs-4" ng-class="{'open':vm.tglSave}">
+								<a href="" ng-click="vm.tglSave=!vm.tglSave" class="btn btn-default btn-sm"><i class="fa fa-save"></i> Save <span class="caret"></span></a>
+								<div class="dropdown-menu keep-on" style="width:200px;">
+									<div class="container-fluid">
+									<form ng-submit=""></form>
+										<span class="input-group input-group-sm">
+											<input type="text" required class="form-control" ng-model="search.title">
+											<span class="input-group-btn">
+												<button ng-click="saveSearch(search.title)" class="btn btn-default"><i class="fa fa-save"></i></button>
+											</span>
+										</span>
+									</div>
+								</div>
+							</div>
+							<!--							<a href="" ng-click="saveSearch()" class="col-xs-4"><span class="fa-stack"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-save fa-inverse fa-stack-1x"></i></span> Save</a>-->
 							<span ng-if="savedSearch.length>0" class=" col-xs-8 input-group input-group-sm">
 								<select ng-model="selectedSearch" ng-options="x.title for x in savedSearch" class="form-control"></select>
 								<span class="input-group-btn">

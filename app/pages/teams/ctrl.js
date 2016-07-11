@@ -88,7 +88,7 @@ var app;
 
 		angular.module("IVRY-App").controller("TeamsCtrl", ["$scope", "$rootScope", "$uibModal","dbService", cntrlFn]);
 
-		angular.module("IVRY-App").controller("TeamEditCtrl", ["$scope", "$uibModalInstance", "dbService", "obj", function ($scope, $uibModalInstance, dbService, obj) {
+		angular.module("IVRY-App").controller("TeamEditCtrl", ["$scope", "$uibModalInstance", "dbService","utilitiesServices", "obj", function ($scope, $uibModalInstance, dbService,utilitiesServices, obj) {
 			$scope.obj = obj;
 			this.mode = obj == null ? 1 /*Add Mode*/ : 2 /*Update Mode*/ ;
 			var _this = this;
@@ -142,20 +142,7 @@ var app;
 					name: "Team Lead Nine"
 				},
 			];
-			$scope.moveItems = function (src, items, trgt) {
-				console.log("before", src, items, trgt);
-				if (src == items)
-					items = angular.copy(items);
-				if(trgt==undefined)
-					trgt=[];
-				angular.forEach(items, function (item) {
-					trgt.push(item);
-				});
-				angular.forEach(items, function (item) {
-					src.splice(src.indexOf(item), 1);
-				});
-				console.log("after", src, items, trgt);
-			};
+			$scope.moveItems = utilitiesServices.moveItems;
 		}]);
 	})(Team = app.Team || (Team = {}));
 })(app || (app = {}));

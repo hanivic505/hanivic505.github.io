@@ -52,7 +52,7 @@ var app;
 
 		angular.module("IVRY-App").controller("TargetCtrl", ["$scope", "$rootScope", "$uibModal", "linesTreeService", "dbService", cntrlFn]);
 
-		angular.module("IVRY-App").controller("AssignUsersCtrl", ["$scope", "$uibModalInstance", "obj", function ($scope, $uibModalInstance, obj) {
+		angular.module("IVRY-App").controller("AssignUsersCtrl", ["$scope", "$uibModalInstance", "utilitiesServices", "obj", function ($scope, $uibModalInstance, utilitiesServices, obj) {
 			console.info("AssignUsersCtrl", obj);
 			$scope.modalObj = {
 				line: {
@@ -60,11 +60,14 @@ var app;
 				},
 				team: {
 					available: [{
-						firstName: "Jack Nicklson"
+						firstName: "Jack",
+						lastName: "Nicklson"
 					}, {
-						firstName: "Adam Sandler"
+						firstName: "Adam",
+						lastName: "Sandler"
 					}, {
-						firstName: "Tom Hanks"
+						firstName: "Tom",
+						lastName: "Hanks"
 					}],
 					assigned: obj
 				}
@@ -73,12 +76,13 @@ var app;
 			$scope.ok = function () {
 				$uibModalInstance.close();
 			};
+			$scope.moveItems = utilitiesServices.moveItems;
 
 			$scope.cancel = function () {
 				$uibModalInstance.dismiss('cancel');
 			};
 		}]);
-		angular.module("IVRY-App").controller("ACLCtrl", ["$scope", "$uibModalInstance", "linesTreeService", function ($scope, $uibModalInstance, linesTreeService) {
+		angular.module("IVRY-App").controller("ACLCtrl", ["$scope", "$uibModalInstance", "utilitiesServices", "linesTreeService", function ($scope, $uibModalInstance, utilitiesServices, linesTreeService) {
 			$scope.treeConfigs = {
 				lines: {},
 				treeObj: linesTreeService,

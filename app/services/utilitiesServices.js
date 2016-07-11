@@ -74,6 +74,20 @@ var app;
 					},
 					setPage: function (pageNo) {
 						this.currentPage = pageNo;
+					},
+					moveItems:function (src, items, trgt) {
+						console.log("before", src, items, trgt);
+						if (src == items)
+							items = angular.copy(items);
+						if(trgt==undefined)
+							trgt=[];
+						angular.forEach(items, function (item) {
+							trgt.push(item);
+						});
+						angular.forEach(items, function (item) {
+							src.splice(src.indexOf(item), 1);
+						});
+						console.log("after", src, items, trgt);
 					}
 				}
 			}

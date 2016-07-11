@@ -5,13 +5,32 @@
 	<form ng-submit="ok()">
 		<div class="modal-body">
 			<div class="row">
-				<div class="col-xs-6">
-					<label class="btn-block" for="">Assigned Team Analysts
-						<div class="pull-right">
-							<button class="btn btn-default btn-sm"><i class="fa fa-angle-right"></i></button>
-							<button class="btn btn-default btn-sm"><i class="fa fa-angle-double-right"></i></button>
+				<div class="col-md-12">
+					<fieldset>
+						<legend>Team Members</legend>
+						<div class="row">
+							<div class="col-md-6">
+								<label for="">Assigned Team Analysts</label>
+								<select multiple class="form-control" ng-options="x.firstName+' '+x.lastName for x in modalObj.team.assigned" ng-model="dummy"></select>
+							</div>
+							<div class="col-md-1">
+								<div class="row">
+									<button type="button" class="btn btn-default btn-sm btn-block" ng-click="moveItems(modalObj.team.available,modalObj.team.available,modalObj.team.assigned)"><i class="fa fa-angle-double-left"></i></button>
+									<button type="button" class="btn btn-default btn-sm btn-block" ng-click="moveItems(modalObj.team.available,selectedMembers,modalObj.team.assigned)"><i class="fa fa-angle-left"></i></button>
+									<button type="button" class="btn btn-default btn-sm btn-block" ng-click="moveItems(modalObj.team.assigned,dummy,modalObj.team.available)"><i class="fa fa-angle-right"></i></button>
+									<button type="button" class="btn btn-default btn-sm btn-block" ng-click="moveItems(modalObj.team.assigned,obj.data.members,modalObj.team.available)"><i class="fa fa-angle-double-right"></i></button>
+								</div>
+							</div>
+							<div class="col-md-5">
+								<label for="">Available Team Analysts</label>
+								<select multiple class="form-control" ng-options="x.firstName+' '+x.lastName for x in modalObj.team.available" ng-model="selectedMembers"></select>
+							</div>
 						</div>
-					</label>
+					</fieldset>
+				</div>
+<!--
+				<div class="col-xs-6">
+					<label class="btn-block" for="">Assigned Team Analysts</label>
 					<div class="multi-pile">
 						<table class="table table-striped table-hover table-condensed">
 							<tbody>
@@ -34,6 +53,17 @@
 							<button class="btn btn-default btn-sm"><i class="fa fa-angle-left"></i></button>
 						</div>
 					</label>
+				<div class="col-xs-1">
+					<div class="row">
+						<label for="">&nbsp;</label>
+						<button type="button" class="btn btn-default btn-block btn-sm"><i class="fa fa-angle-double-right"></i></button>
+						<button type="button" class="btn btn-default btn-block btn-sm"><i class="fa fa-angle-right"></i></button>
+						<button type="button" class="btn btn-default btn-block btn-sm"><i class="fa fa-angle-left"></i></button>
+						<button type="button" class="btn btn-default btn-block btn-sm"><i class="fa fa-angle-double-left"></i></button>
+					</div>
+				</div>
+				<div class="col-xs-5">
+					<label for="" class="btn-block">Available Team Analysts</label>
 					<div class="multi-pile">
 						<table class="table table-striped table-hover table-condensed">
 							<tbody>
@@ -49,6 +79,7 @@
 						</table>
 					</div>
 				</div>
+-->
 			</div>
 		</div>
 		<div class="modal-footer">
