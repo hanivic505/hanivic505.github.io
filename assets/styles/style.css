@@ -332,7 +332,7 @@ table.uib-daypicker {
 	margin: 0 auto;
 }
 .open>.dropdown-menu {
-	background: #e7e7e7;
+	background: #fafafa;
 	border-top: solid 3px #4281d0;
 }
 .dropdown.keep-on {
@@ -615,3 +615,19 @@ h2 .dropdown .btn {
 /*    margin-top: -10px;*/
 }
 .special-input{display: inline-block;width:300px;position: relative;top: 5px;}
+fieldset {
+    background: #eee;
+    padding: 15px;
+    border-radius: 4px;
+    border: solid 1px #ddd;
+    margin-top: 15px;
+}
+legend{
+    line-height:1.2em;
+    display: inline-block;
+}
+.values label{font-weight: normal;}
+.controls-row>div{margin-bottom: 8px;}
+div#waveform-timeline {
+    background: #eee;
+}

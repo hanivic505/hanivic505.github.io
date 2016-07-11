@@ -8,9 +8,15 @@ var app;
 
 	var CallsLogItem;
 	(function (CallsLogItem) {
-		angular.module("IVRY-App").controller("exportCallLogCtrl", ["$scope", "$uibModalInstance", "obj", function ($scope, $uibModalInstance, obj) {
+		angular.module("IVRY-App").controller("exportCallLogCtrl", ["$scope", "$filter", "$uibModalInstance", "obj", function ($scope, $filter, $uibModalInstance, obj) {
 			$scope.obj = obj;
-			$scope.objType=Object.prototype.toString.call(obj);
+			$scope.objType = Object.prototype.toString.call(obj);
+			if ($scope.objType == "[object Object]")
+				$scope.exp = {
+					name: obj.lineName + '_' + $filter('date')(obj.startDate, 'dd.MM.yyyy.HH.mm') + '.wav'
+				}
+
+
 			$scope.ok = function () {
 				$uibModalInstance.close($scope.obj);
 			};
@@ -72,7 +78,7 @@ var app;
 				return url == activeUrl;
 			};
 		});
-		angular.module("IVRY-App").controller("CallLogCtrl", ["$rootScope", "$scope", "$log", "linesFilter", "$uibModal", "callLogService", "linesTreeService", "utilitiesServices", function ($rootScope, $scope, $log, linesFilter, $uibModal, callLogService, linesTreeService, utilitiesServices) {
+		angular.module("IVRY-App").controller("CallLogCtrl", ["$rootScope", "$scope", "$log", "linesFilter", "$uibModal", "callLogService", "linesTreeService", "utilitiesServices", "dbService", function ($rootScope, $scope, $log, linesFilter, $uibModal, callLogService, linesTreeService, utilitiesServices, dbService) {
 			/*jslint node: true */
 			$rootScope.user = "Analyst";
 			$scope.paused = true;
@@ -82,21 +88,43 @@ var app;
 			this.isVisible = false;
 			$scope.$watch(function () {
 				return _this.editObj;
-			}, function (nVal) {
-				if (nVal !== null) {
-					_this.isOn = false;
-					_this.isVisible = true;
-					_this.isOn = true;
-				}
-			});
-			$scope.markAll={isMarked:10};
+			}, function (nVal) {});
+			$scope.markAll = {
+				isMarked: 10
+			};
 			$scope.currentPage = 1;
 			$scope.numPerPage = 10;
-			$scope.advancedFilter = [{
-				attribute: null,
-				operator: null,
-				value: null
-			}];
+			this.advFltr = {
+				params: [{
+					attribute: null,
+					operator: null,
+					value: null
+				}],
+				isLocked: null,
+				isUnMarked: false,
+				isImportant: false,
+				isIrrelevent: false,
+				isReviseLater: false,
+				isReviewed: false,
+				isTranscribe: false
+			};
+			$scope.advancedFilter = angular.copy(this.advFltr);
+			$scope.savedSearch = [];
+			$scope.saveSearch = function (title) {
+				$scope.advancedFilter["title"] = "Filter " + ($scope.savedSearch.length + 1);
+				dbService.add($scope.savedSearch, $scope.advancedFilter);
+				$scope.advancedFilter = angular.copy(_this.advFltr);
+			};
+			$scope.loadSearch = function (obj) {
+				$scope.advancedFilter = angular.copy(obj);
+			};
+			$scope.cancelSearch = function () {
+				$scope.advancedFilter = angular.copy(_this.advFltr);
+			};
+			$scope.deleteSearch = function (obj) {
+				$scope.savedSearch.splice($scope.savedSearch.indexOf(obj), 1);
+				$scope.advancedFilter = angular.copy(_this.advFltr);
+			};
 			$scope.setPage = function (pageNo) {
 				$scope.currentPage = pageNo;
 			};
@@ -158,6 +186,11 @@ var app;
 			$scope.$watch(function () {
 				return _this.editObj;
 			}, function (nVal) {
+				if (nVal != null) {
+					_this.isOn = false;
+					_this.isVisible = true;
+					_this.isOn = true;
+				}
 				if (nVal !== undefined || nVal !== null) {
 					try {
 						_this.wavesurfer.destroy();
@@ -176,6 +209,12 @@ var app;
 						_this.wavesurfer.on('ready', function () {
 							// Enable creating regions by dragging
 							_this.wavesurfer.enableDragSelection();
+							var timeline = Object.create(WaveSurfer.Timeline);
+
+							timeline.init({
+								wavesurfer: _this.wavesurfer,
+								container: '#waveform-timeline'
+							});
 							$scope.duration = _this.wavesurfer.getDuration();
 							$scope.$apply();
 						});
@@ -208,8 +247,10 @@ var app;
 					_this.wavesurfer.play();
 					$scope.$apply();
 				});
-
-				_this.wavesurfer.load(url);
+				if (_this.wavesurfer.isPlaying())
+					_this.wavesurfer.stop();
+				else
+					_this.wavesurfer.load(url);
 			};
 			$scope.handleChkAll = function (obj, prop, isHandleTree = false) {
 				if (isHandleTree && obj.id !== undefined)
@@ -229,76 +270,126 @@ var app;
 			$scope.columns = {
 				childs: [
 					{
+						title: 'Mark',
+						prop: "isMarked",
+						isOn: true,
+						drag: false,
+						show: false
+					},
+					{
+						title: "Locked",
+						prop: "isBlocked",
+						isOn: true,
+						drag: false,
+						show: false
+					},
+					{
+						title: "Transcribed",
+						prop: "isTranscribe",
+						isOn: true,
+						drag: false,
+						show: false
+					},
+					{
 						title: 'Case Name',
 						prop: "caseName",
 						isOn: true,
-						order: 1
+						drag: true,
+						show: true
 					},
 					{
 						title: 'Identity Name',
 						prop: "identityName",
 						isOn: true,
-						order: 2
+						drag: true,
+						show: true
 					},
 					{
 						title: 'Line Name',
 						prop: "lineName",
 						isOn: true,
-						order: 3
+						drag: true,
+						show: true
 					},
 					{
 						title: 'Line ID',
 						prop: "lineId",
 						isOn: true,
-						order: 4
+						drag: true,
+						show: true
 					},
 					{
 						title: 'Date',
 						prop: "startDate",
 						isOn: true,
 						type: "date",
-						order: 5
+						drag: true,
+						show: true
 					},
 					{
 						title: 'Start Time',
 						prop: "startDate",
 						isOn: false,
 						type: "time",
-						order: 6
+						drag: true,
+						show: true
 					},
 					{
 						title: 'End Time',
 						prop: "endDate",
 						isOn: false,
 						type: "time",
-						order: 7
+						drag: true,
+						show: true
 					},
 					{
 						title: 'Duration',
 						prop: "duration",
 						isOn: false,
 						type: "time",
-						order: 8
+						drag: true,
+						show: true
 					},
 					{
 						title: 'Comment',
 						prop: "comment",
 						isOn: false,
-						order: 9
+						drag: true,
+						show: true
 					},
 					{
 						title: 'Calling Number (a_number)',
 						prop: "sipCallingParty",
 						isOn: false,
-						order: 10
+						drag: true,
+						show: true
 					},
 					{
 						title: 'Called Number (b_number)',
 						prop: "sipCalledParty",
 						isOn: false,
-						order: 11
+						drag: true,
+						show: true
 					}
 				]
+			};
+			$scope.dragControlListeners = {
+				accept: function (sourceItemHandleScope, destSortableScope, destItemScope) {
+					//					console.info(sourceItemHandleScope,destSortableScope,destItemScope)
+					if (destItemScope === undefined)
+						return sourceItemHandleScope.itemScope.modelValue.drag;
+					else
+						return sourceItemHandleScope.itemScope.modelValue.drag && destItemScope.modelValue.drag;
+				}, //override to determine drag is allowed or not. default is true.
+				itemMoved: function (event) {
+					//					console.info(event)
+				},
+				orderChanged: function (event) {
+					//					console.log(event, $scope.columns)
+				},
+				containment: '#board', //optional param.
+				clone: false, //optional param for clone feature.
+				allowDuplicates: false //optional param allows duplicates to be dropped.
 			};
 			$scope.treeConfig = {
 				lines: {},
@@ -353,10 +444,10 @@ var app;
 				});
 			};
 			this.pushNew = function (scopeListName, obj) {
-				$scope[scopeListName].push(obj);
+				scopeListName.push(obj);
 			};
 			this.popOut = function (scopeListName, obj) {
-				$scope[scopeListName].splice($scope[scopeListName].indexOf(obj), 1);
+				scopeListName.splice(scopeListName.indexOf(obj), 1);
 			};
 
 			this.getTimeDiff = utilitiesServices.getTimeDiff;
@@ -387,12 +478,12 @@ var app;
 					$scope.selectedItems.splice($scope.selectedItems.indexOf(item), 1);
 				console.info($scope.selectedItems.length, $scope.selectedItems);
 			};
-			$scope.applyUpdates=function(obj,trgt){
-				console.info(obj,trgt,trgt.indexOf(obj))
+			$scope.applyUpdates = function (obj, trgt) {
+				console.info(obj, trgt, trgt.indexOf(obj))
 			};
-			$scope.markSelected=function(list,val){
-				angular.forEach(list,function(item){
-					item.isMarked=val;
+			$scope.markSelected = function (list, val) {
+				angular.forEach(list, function (item) {
+					item.isMarked = val;
 				});
 				console.info(list);
 			};

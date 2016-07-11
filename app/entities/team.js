@@ -6,7 +6,19 @@ var app;
 				title: title,
 				department: department,
 				comment: comment,
-				membersCount:function(){return 7;}
+				members: [
+					{
+						id: 15,
+						name: "Team Lead Fifteen"
+							},
+					{
+						id: 16,
+						name: "Team Lead Sixteen"
+							}
+						],
+				membersCount: function () {
+					return this.members.length;
+				}
 			};
 		}
 		return Team;

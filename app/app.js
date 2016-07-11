@@ -47,7 +47,7 @@ var app;
 	})();
 	Config.$inject = ['$urlRouterProvider', '$stateProvider', 'USER_ROLES'];
 
-	var mainApp = angular.module("IVRY-App", ['ui.router', 'ui.bootstrap', 'ngFileUpload', 'uiSwitch']);
+	var mainApp = angular.module("IVRY-App", ['ui.router', 'ui.bootstrap', 'ngFileUpload', 'uiSwitch','as.sortable']);
 	mainApp.config(Config);
 
 	var initApp = function ($rootScope, $state /*,AUTH_EVENTS,AuthService*/ ) {

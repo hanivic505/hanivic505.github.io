@@ -10,7 +10,7 @@ var app;
 						$rootScope.$emit("dbServiceAdded");
 					},
 					delete: function (repo, obj) {
-						repos.splice(repo.indexOf(obj), 1);
+						repo.splice(repo.indexOf(obj), 1);
 					},
 					update: function (repo, obj, id) {},
 					getAll: function (repo) {},

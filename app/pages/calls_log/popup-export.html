@@ -4,10 +4,10 @@
 </div>
 <div class="modal-body">
     <div class="row">
-        <div class="col-md-12"><label for="">Export File Name:</label><input class="form-control" type="text" ng-model="exp.name"></div>
+        <div class="col-md-12" ng-if="objType=='[object Object]'"><label for="">Export File Name:</label><input class="form-control" type="text" ng-model="exp.name"></div>
         <div class="col-md-12">
             <label>Export File Path:</label>
-            <input type="file" ng-bind="exp.path" webkitdirectory directory class="form-control"/>
+            <input type="file" ng-bind="exp.path" class="form-control"/>
         </div>
     </div>
 </div>

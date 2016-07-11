@@ -25,7 +25,7 @@
 				</div>
 				<div class="col-md-3 h100 vertical-scroll"><i class="fa fa-users"></i>
 					<div ng-if="lineAssignedUsers">
-						<h5><b>Line Assigned Users <a href="" ng-click="openPopup(lineAssignedUsers,'/app/target/modal-assign-user.html','AssignUsersCtrl')" class="-btn -btn-link -fg-white"><span class="fa-stack"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-user-plus fa-stack-1x fa-inverse"></i></span></a></b></h5>
+						<h5><b>Line Assigned Users <a href="" ng-click="openPopup(lineAssignedUsers,'/app/pages/target/modal-assign-user.html','AssignUsersCtrl')" class="-btn -btn-link -fg-white"><span class="fa-stack"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-user-plus fa-stack-1x fa-inverse"></i></span></a></b></h5>
 						<div class="list-group">
 							<div class="list-group-item">
 								<div class="input-group">
@@ -38,7 +38,7 @@
 									<div class="list-group-item" ng-repeat="x in lineAssignedUsers | filter:fltrLineAssignedUsers">
 										<span ng-bind="x.firstName+' '+x.lastName"></span>
 										<span class="node-menu pull-right">
-											<a href="" class="btn btn-link" title="Manage Access Rights" ng-click="openPopup(x,'/app/target/modal-acl.html','ACLCtrl','lg')"><i class="fa fa-shield"></i></a>
+											<a href="" class="btn btn-link" title="Manage Access Rights" ng-click="openPopup(x,'/app/pages/target/modal-acl.html','ACLCtrl','lg')"><i class="fa fa-shield"></i></a>
 											<a href="" class="btn btn-link" title="UnAssign this User"><i class="fa fa-trash"></i></a>
 										</span>
 									</div>
