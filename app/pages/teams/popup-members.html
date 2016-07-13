@@ -1,0 +1,57 @@
+<div class="modal-header">
+	<h3 class="modal-title">{{obj.title}} Team Members</h3>
+</div>
+<div class="modal-body">
+	<div class="row">
+		<div class="col-md-12">
+			<fieldset>
+				<legend>Team Leaders</legend>
+				<div class="row">
+					<div class="col-md-6">
+						<label for="">Assigned Team Leaders</label>
+						<select multiple class="form-control" ng-options="x.name for x in obj.data.members" ng-model="dummyTL"></select>
+					</div>
+					<div class="col-md-1">
+						<div class="row">
+							<button class="btn btn-default btn-sm btn-block" ng-click="moveItems(depTeamLeads,depTeamLeads,obj.data.members)"><i class="fa fa-angle-double-left"></i></button>
+							<button class="btn btn-default btn-sm btn-block" ng-click="moveItems(depTeamLeads,selectedDepTeamLeads,obj.data.members)"><i class="fa fa-angle-left"></i></button>
+							<button class="btn btn-default btn-sm btn-block" ng-click="moveItems(obj.data.members,dummyTL,depTeamLeads)"><i class="fa fa-angle-right"></i></button>
+							<button class="btn btn-default btn-sm btn-block" ng-click="moveItems(obj.data.members,obj.data.members,depTeamLeads)"><i class="fa fa-angle-double-right"></i></button>
+						</div>
+					</div>
+					<div class="col-md-5">
+						<label for="">Available Team Leaders</label>
+						<select multiple class="form-control" ng-options="x.name for x in depTeamLeads" ng-model="selectedDepTeamLeads"></select>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+		<div class="col-md-12">
+			<fieldset>
+				<legend>Team Analysts</legend>
+				<div class="row">
+					<div class="col-md-6">
+						<label for="">Assigned Team Analysts</label>
+						<select multiple class="form-control" ng-options="x.name for x in obj.data.members" ng-model="dummy"></select>
+					</div>
+					<div class="col-md-1">
+						<div class="row">
+							<button class="btn btn-default btn-sm btn-block" ng-click="moveItems(depTeamLeads,depTeamLeads,obj.data.members)"><i class="fa fa-angle-double-left"></i></button>
+							<button class="btn btn-default btn-sm btn-block" ng-click="moveItems(depTeamLeads,selectedDepTeamLeads,obj.data.members)"><i class="fa fa-angle-left"></i></button>
+							<button class="btn btn-default btn-sm btn-block" ng-click="moveItems(obj.data.members,dummy,depTeamLeads)"><i class="fa fa-angle-right"></i></button>
+							<button class="btn btn-default btn-sm btn-block" ng-click="moveItems(obj.data.members,obj.data.members,depTeamLeads)"><i class="fa fa-angle-double-right"></i></button>
+						</div>
+					</div>
+					<div class="col-md-5">
+						<label for="">Available Team Analysts</label>
+						<select multiple class="form-control" ng-options="x.name for x in depTeamLeads" ng-model="selectedDepTeamLeads"></select>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+	</div>
+</div>
+<div class="modal-footer">
+	<button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+	<button class="btn btn-primary" type="button" ng-click="ok()">Save</button>
+</div>

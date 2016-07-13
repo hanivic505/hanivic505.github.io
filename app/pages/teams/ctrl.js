@@ -144,5 +144,61 @@ var app;
 			];
 			$scope.moveItems = utilitiesServices.moveItems;
 		}]);
+		angular.module("IVRY-App").controller("TeamMembersCtrl", ["$scope", "$uibModalInstance", "dbService","utilitiesServices", "obj", function ($scope, $uibModalInstance, dbService,utilitiesServices, obj) {
+			$scope.obj = obj;
+			this.mode = obj == null ? 1 /*Add Mode*/ : 2 /*Update Mode*/ ;
+			var _this = this;
+			console.info("mode", _this.mode);
+			$scope.ok = function () {
+//				if (_this.mode == 1) {
+//					dbService.add(obj.repo,obj.data);
+//				}
+				$uibModalInstance.close($scope.obj);
+			};
+
+			$scope.cancel = function () {
+				$uibModalInstance.dismiss('cancel');
+			};
+			$scope.selectedDepTeamLeads = [];
+			$scope.depTeamLeads = [
+				{
+					id: 1,
+					name: "Team Lead One"
+				},
+				{
+					id: 2,
+					name: "Team Lead Two"
+				},
+				{
+					id: 3,
+					name: "Team Lead Three"
+				},
+				{
+					id: 4,
+					name: "Team Lead Four"
+				},
+				{
+					id: 5,
+					name: "Team Lead Five"
+				},
+				{
+					id: 6,
+					name: "Team Lead Six"
+				},
+				{
+					id: 7,
+					name: "Team Lead Seven"
+				},
+				{
+					id: 8,
+					name: "Team Lead Eight"
+				},
+				{
+					id: 9,
+					name: "Team Lead Nine"
+				},
+			];
+			$scope.moveItems = utilitiesServices.moveItems;
+		}]);
 	})(Team = app.Team || (Team = {}));
 })(app || (app = {}));
