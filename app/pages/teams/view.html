@@ -20,7 +20,7 @@
 						</tr>
 						<tr ng-if="isFilterOn">
 							<th ng-repeat="col in columns.childs | filter:{isOn:true}">
-								<input type="text" class="form-control input-sm" ng-model="fltrObj[col.prop]" ng-if="!col.optOutFilter" placeholder="{{col.title}}">
+								<input type="search" class="form-control input-sm" ng-model="fltrObj[col.prop]" ng-if="!col.optOutFilter" placeholder="{{col.title}}">
 								<span ng-if="col.optOutFilter" ng-bind="col.title"></span>
 							</th>
 						</tr>

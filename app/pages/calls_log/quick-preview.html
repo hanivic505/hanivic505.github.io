@@ -1,6 +1,6 @@
 <div class="quick-preview" ng-class="{'on':vm.isOn}">
 	<header>
-		<a uib-tooltip="Close" href="" class="close margin-left" ng-click="vm.isVisible=false"><i class="fa fa-times"></i></a>
+		<a uib-tooltip="Close" href="" class="close margin-left" ng-click="vm.isVisible=false;vm.editObj=null;"><i class="fa fa-times"></i></a>
 		<a uib-tooltip="Expand / Collapse" href="" class="close margin-left" ng-click="vm.isOn=!vm.isOn"><i class="fa" ng-class="{'fa-compress':vm.isOn,'fa-expand':!vm.isOn}"></i></a>
 		<a uib-tooltip="Open Full View Details" class="close" ng-click="openPopup(vm.editObj,'/app/pages/calls_log/popup-fullview.html','callLogFullViewCtrl','lg')">
 			<i class="fa fa-arrows-alt fg-white"></i>

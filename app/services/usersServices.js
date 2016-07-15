@@ -1,29 +1,15 @@
 var app;
 (function (app) {
 	var services;
+	var User;
 	(function (services, User) {
 		var serviceFn = (function () {
 			function serviceFn() {
 
-				return this.usersList = [
-					User("Fred1", "Castro", 0100383977, "fred@mail.com", "fred", "P@ssw0rd", 1, 1, 2),
-					User("Fred2", "Castro", 0100383977, "fred@mail.com", "fred", "P@ssw0rd", 1, 1, 2),
-					User("Fred3", "Castro", 0100383977, "fred@mail.com", "fred", "P@ssw0rd", 1, 1, 2),
-					User("Fred4", "Castro", 0100383977, "fred@mail.com", "fred", "P@ssw0rd", 1, 1, 2),
-					User("Fred5", "Castro", 0100383977, "fred@mail.com", "fred", "P@ssw0rd", 1, 1, 2),
-					User("Fred5", "Castro", 0100383977, "fred@mail.com", "fred", "P@ssw0rd", 1, 1, 2),
-					User("Fred5", "Castro", 0100383977, "fred@mail.com", "fred", "P@ssw0rd", 1, 1, 2),
-					User("Fred5", "Castro", 0100383977, "fred@mail.com", "fred", "P@ssw0rd", 1, 1, 2),
-					User("Fred5", "Castro", 0100383977, "fred@mail.com", "fred", "P@ssw0rd", 1, 1, 2),
-					User("Fred5", "Castro", 0100383977, "fred@mail.com", "fred", "P@ssw0rd", 1, 1, 2),
-					User("Fred5", "Castro", 0100383977, "fred@mail.com", "fred", "P@ssw0rd", 1, 1, 2),
-					User("Fred5", "Castro", 0100383977, "fred@mail.com", "fred", "P@ssw0rd", 1, 1, 2),
-					User("Fred5", "Castro", 0100383977, "fred@mail.com", "fred", "P@ssw0rd", 1, 1, 2),
-					User("Fred5", "Castro", 0100383977, "fred@mail.com", "fred", "P@ssw0rd", 1, 1, 2),
-					User("Fred5", "Castro", 0100383977, "fred@mail.com", "fred", "P@ssw0rd", 1, 1, 2),
-					User("Fred5", "Castro", 0100383977, "fred@mail.com", "fred", "P@ssw0rd", 1, 1, 2),
-					User("Fred5", "Castro", 0100383977, "fred@mail.com", "fred", "P@ssw0rd", 1, 1, 2),
-            ];
+				this.usersList = [];
+				for(var i=0;i<15;i++)
+					this.usersList.push(User(i+1,"Farid"+i,"Nabil"+i,"010101010"+i,"teamLead"+i+"@mail.com","TL_User"+i,"P@ssw0rd",2,1,1));
+				return this.usersList;
 			}
 			return serviceFn;
 		})();

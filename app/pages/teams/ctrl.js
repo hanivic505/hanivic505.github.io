@@ -2,9 +2,10 @@ var app;
 (function (app) {
 	'use strict';
 	var Team;
-	(function (Team) {
+	var User;
+	(function (Team, User) {
 		var cntrlFn = (function () {
-			function cntrlFn($scope, $rootScope, $uibModal,dbService) {
+			function cntrlFn($scope, $rootScope, $uibModal, dbService) {
 				var _this = this;
 				$rootScope.user = "DepAdmin";
 				$scope.columns = {
@@ -55,11 +56,11 @@ var app;
 				for (i = 0; i < 23; i++)
 					this.filteredList.push(new Team("Team " + i, "Department Name", "no CommenT"));
 
-				$scope.addNew=function(){
-					$scope.openPopup(new Team('','',''),'/app/pages/teams/popup-edit.html','TeamEditCtrl','lg')
+				$scope.addNew = function () {
+					$scope.openPopup(new Team('', '', ''), '/app/pages/teams/popup-edit.html', 'TeamEditCtrl', 'lg')
 				};
-				$scope.delete=function(obj){
-					dbService.delete(_this.filteredList,obj);
+				$scope.delete = function (obj) {
+					dbService.delete(_this.filteredList, obj);
 				};
 				$scope.openPopup = function (_obj, tmpltURL, cntrl, size = "") {
 					var modalInstance = $uibModal.open({
@@ -69,8 +70,10 @@ var app;
 						size: size,
 						resolve: {
 							obj: function () {
-								return {data:_obj,
-								repo:_this.filteredList};
+								return {
+									data: _obj,
+									repo: _this.filteredList
+								};
 							},
 
 						}
@@ -86,17 +89,17 @@ var app;
 			return cntrlFn;
 		})();
 
-		angular.module("IVRY-App").controller("TeamsCtrl", ["$scope", "$rootScope", "$uibModal","dbService", cntrlFn]);
+		angular.module("IVRY-App").controller("TeamsCtrl", ["$scope", "$rootScope", "$uibModal", "dbService", cntrlFn]);
 
-		angular.module("IVRY-App").controller("TeamEditCtrl", ["$scope", "$uibModalInstance", "dbService","utilitiesServices", "obj", function ($scope, $uibModalInstance, dbService,utilitiesServices, obj) {
+		angular.module("IVRY-App").controller("TeamEditCtrl", ["$scope", "$uibModalInstance", "dbService", "utilitiesServices", "obj", function ($scope, $uibModalInstance, dbService, utilitiesServices, obj) {
 			$scope.obj = obj;
 			this.mode = obj == null ? 1 /*Add Mode*/ : 2 /*Update Mode*/ ;
 			var _this = this;
 			console.info("mode", _this.mode);
 			$scope.ok = function () {
-//				if (_this.mode == 1) {
-					dbService.add(obj.repo,obj.data);
-//				}
+				//				if (_this.mode == 1) {
+				dbService.add(obj.repo, obj.data);
+				//				}
 				$uibModalInstance.close($scope.obj);
 			};
 
@@ -104,55 +107,21 @@ var app;
 				$uibModalInstance.dismiss('cancel');
 			};
 			$scope.selectedDepTeamLeads = [];
-			$scope.depTeamLeads = [
-				{
-					id: 1,
-					name: "Team Lead One"
-				},
-				{
-					id: 2,
-					name: "Team Lead Two"
-				},
-				{
-					id: 3,
-					name: "Team Lead Three"
-				},
-				{
-					id: 4,
-					name: "Team Lead Four"
-				},
-				{
-					id: 5,
-					name: "Team Lead Five"
-				},
-				{
-					id: 6,
-					name: "Team Lead Six"
-				},
-				{
-					id: 7,
-					name: "Team Lead Seven"
-				},
-				{
-					id: 8,
-					name: "Team Lead Eight"
-				},
-				{
-					id: 9,
-					name: "Team Lead Nine"
-				},
-			];
+			$scope.depTeamLeads = [];
+			for (var i = 6; i < 15; i++)
+				$scope.depTeamLeads.push(User(i + 1, "Team", "Lead " + i, "0101010102", "teamLead@mail.com", "TL_User" + i, 2, 1, 1));
+
 			$scope.moveItems = utilitiesServices.moveItems;
 		}]);
-		angular.module("IVRY-App").controller("TeamMembersCtrl", ["$scope", "$uibModalInstance", "dbService","utilitiesServices", "obj", function ($scope, $uibModalInstance, dbService,utilitiesServices, obj) {
+		angular.module("IVRY-App").controller("TeamMembersCtrl", ["$scope", "$uibModalInstance", "dbService", "utilitiesServices", "obj", function ($scope, $uibModalInstance, dbService, utilitiesServices, obj) {
 			$scope.obj = obj;
 			this.mode = obj == null ? 1 /*Add Mode*/ : 2 /*Update Mode*/ ;
 			var _this = this;
 			console.info("mode", _this.mode);
 			$scope.ok = function () {
-//				if (_this.mode == 1) {
-//					dbService.add(obj.repo,obj.data);
-//				}
+				//				if (_this.mode == 1) {
+				//					dbService.add(obj.repo,obj.data);
+				//				}
 				$uibModalInstance.close($scope.obj);
 			};
 
@@ -160,45 +129,15 @@ var app;
 				$uibModalInstance.dismiss('cancel');
 			};
 			$scope.selectedDepTeamLeads = [];
-			$scope.depTeamLeads = [
-				{
-					id: 1,
-					name: "Team Lead One"
-				},
-				{
-					id: 2,
-					name: "Team Lead Two"
-				},
-				{
-					id: 3,
-					name: "Team Lead Three"
-				},
-				{
-					id: 4,
-					name: "Team Lead Four"
-				},
-				{
-					id: 5,
-					name: "Team Lead Five"
-				},
-				{
-					id: 6,
-					name: "Team Lead Six"
-				},
-				{
-					id: 7,
-					name: "Team Lead Seven"
-				},
-				{
-					id: 8,
-					name: "Team Lead Eight"
-				},
-				{
-					id: 9,
-					name: "Team Lead Nine"
-				},
-			];
+			$scope.depTeamLeads = [];
+			$scope.depAnalysts = [];
+
+			for (var i = 6; i < 15; i++) {
+
+				$scope.depAnalysts.push(User(i + 1, "Team", "Analyst " + i, "0101010102", "teamAnalyst@mail.com", "TL_User" + i, 2, 1, 1));
+				$scope.depTeamLeads.push(User(i + 1, "Team", "Lead " + i, "0101010102", "teamLead@mail.com", "TL_User" + i, 2, 1, 1));
+			}
 			$scope.moveItems = utilitiesServices.moveItems;
 		}]);
-	})(Team = app.Team || (Team = {}));
+	})(Team = app.Team || (Team = {}), User = app.User);
 })(app || (app = {}));
