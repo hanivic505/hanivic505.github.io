@@ -33,8 +33,9 @@ var app;
 			return Identity;
 		})();
 		var Line = (function () {
-			function Line(lineNumber, lineType, isRecordCalls, recordingTime, recordingPeriod, isVip, comment) {
+			function Line(title,lineNumber, lineType, isRecordCalls, recordingTime, recordingPeriod, isVip, comment) {
 				return {
+					title:title,
 					lineNumber: lineNumber,
 					lineType: lineType,
 					isRecordCalls: isRecordCalls,
@@ -42,6 +43,7 @@ var app;
 					recordingPeriod: recordingPeriod,
 					isVip: isVip,
 					comment: comment,
+					status:{state:1,text:"Online"},
 					delete:function(){
 //						this=null;
 					}

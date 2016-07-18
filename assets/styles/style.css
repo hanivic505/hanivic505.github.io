@@ -347,11 +347,13 @@ table.uib-daypicker {
 .lines-tree {
 	width: 400px;
 }
-.lines-tree {
-	width: 400px;
-	max-height: 450px;
+.lines-tree tree {
+	width: 398px;
+	max-height: 420px;
 	overflow-x: auto;
+	display: block;
 }
+tree+div>hr{margin:0 0 8px;}
 .quick-preview {
 	position: fixed;
 	bottom: 0;

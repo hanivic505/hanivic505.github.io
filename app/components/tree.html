@@ -19,7 +19,7 @@
 				<label class="btn btn-link" ng-click="$ctrl.setSelectedNode(identity,'identity')" ng-class="{'active':$ctrl.treeConfig.selectedNode.data==identity}">
 					<input ng-if="$ctrl.multiSelect" type="checkbox" ng-change="handleChkAll(identity,'checked',true)" ng-model="identity.checked"> {{identity.title}}</label>
 				<span class="node-menu" ng-if="$ctrl.allowEdit">
-					<a href="" ng-click="dbService.add(identity.childs==undefined?identity.childs=[]:identity.childs,{title:'New Line'})" class="btn btn-link" title="Add Child Line">
+					<a href="" ng-click="addLine(identity.childs==undefined?identity.childs=[]:identity.childs,'New Line Object')" class="btn btn-link" title="Add Child Line">
 						<i class="fa fa-plus-circle"></i>
 					</a>
 					<a href="" class="btn btn-link" title="Delete This Identity">
