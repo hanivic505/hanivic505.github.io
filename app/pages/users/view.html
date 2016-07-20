@@ -1,94 +1,55 @@
-<div ng-controller="SystemCtrl as vm">
+<div ng-controller="UsersCtrl as vm">
 	<h1 class="page-header">
-		<i class="fa fa-gears"></i> System Settings
+		<i class="fa fa-street-view"></i> Users
 	</h1>
-	<div class="container forms">
-		<form>
-			<fieldset>
-				<h3>System Information</h3>
-				<div class="col-md-10 col-md-push-1">
-					<div class="form-group col-md-6">
-						<label for="">Maximum Number of Recording Lines</label>
-						<div class="input-group">
-							<input type="number" ng-model="model.maxNumOfRecLines" class="form-control" placeholder="Max # Line of Recording Lines">
-							<span class="input-group-addon">
-								Line(s)
-							</span>
+	<h2>Users List <small><button class="btn btn-link" ng-click="addNew()"><i class="fa fa-plus-circle fg-green"></i></button></small></h2>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="-table-responsive -no-vertical-overflow">
+				<table class="table table-white table-hover table-striped with-actions-bar">
+					<caption class="no-padding">
+						<div class="row col-md-1">
+							<div class="dropdown keep-on">
+								<button type="button" ng-click="isFilterOn=!isFilterOn"><i class="fa fa-filter"></i></button>
+							</div>
 						</div>
-					</div>
-					<div class="form-group col-md-6">
-						<label for="">Maximum Number of Users</label>
-						<div class="input-group">
-							<input type="number" ng-model="model.maxNumOfRecUsers" class="form-control" placeholder="Max Number of Users">
-							<span class="input-group-addon">
-								User(s)
-							</span>
-						</div>
-					</div>
-					<div class="form-group col-md-6">
-						<label for="">Auto Delete Call Record After</label>
-						<div class="input-group">
-							<input type="number" ng-model="model.autoDelCallRecAfter" class="form-control" placeholder="Auto Delete Call Record After">
-							<span class="input-group-addon">
-								Day(s)
-							</span>
-						</div>
-					</div>
-					<div class="form-group col-md-6">
-						<label for="">User Session Expires After</label>
-						<div class="input-group">
-							<input type="number" ng-model="model.userSessionExpAfter" class="form-control" placeholder="User Session Expires After">
-							<span class="input-group-addon">
-								Minute(s)
-							</span>
-						</div>
-					</div>
-					<div class="form-group col-md-6">
-						<label for="">Events to be Logged in the Audit Trail</label>
-						<input type="text" class="form-control">
-					</div>
-					<div class="form-group col-md-6">
-						<button type="button" class="btn btn-primary btn-block">
-							<i class="fa fa-shield fa-2x"></i> <span>Upload License
-						<br/><small>Parameter File</small></span></button>
-					</div>
-				</div>
-			</fieldset>
-			<fieldset>
-				<h3>Password Rules</h3>
-				<div class="col-md-10 col-md-push-1">
-					<div class="col-md-6 form-group">
-						<label for="">Minimum Length</label>
-						<div class="input-group">
-							<input type="number" ng-model="model.passwordMinLength" class="form-control" placeholder="Minimum Length">
-							<span class="input-group-addon">
-								Character(s)
-							</span>
-						</div>
-					</div>
-					<div class="col-md-6 form-group">
-						<label for="">Expires After</label>
-						<div class="input-group">
-							<input type="number" ng-model="model.passwordExpAfter" class="form-control" placeholder="Expires After">
-							<span class="input-group-addon">
-								Day(s)
-							</span>
-						</div>
-					</div>
-					<div class="col-md-6 form-group">
-						<label for="">Must Contains Capital Letter</label>
-						<switch ng-model="model.isMustContainCapLetter" class="pull-right" on="Yes" off="No"></switch>
-					</div>
-					<div class="col-md-6 form-group">
-						<label for="">Must Contains a Digit</label>
-						<switch ng-model="model.isMustContainDigit" class="pull-right" on="Yes" off="No"></switch>
-					</div>
-				</div>
-			</fieldset>
-			<div class="btn-bar">
-				<button type="submit" class="btn btn-primary">Save</button>
-				<button type="reset" class="btn btn-default">Reset</button>
+					</caption>
+					<thead>
+						<tr ng-if="!isFilterOn">
+							<th ng-repeat="col in columns.childs | filter:{isOn:true}">{{col.title}}</th>
+						</tr>
+						<tr ng-if="isFilterOn">
+							<th ng-repeat="col in columns.childs | filter:{isOn:true}">
+								<input type="search" class="form-control input-sm" ng-model="fltrObj[col.prop]" ng-if="!col.optOutFilter" placeholder="{{col.title}}">
+								<span ng-if="col.optOutFilter" ng-bind="col.title"></span>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-click="vm.editObj=x;" ng-repeat="x in vm.filteredList | filter:paginate |filter:fltrObj " ng-class="{'active':vm.editObj==x}">
+							<td ng-repeat="col in columns.childs  | filter:{isOn:true}">
+								<span class="btn btn-link" ng-bind="x[col.prop]" ng-if="col.type==undefined"></span>
+								<span class="btn btn-link" ng-bind="x[col.prop]()" ng-if="col.type=='func'"></span>
+								<span class="btn btn-link" ng-bind="x[col.prop]|date:'dd/MM/yyyy'" ng-if="col.type=='date'"></span>
+								<span class="btn btn-link" ng-bind="x[col.prop]|date:'hh:mm'" ng-if="col.type=='time'"></span>
+							</td>
+							<td class="actions-bar">
+								<a href="" class="btn btn-link" tooltip-placement="top" uib-tooltip="Rights" ng-click="openPopup(x,'/app/pages/target/modal-acl.html','ACLCtrl','lg');"><i class="fa fa-shield"></i></a>
+								<a href="" class="btn btn-link" tooltip-placement="top" uib-tooltip="Edit Record" ng-click="openPopup(x,'/app/pages/users/popup-edit.html','UserEditCtrl','lg')"><i class="fa fa-pencil"></i></a>
+								<a href="" class="btn btn-link" tooltip-placement="top" uib-tooltip="Delete Record" ng-click="delete(x)"><i class="fa fa-trash"></i></a>
+							</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="20">
+								<span class="btn btn-link pull-left">Records Count {{vm.filteredList.length}}</span>
+								<uib-pagination boundary-links="true" total-items="vm.filteredList.length" ng-model="currentPage" class="pagination-sm" max-size="6" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>
+							</td>
+						</tr>
+					</tfoot>
+				</table>
 			</div>
-		</form>
+		</div>
 	</div>
 </div>
