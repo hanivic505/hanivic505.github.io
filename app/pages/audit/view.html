@@ -1,0 +1,50 @@
+<div ng-controller="AuditCtrl as vm">
+	<h1 class="page-header">
+		<i class="fa fa-info"></i> Audit
+	</h1>
+	<h2>Audit View</h2>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="-table-responsive -no-vertical-overflow">
+				<table class="table table-white table-hover table-striped with-actions-bar">
+					<caption class="no-padding">
+						<div class="row col-md-1">
+							<div class="dropdown keep-on">
+								<button type="button" ng-click="isFilterOn=!isFilterOn"><i class="fa fa-filter"></i></button>
+							</div>
+						</div>
+					</caption>
+					<thead>
+						<tr ng-if="!isFilterOn">
+							<th ng-repeat="col in columns.childs | filter:{isOn:true}">{{col.title}}</th>
+						</tr>
+						<tr ng-if="isFilterOn">
+							<th ng-repeat="col in columns.childs | filter:{isOn:true}">
+								<input type="search" class="form-control input-sm" ng-model="fltrObj[col.prop]" ng-if="!col.optOutFilter" placeholder="{{col.title}}">
+								<span ng-if="col.optOutFilter" ng-bind="col.title"></span>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-click="vm.editObj=x;" ng-repeat="x in vm.filteredList | filter:paginate |filter:fltrObj " ng-class="{'active':vm.editObj==x}">
+							<td ng-repeat="col in columns.childs  | filter:{isOn:true}">
+								<span class="btn btn-link" ng-bind="x[col.prop]" ng-if="col.type==undefined"></span>
+								<span class="btn btn-link" ng-bind="x[col.prop]()" ng-if="col.type=='func'"></span>
+								<span class="btn btn-link" ng-bind="x[col.prop]|date:'dd/MM/yyyy'" ng-if="col.type=='date'"></span>
+								<span class="btn btn-link" ng-bind="x[col.prop]|date:'hh:mm'" ng-if="col.type=='time'"></span>
+							</td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="20">
+								<span class="btn btn-link pull-left">Records Count {{vm.filteredList.length}}</span>
+								<uib-pagination boundary-links="true" total-items="vm.filteredList.length" ng-model="currentPage" class="pagination-sm" max-size="6" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>
+							</td>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

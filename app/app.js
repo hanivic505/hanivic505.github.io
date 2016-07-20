@@ -41,6 +41,13 @@ var app;
 					title: "Users",
 					authorizedRoles: [USER_ROLES.depAdmin]
 				}
+			}).state("audit", {
+				url: "/audit",
+				templateUrl: "/app/pages/audit/view.html",
+				data: {
+					title: "Audit",
+					authorizedRoles: [USER_ROLES.depAdmin]
+				}
 			});
 			this.$urlRouterProvider.otherwise('/calls-log');
 		}
