@@ -200,6 +200,8 @@ h1.page-header {
 .vertical-scroll {
 	overflow-y: auto;
 }
+.pos-absolute{position: absolute;}
+.pos-absolute.pull-right{right:15px;}
 .pos-fixed {
 	position: fixed;
 	z-index: 200;
@@ -550,7 +552,7 @@ li {
 .browser>div:nth-child(3) .list-group-item .list-group {
 	margin: 0;
 }
-.browser>div:nth-child(3) i.fa-users {
+.browser>div:nth-child(3)>i.fa {
 	position: absolute;
 	bottom: 20px;
 	right: 20px;

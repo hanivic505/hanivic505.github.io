@@ -1,0 +1,15 @@
+<form ng-submit="$ctrl.saveRights($ctrl.rightsObj)">
+
+	<div class="row">
+		<div class="col-md-4" ng-repeat="right in $ctrl.rights">
+			<label class="text-normal">
+				<input type="checkbox" ng-model="$ctrl.rightsObj[right.id]" /> {{right.name}}
+			</label>
+		</div>
+	</div>
+
+	<div class="btn-bar">
+		<button class="btn btn-primary">Save</button>
+		<button type="button" class="btn btn-default">Cancel</button>
+	</div>
+</form>

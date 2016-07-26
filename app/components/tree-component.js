@@ -14,8 +14,8 @@ var app;
 
 			var ctrl = this;
 			$scope.dbService = dbService;
-			$scope.addLine = function(trgt,title){
-				dbService.add(trgt,new Target.Line('New Line Object'));
+			$scope.addLine = function (trgt, title) {
+				dbService.add(trgt, new Target.Line('New Line Object'));
 			};
 
 			this.collapsed = true;
@@ -23,6 +23,10 @@ var app;
 			this.lines = this.treeConfig.lines;
 			//	this.treeObj=angular.copy(this.treeConfig.treeObj);
 			this.treeObj = this.treeConfig.treeObj;
+			this.treeScndLvl = this.treeConfig.secondLevel;
+			this.treeScndLvlTitle = this.treeConfig.secondLevelTitle;
+			this.treeThrdLvl = this.treeConfig.thirdLevel;
+			this.treeThrdLvlTitle = this.treeConfig.thirdLevelTitle;
 			//	this.filterBy=this.treeConfig.filterBy;
 			this.multiSelect = this.treeConfig.multiSelect == undefined ? false : this.treeConfig.multiSelect;
 			this.allowEdit = this.treeConfig.allowEdit == undefined ? false : this.treeConfig.allowEdit;
@@ -35,6 +39,7 @@ var app;
 				ctrl.collapsed = !ctrl.collapsed;
 				for (var i = 0, el = ctrl.treeObj; i < el.length; i++) {
 					el[i].expand = !ctrl.collapsed;
+					el[i].childs = el[i].childs || el[i][this.treeScndLvl] || el[i][this.treeThrdLvl]
 					if (el[i].childs != undefined)
 						for (var j = 0, sEl = el[i].childs; j < sEl.length; j++) {
 							sEl[j].expand = !ctrl.collapsed;

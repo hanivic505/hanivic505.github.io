@@ -2,7 +2,7 @@ var app;
 
 (function (app) {
 	var Config = (function () {
-		function Config($urlRouterProvider, $stateProvider,$locationProvider, USER_ROLES) {
+		function Config($urlRouterProvider, $stateProvider, $locationProvider, USER_ROLES) {
 			this.$stateProvider = $stateProvider;
 			this.$urlRouterProvider = $urlRouterProvider;
 			$locationProvider.html5Mode(true);
@@ -48,14 +48,21 @@ var app;
 					title: "Audit",
 					authorizedRoles: [USER_ROLES.depAdmin]
 				}
+			}).state("rights", {
+				url: "/rights",
+				templateUrl: "/app/pages/rights/view.html",
+				data: {
+					title: "User Access Rights",
+					authorizedRoles: [USER_ROLES.depAdmin]
+				}
 			});
 			this.$urlRouterProvider.otherwise('/calls-log');
 		}
 		return Config;
 	})();
-	Config.$inject = ['$urlRouterProvider', '$stateProvider',"$locationProvider", 'USER_ROLES'];
+	Config.$inject = ['$urlRouterProvider', '$stateProvider', "$locationProvider", 'USER_ROLES'];
 
-	var mainApp = angular.module("IVRY-App", ['ui.router', 'ui.bootstrap', 'ngFileUpload', 'uiSwitch','as.sortable']);
+	var mainApp = angular.module("IVRY-App", ['ui.router', 'ui.bootstrap', 'ngFileUpload', 'uiSwitch', 'as.sortable']);
 	mainApp.config(Config);
 
 	var initApp = function ($rootScope, $state /*,AUTH_EVENTS,AuthService*/ ) {

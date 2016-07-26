@@ -1,0 +1,32 @@
+<div class="h100" ng-controller="RightsCtrl as vm">
+	<h1 class="page-header">
+		<i class="fa fa-crosshairs"></i> Users Access Rights
+	</h1>
+	<div class="container-fluid forms h100">
+		<h2>Manage Targets</h2>
+		<div class="row h90">
+			<div class="col-md-12 browser h100">
+				<div class="col-md-3 h100">
+					<h4 class="pull-right pos-absolute">Users</h4>
+					<div class="row h100 no-vertical-overflow">
+						<div class="h100 vertical-scroll" style="padding-bottom:30px;">
+							<tree tree-config="treeUsersConfig"></tree>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-3 h100">
+					<h4 class="pull-right pos-absolute">Targets</h4>
+					<div class="row h100 no-vertical-overflow">
+						<div class="h100 vertical-scroll" style="padding-bottom:30px;">
+							<tree tree-config="treeConfig"></tree>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 h100 vertical-scroll"><i class="fa fa-lock"></i>
+					<h3>User Assigned Rights</h3>
+					<rights config="config"></rights>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -5,8 +5,8 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title ng-cloak ng-bind="'IVRY - '+$state.current.data.title"></title>
-	<base href="/"/>
-<!--
+	<base href="/" />
+	<!--
 	<script>
 		document.write('<base href="' + document.location + '" />');
 	</script>
@@ -58,6 +58,7 @@
 	<script src="app/entities/target.js"></script>
 	<script src="app/entities/user.js"></script>
 	<script src="app/entities/team.js"></script>
+	<script src="app/entities/department.js"></script>
 	<script src="app/entities/audit.js"></script>
 	<script src="app/entities/datepicker.js"></script>
 	<script src="app/app.js"></script>
@@ -66,10 +67,12 @@
 	<script src="app/services/usersServices.js"></script>
 	<script src="app/services/callLogService.js"></script>
 	<script src="app/services/utilitiesServices.js"></script>
-	<script src="app/components/tree-components.js"></script>
-	<script src="app/components/manage-case-components.js"></script>
-	<script src="app/components/manage-identity-components.js"></script>
-	<script src="app/components/manage-line-components.js"></script>
+	<script src="app/services/departmentService.js"></script>
+	<script src="app/components/tree-component.js"></script>
+	<script src="app/components/manage-case-component.js"></script>
+	<script src="app/components/manage-identity-component.js"></script>
+	<script src="app/components/manage-line-component.js"></script>
+	<script src="app/components/rights-component.js"></script>
 	<script src="app/components/player.js"></script>
 	<script src="app/pages/calls_log/ctrl.js"></script>
 	<script src="app/pages/system/ctrl.js"></script>
@@ -77,6 +80,7 @@
 	<script src="app/pages/teams/ctrl.js"></script>
 	<script src="app/pages/users/ctrl.js"></script>
 	<script src="app/pages/audit/ctrl.js"></script>
+	<script src="app/pages/rights/ctrl.js"></script>
 </body>
 
 </html>

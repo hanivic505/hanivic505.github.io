@@ -9,14 +9,14 @@
 				<div class="row">
 					<div class="col-md-6">
 						<label for="">Assigned Team Leaders</label>
-						<select multiple class="form-control" ng-options="x.firstName +' '+x.lastName for x in obj.data.members.teamLeads" ng-model="dummyTL"></select>
+						<select multiple class="form-control" ng-options="x.firstName +' '+x.lastName for x in obj.data.teamLeads" ng-model="dummyTL"></select>
 					</div>
 					<div class="col-md-1">
 						<div class="row">
-							<button class="btn btn-default btn-sm btn-block" ng-click="moveItems(depTeamLeads,depTeamLeads,obj.data.members.teamLeads)"><i class="fa fa-angle-double-left"></i></button>
-							<button class="btn btn-default btn-sm btn-block" ng-click="moveItems(depTeamLeads,selectedDepTeamLeads,obj.data.members.teamLeads)"><i class="fa fa-angle-left"></i></button>
-							<button class="btn btn-default btn-sm btn-block" ng-click="moveItems(obj.data.members.teamLeads,dummyTL,depTeamLeads)"><i class="fa fa-angle-right"></i></button>
-							<button class="btn btn-default btn-sm btn-block" ng-click="moveItems(obj.data.members.teamLeads,obj.data.members.teamLeads,depTeamLeads)"><i class="fa fa-angle-double-right"></i></button>
+							<button class="btn btn-default btn-sm btn-block" ng-click="moveItems(depTeamLeads,depTeamLeads,obj.data.teamLeads)"><i class="fa fa-angle-double-left"></i></button>
+							<button class="btn btn-default btn-sm btn-block" ng-click="moveItems(depTeamLeads,selectedDepTeamLeads,obj.data.teamLeads)"><i class="fa fa-angle-left"></i></button>
+							<button class="btn btn-default btn-sm btn-block" ng-click="moveItems(obj.data.teamLeads,dummyTL,depTeamLeads)"><i class="fa fa-angle-right"></i></button>
+							<button class="btn btn-default btn-sm btn-block" ng-click="moveItems(obj.data.teamLeads,obj.data.teamLeads,depTeamLeads)"><i class="fa fa-angle-double-right"></i></button>
 						</div>
 					</div>
 					<div class="col-md-5">
@@ -32,14 +32,14 @@
 				<div class="row">
 					<div class="col-md-6">
 						<label for="">Assigned Team Analysts</label>
-						<select multiple class="form-control" ng-options="x.firstName +' '+x.lastName for x in obj.data.members.teamAnalysts" ng-model="dummy"></select>
+						<select multiple class="form-control" ng-options="x.firstName +' '+x.lastName for x in obj.data.teamAnalysts" ng-model="dummy"></select>
 					</div>
 					<div class="col-md-1">
 						<div class="row">
-							<button class="btn btn-default btn-sm btn-block" ng-click="moveItems(depAnalysts,depAnalysts,obj.data.members.teamAnalysts)"><i class="fa fa-angle-double-left"></i></button>
-							<button class="btn btn-default btn-sm btn-block" ng-click="moveItems(depAnalysts,selectedDepAnalysts,obj.data.members.teamAnalysts)"><i class="fa fa-angle-left"></i></button>
-							<button class="btn btn-default btn-sm btn-block" ng-click="moveItems(obj.data.members.teamAnalysts,dummy,depAnalysts)"><i class="fa fa-angle-right"></i></button>
-							<button class="btn btn-default btn-sm btn-block" ng-click="moveItems(obj.data.members.teamAnalysts,obj.data.members.Analysts,depAnalysts)"><i class="fa fa-angle-double-right"></i></button>
+							<button class="btn btn-default btn-sm btn-block" ng-click="moveItems(depAnalysts,depAnalysts,obj.data.teamAnalysts)"><i class="fa fa-angle-double-left"></i></button>
+							<button class="btn btn-default btn-sm btn-block" ng-click="moveItems(depAnalysts,selectedDepAnalysts,obj.data.teamAnalysts)"><i class="fa fa-angle-left"></i></button>
+							<button class="btn btn-default btn-sm btn-block" ng-click="moveItems(obj.data.teamAnalysts,dummy,depAnalysts)"><i class="fa fa-angle-right"></i></button>
+							<button class="btn btn-default btn-sm btn-block" ng-click="moveItems(obj.data.teamAnalysts,obj.data.Analysts,depAnalysts)"><i class="fa fa-angle-double-right"></i></button>
 						</div>
 					</div>
 					<div class="col-md-5">
