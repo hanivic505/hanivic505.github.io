@@ -2,15 +2,30 @@
 	<button uib-dropdown-toggle>
 		<i class="fa fa-calendar"></i> <b>Duration</b> From: <span ng-bind="vm.fromToObj.from | date:'dd/MM/yyyy HH:mm'">13/02/2016</span> Till: <span ng-bind="vm.fromToObj.to | date:'dd/MM/yyyy HH:mm'">15/08/2016</span>
 	</button>
-	<div class="dropdown-menu keep-on ignore" uib-dropdown-menu>
-		<div class="col-xs-6">
+	<div class="dropdown-menu keep-on ignore" style="width:800px;" uib-dropdown-menu>
+		<div class="col-xs-12 alternate">
+			<label>Display Advanced Period Selection</label>
+			<switch ng-model="vm.durationOption" class="pull-right" on="Yes" off="No"></switch>
+		</div>
+		<hr/>
+		<label class="col-xs-4" ng-if="vm.durationOption==0">Period Selection</label>
+		<div class="col-xs-8" ng-if="vm.durationOption==0">
+			<select ng-model="vm.fromToObj.period" class="form-control">
+				<option value="">Select Period</option>
+				<option value="1">Last Hour</option>
+				<option value="2">Last Day</option>
+				<option value="3">Last Week</option>
+				<option value="4">Last Month</option>
+			</select>
+		</div>
+		<div class="col-xs-6" ng-if="vm.durationOption==1">
 			<h4 class="text-center">From</h4>
 			<uib-datepicker ng-model="vm.fromToObj.from" datepicker-options="options1" class="well well-sm" datepicker-options="options1"></uib-datepicker>
 			<div class="time-picker">
 				<uib-timepicker ng-model="vm.fromToObj.from" hour-step="1" minute-step="1" show-meridian="false"></uib-timepicker>
 			</div>
 		</div>
-		<div class="col-xs-6">
+		<div class="col-xs-6" ng-if="vm.durationOption==1">
 			<h4 class="text-center">Till</h4>
 			<uib-datepicker ng-model="vm.fromToObj.to" class="well well-sm" datepicker-options="options2"></uib-datepicker>
 			<div class="time-picker">

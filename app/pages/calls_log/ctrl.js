@@ -11,18 +11,29 @@ var app;
 		angular.module("IVRY-App").controller("exportCallLogCtrl", ["$scope", "$filter", "$uibModalInstance", "obj", function ($scope, $filter, $uibModalInstance, obj) {
 			$scope.obj = obj;
 			$scope.objType = Object.prototype.toString.call(obj);
-			$scope.exported=false;
-			if ($scope.objType == "[object Object]")
+			$scope.exported = false;
+			if ($scope.objType == "[object Object]") {
 				$scope.exp = {
-					name: obj.lineName + '_' + $filter('date')(obj.startDate, 'dd.MM.yyyy.HH.mm') + '.wav'
+					name: obj.lineName + '_' + $filter('date')(obj.startDate, 'dd.MM.yyyy.HH.mm'),
+					options: {
+						audio: true,
+						excel: false
+					}
 				}
-
+			} else {
+				$scope.exp = {
+					options: {
+						audio: false,
+						excel: true
+					}
+				}
+			}
 
 			$scope.ok = function () {
-				if($scope.exported)
-				$uibModalInstance.close($scope.obj);
+				if ($scope.exported)
+					$uibModalInstance.close($scope.obj);
 				else
-					$scope.exported=true;
+					$scope.exported = true;
 			};
 
 			$scope.cancel = function () {
@@ -38,27 +49,46 @@ var app;
 			$scope.cancel = function () {
 				$uibModalInstance.dismiss('cancel');
 			};
+			$scope.print = function () {
+				$('textarea').each(function () {
+					$(this).height($(this).prop('scrollHeight'));
+				});
+				window.print();
+				$('textarea').each(function () {
+					$(this).removeAttr("style");
+				});
+			};
 			$scope.getIcon = utilitiesServices.getIcon;
-        }]);
-		angular.module("IVRY-App").controller('PlaylistController', function ($scope) {
+
 			var activeUrl = null;
-			var _this = this;
-			this.paused = true;
+
+			$scope.paused = true;
 
 			$scope.$on('wavesurferInit', function (e, wavesurfer) {
+				console.info("wavesurferInit");
 				$scope.wavesurfer = wavesurfer;
-				console.info(wavesurfer);
+
 				$scope.wavesurfer.on('play', function () {
-					_this.paused = false;
+					$scope.paused = false;
 				});
 
 				$scope.wavesurfer.on('pause', function () {
-					_this.paused = true;
+					$scope.paused = true;
 				});
 
 				$scope.wavesurfer.on('finish', function () {
-					_this.paused = true;
+					$scope.paused = true;
 					$scope.wavesurfer.seekTo(0);
+					$scope.$apply();
+				});
+
+				$scope.wavesurfer.on('ready', function () {
+					$scope.duration = $scope.wavesurfer.getDuration();
+					$scope.$apply();
+				});
+
+				$scope.wavesurfer.on("audioprocess", function () {
+					$scope.currentTime = $scope.wavesurfer.getCurrentTime();
 					$scope.$apply();
 				});
 			});
@@ -81,8 +111,51 @@ var app;
 			$scope.isPlaying = function (url) {
 				return url == activeUrl;
 			};
-		});
-		angular.module("IVRY-App").controller("CallLogCtrl", ["$rootScope", "$scope", "$log","$filter", "linesFilter", "$uibModal", "callLogService", "linesTreeService", "utilitiesServices", "dbService", function ($rootScope, $scope, $log,$filter, linesFilter, $uibModal, callLogService, linesTreeService, utilitiesServices, dbService) {
+
+        }]);
+//		angular.module("IVRY-App").controller('PlaylistController', function ($scope) {
+//			var activeUrl = null;
+//			var _this = this;
+//			this.paused = true;
+//
+//			$scope.$on('wavesurferInit', function (e, wavesurfer) {
+//				$scope.wavesurfer = wavesurfer;
+//				console.info(wavesurfer);
+//				$scope.wavesurfer.on('play', function () {
+//					_this.paused = false;
+//				});
+//
+//				$scope.wavesurfer.on('pause', function () {
+//					_this.paused = true;
+//				});
+//
+//				$scope.wavesurfer.on('finish', function () {
+//					_this.paused = true;
+//					$scope.wavesurfer.seekTo(0);
+//					$scope.$apply();
+//				});
+//			});
+//
+//			$scope.play = function (url) {
+//				if (!$scope.wavesurfer) {
+//					return;
+//				}
+//
+//				activeUrl = url;
+//
+//				$scope.wavesurfer.once('ready', function () {
+//					$scope.wavesurfer.play();
+//					$scope.$apply();
+//				});
+//
+//				$scope.wavesurfer.load(activeUrl);
+//			};
+//
+//			$scope.isPlaying = function (url) {
+//				return url == activeUrl;
+//			};
+//		});
+		angular.module("IVRY-App").controller("CallLogCtrl", ["$rootScope", "$scope", "$log", "$filter", "linesFilter", "$uibModal", "callLogService", "linesTreeService", "utilitiesServices", "dbService", function ($rootScope, $scope, $log, $filter, linesFilter, $uibModal, callLogService, linesTreeService, utilitiesServices, dbService) {
 			/*jslint node: true */
 			$rootScope.user = "DepAdmin";
 			$scope.paused = true;
@@ -90,6 +163,7 @@ var app;
 				idx = 1;
 			this.isOn = false;
 			this.isVisible = false;
+			this.durationOption = 0;
 			$scope.$watch(function () {
 				return _this.editObj;
 			}, function (nVal) {});
@@ -190,6 +264,10 @@ var app;
 				minDate: this.fromToObj.from,
 				maxDate: new Date()
 			};
+			$rootScope.$on("columnsFiltered", function () {
+				var $prnt = $(".picked")[0];
+				console.info($prnt);
+			});
 			this.editObj = null;
 			this.callsLog = [];
 			this.wavesurfer = {};
@@ -258,17 +336,19 @@ var app;
 					}
 				}
 			});
+			this.currentMiniAudio={};
 			$scope.play = function (obj) {
+				_this.currentMiniAudio=obj;
 				if (!_this.wavesurferMini) {
 					return;
 				}
 				try {
 					_this.wavesurfer.stop();
 				} catch (ex) {}
-//				try {
-//					_this.wavesurferMini.destroy();
-//				} catch (ex) {}
-
+				//				try {
+				//					_this.wavesurferMini.destroy();
+				//				} catch (ex) {}
+				if(_this.wavesurferMini.load==undefined)
 				_this.wavesurferMini = WaveSurfer.create({
 					container: '#mini-player',
 					waveColor: 'gray',
@@ -283,16 +363,23 @@ var app;
 
 				_this.wavesurferMini.on('play', function () {
 					$scope.miniPaused = false;
-					$scope.miniIsPlaying=obj.caseName+", "+obj.identityName+", "+obj.lineName+" : "+$filter("date")(obj.startDate,"dd/MM/yyyy HH:mm");
+					$scope.miniIsPlaying = obj.caseName + ", " + obj.identityName + ", " + obj.lineName + " : " + $filter("date")(obj.startDate, "dd/MM/yyyy HH:mm");
 					$scope.$apply();
 				});
 
 				_this.wavesurferMini.on('pause', function () {
 					$scope.miniPaused = true;
-					$scope.$apply();
+//					$scope.$apply();
 				});
 				_this.wavesurferMini.load(obj.audio);
 			};
+
+			$scope.playAudio=function(dir){
+				var idx=$scope.filteredCallsLog.indexOf(_this.currentMiniAudio);
+				_this.editObj=$scope.filteredCallsLog[idx+dir];
+				$scope.play(_this.editObj);
+			};
+
 			$scope.handleChkAll = function (obj, prop, isHandleTree = false) {
 				if (isHandleTree && obj.id !== undefined)
 					ctrl.lines[obj.id] = obj.checked;

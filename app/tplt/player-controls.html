@@ -1,0 +1,12 @@
+<label for="" class="label label-default">
+	<button class="btn btn-link btn-sm" ng-click="wavesurfer.playPause()">
+		<span id="play" ng-show="paused" uib-tooltip="Play Audio">
+			<i class="fa fa-play-circle fa-3x fg-yellow"></i>
+		</span>
+
+		<span id="pause" ng-show="!paused" uib-tooltip="Pause Audio">
+			<i class="fa fa-pause-circle fa-3x fg-yellow"></i>
+		</span>
+	</button>Duration
+	<label for="" class="label fg-yellow"><span ng-bind="currentTime | wavesurferTimeFormat"></span> / <span ng-bind="duration|wavesurferTimeFormat"></span></label>
+</label>

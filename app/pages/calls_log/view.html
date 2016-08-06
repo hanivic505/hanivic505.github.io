@@ -1,33 +1,34 @@
 <div ng-controller="CallLogCtrl as vm">
 	<h1 class="page-header">
         <i class="fa fa-headphones fa-1x"></i> Calls log
-        	<div id="mini-player"></div>
+		<div id="mini-player"></div>
         <div class="mini-player" ng-if="!miniPaused">
         	<div class="mini-controls">
-        		<label for="" class="label label-warning"> {{miniIsPlaying}}
+        		<label class="label label-warning"> {{miniIsPlaying}}
+        			<a ng-click="playAudio(-1)" class="btn btn-link btn-sm">
+						<span class="fa fa-stack">
+							<i class="fa fa-circle fa-stack-2x fg-white"></i>
+							<i class="fa fa-step-backward fa-stack-1x fg-blue"></i>
+						</span>
+					</a>
         			<a href="" class="btn btn-link" ng-click="vm.wavesurferMini.playPause()">
 						<span id="pause" ng-show="!miniPaused" uib-tooltip="Pause Audio">
 							<i class="fa fa-pause-circle fa-3x fg-yellow"></i>
+						</span>
+					</a>
+        			<a ng-click="playAudio(1)" class="btn btn-link btn-sm">
+						<span class="fa fa-stack">
+							<i class="fa fa-circle fa-stack-2x fg-white"></i>
+							<i class="fa fa-step-forward fa-stack-1x fg-blue"></i>
 						</span>
 					</a>
         		</label>
         	</div>
         </div>
     </h1>
-	<h2>Calls Log List <small class="text-warning" ng-if="selectedItems.length">You have selected {{selectedItems.length}} Items, What do you need to do?
-							   <div class="special-input"><span class="input-group input-group-sm"><span class="input-group-addon">Mark selected as</span>
-                                  <span class="dropdown form-control">
-                                    <a href="" data-toggle="dropdown" title="{{vm.getIcon(markAll.isMarked).title}}"><i class="fa" ng-class="vm.getIcon(markAll.isMarked).icon"></i> {{vm.getIcon(markAll.isMarked).title}} <i class="caret"></i></a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="" ng-click="markAll.isMarked=10"><i class="fa fa-circle-o"></i> Un Marked</a></li>
-                                        <li><a href="" ng-click="markAll.isMarked=11"><i class="fa fa-exclamation"></i> Important</a></li>
-                                        <li><a href="" ng-click="markAll.isMarked=12"><i class="fa fa-search"></i> Revise Later</a></li>
-                                        <li><a href="" ng-click="markAll.isMarked=13"><i class="fa fa-check"></i> Reviewed</a></li>
-                                        <li><a href="" ng-click="markAll.isMarked=14"><i class="fa fa-times"></i> Irrelevent</a></li>
-                                    </ul>
-                                </span>
-								   <span class="input-group-btn"><button ng-click="markSelected(selectedItems,markAll.isMarked)" class="btn btn-default">Apply</button></span></span></div>
-                                   <button class="btn btn-link btn-sm" ng-click="openPopup(selectedItems,'/app/pages/calls_log/popup-export.html','exportCallLogCtrl','sm');"><i class="fa fa-external-link-square"></i> <span>Export Selected</span></button><button class="btn btn-link btn-sm" ng-click=""><i class="fa fa-trash"></i> <span>Delete Selected</span></button></small></h2>
+	<h2>Calls Log List
+		<ng-include src="'/app/pages/calls_log/multi-selected-actions.html'"></ng-include>
+    </h2>
 	<div class="row">
 		<div class="col-md-12">
 			<div class="-table-responsive -no-vertical-overflow">

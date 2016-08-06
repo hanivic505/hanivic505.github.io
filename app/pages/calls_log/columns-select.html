@@ -1,7 +1,10 @@
 <div class="dropdown keep-on" uib-dropdown auto-close="disabled">
 	<button uib-dropdown-toggle><i class="fa fa-gear"></i></button>
-	<div class="dropdown-menu keep-on" uib-dropdown-menu>
+	<div class="dropdown-menu keep-on" style="min-width:290px;" uib-dropdown-menu>
 		<h5 class="text-center">Select Columns to View</h5>
+		<div class="alternate">
+			<input type="search" ng-model="columnFilter" placeholder="Search for Column" class="input-sm form-control">
+		</div>
 <!--
 		<div class="list-group list-group-sm">
 			<div class="list-group-item clearfix" ng-repeat="x in columns.childs">
@@ -12,7 +15,7 @@
 		</div>
 -->
 		<div class="list-group list-group-sm mh-350 vertical-scroll" data-as-sortable="dragControlListeners" data-ng-model="columns.childs">
-		   <div class="list-group-item clearfix" ng-repeat="x in columns.childs" data-as-sortable-item>
+		   <div class="list-group-item clearfix" ng-class="{'picked':x.picked}" ng-repeat="x in columns.childs | columnsFilter:columnFilter" data-as-sortable-item>
 			  <div data-as-sortable-item-handle>
 			  	<label data-as-sortable-item-handle class="pull-left" style="white-space:nowrap;margin-right:60px;">
 					<input type="checkbox" ng-model="x.isOn" /> {{x.title}}</label>

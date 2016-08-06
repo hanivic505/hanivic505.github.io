@@ -102,6 +102,23 @@ var app;
 			return filtered;
 		};
 	});
+	mainApp.filter("columnsFilter", function ($rootScope, $timeout) {
+		console.log("columnsFilter")
+		return function (value, filterBy) {
+			angular.forEach(value, function (val, key) {
+				if (!angular.isUndefined(filterBy)) {
+					if (filterBy.toLowerCase() == val.title.toLowerCase())
+						val["picked"] = true;
+					else
+						val["picked"] = false;
+				}
+			});
+//			var promise = $timeout(function () {
+//				$rootScope.$broadcast("columnsFiltered");
+//			}, 2000);
+			return value;
+		};
+	});
 	mainApp.filter('wavesurferTimeFormat', function () {
 		return function (input) {
 			if (!input) {

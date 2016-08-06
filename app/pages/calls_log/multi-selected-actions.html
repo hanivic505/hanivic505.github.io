@@ -1,0 +1,22 @@
+<small class="text-warning" ng-if="selectedItems.length">You have selected {{selectedItems.length}} Items, What do you need to do?
+	<div class="special-input">
+		<span class="input-group input-group-sm">
+			<span class="input-group-addon">Mark selected as</span>
+			<span class="dropdown form-control">
+				<a href="" data-toggle="dropdown" title="{{vm.getIcon(markAll.isMarked).title}}"><i class="fa" ng-class="vm.getIcon(markAll.isMarked).icon"></i> {{vm.getIcon(markAll.isMarked).title}} <i class="caret"></i></a>
+				<ul class="dropdown-menu">
+					<li><a href="" ng-click="markAll.isMarked=10"><i class="fa fa-circle-o"></i> Un Marked</a></li>
+					<li><a href="" ng-click="markAll.isMarked=11"><i class="fa fa-exclamation"></i> Important</a></li>
+					<li><a href="" ng-click="markAll.isMarked=12"><i class="fa fa-search"></i> Revise Later</a></li>
+					<li><a href="" ng-click="markAll.isMarked=13"><i class="fa fa-check"></i> Reviewed</a></li>
+					<li><a href="" ng-click="markAll.isMarked=14"><i class="fa fa-times"></i> Irrelevent</a></li>
+				</ul>
+			</span>
+			<span class="input-group-btn">
+				<button ng-click="markSelected(selectedItems,markAll.isMarked)" class="btn btn-default">Apply</button>
+			</span>
+		</span>
+	</div>
+	<button class="btn btn-link btn-sm" ng-click="openPopup(selectedItems,'/app/pages/calls_log/popup-export.html','exportCallLogCtrl','sm');"><i class="fa fa-external-link-square"></i> <span>Export Selected</span></button>
+	<button class="btn btn-link btn-sm" ng-click=""><i class="fa fa-trash"></i> <span>Delete Selected</span></button>
+</small>

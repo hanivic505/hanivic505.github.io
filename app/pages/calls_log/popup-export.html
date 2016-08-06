@@ -8,12 +8,24 @@
 			<label for="">Export File Name:</label>
 			<input class="form-control" type="text" ng-model="exp.name">
 		</div>
+		<div class="col-md-12" ng-if="!exported">
+			<label for="">Export Types:</label>
+			<div>
+				<label>
+					<input type="checkbox" ng-model="exp.options.audio"> <i class="fa fa-file-audio-o"></i> Audio</label>
+				<label>
+					<input type="checkbox" ng-model="exp.options.excel"> <i class="fa fa-file-excel-o"></i> Record Data</label>
+			</div>
+		</div>
 		<div class="col-md-12" ng-if="exported">
-			<a href="" class="btn btn-link" title="{{exp.name}}">
-				<i class="fa fa-3x fa-download"></i> Download File
+			<a href="" class="btn btn-link" ng-if="exp.options.excel" title="{{exp.name+'.xls'}}">
+				<i class="fa fa-3x fa-download"></i> Download Data File
+			</a>
+			<a href="" class="btn btn-link" ng-if="exp.options.audio" title="{{exp.name+'.zip'}}">
+				<i class="fa fa-3x fa-download"></i> Download Audio File
 			</a>
 		</div>
-<!--
+		<!--
 		<div class="col-md-12">
 			<label>Export File Path:</label>
 			<input type="file" ng-bind="exp.path" class="form-control" />
