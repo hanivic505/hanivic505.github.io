@@ -110,8 +110,11 @@ body {
 .hl-white a {
 	color: #fff !important;
 }
+.btn.fg-white:hover,.btn:hover .fg-white{color:#ddd !important;}
+.btn.fg-blue:hover,.btn:hover .fg-blue{color:#0a20c6 !important;}
+.btn.fg-yellow:hover,.btn:hover .fg-yellow{color:#cc0 !important;}
 .no-padding {
-	padding: 0 !important;
+;	padding: 0 !important;
 }
 h1.page-header {
 	background: #0340C6;
