@@ -113,49 +113,49 @@ var app;
 			};
 
         }]);
-//		angular.module("IVRY-App").controller('PlaylistController', function ($scope) {
-//			var activeUrl = null;
-//			var _this = this;
-//			this.paused = true;
-//
-//			$scope.$on('wavesurferInit', function (e, wavesurfer) {
-//				$scope.wavesurfer = wavesurfer;
-//				console.info(wavesurfer);
-//				$scope.wavesurfer.on('play', function () {
-//					_this.paused = false;
-//				});
-//
-//				$scope.wavesurfer.on('pause', function () {
-//					_this.paused = true;
-//				});
-//
-//				$scope.wavesurfer.on('finish', function () {
-//					_this.paused = true;
-//					$scope.wavesurfer.seekTo(0);
-//					$scope.$apply();
-//				});
-//			});
-//
-//			$scope.play = function (url) {
-//				if (!$scope.wavesurfer) {
-//					return;
-//				}
-//
-//				activeUrl = url;
-//
-//				$scope.wavesurfer.once('ready', function () {
-//					$scope.wavesurfer.play();
-//					$scope.$apply();
-//				});
-//
-//				$scope.wavesurfer.load(activeUrl);
-//			};
-//
-//			$scope.isPlaying = function (url) {
-//				return url == activeUrl;
-//			};
-//		});
-		angular.module("IVRY-App").controller("CallLogCtrl", ["$rootScope", "$scope", "$log", "$filter", "linesFilter", "$uibModal", "callLogService", "linesTreeService", "utilitiesServices", "dbService", function ($rootScope, $scope, $log, $filter, linesFilter, $uibModal, callLogService, linesTreeService, utilitiesServices, dbService) {
+		//		angular.module("IVRY-App").controller('PlaylistController', function ($scope) {
+		//			var activeUrl = null;
+		//			var _this = this;
+		//			this.paused = true;
+		//
+		//			$scope.$on('wavesurferInit', function (e, wavesurfer) {
+		//				$scope.wavesurfer = wavesurfer;
+		//				console.info(wavesurfer);
+		//				$scope.wavesurfer.on('play', function () {
+		//					_this.paused = false;
+		//				});
+		//
+		//				$scope.wavesurfer.on('pause', function () {
+		//					_this.paused = true;
+		//				});
+		//
+		//				$scope.wavesurfer.on('finish', function () {
+		//					_this.paused = true;
+		//					$scope.wavesurfer.seekTo(0);
+		//					$scope.$apply();
+		//				});
+		//			});
+		//
+		//			$scope.play = function (url) {
+		//				if (!$scope.wavesurfer) {
+		//					return;
+		//				}
+		//
+		//				activeUrl = url;
+		//
+		//				$scope.wavesurfer.once('ready', function () {
+		//					$scope.wavesurfer.play();
+		//					$scope.$apply();
+		//				});
+		//
+		//				$scope.wavesurfer.load(activeUrl);
+		//			};
+		//
+		//			$scope.isPlaying = function (url) {
+		//				return url == activeUrl;
+		//			};
+		//		});
+		angular.module("IVRY-App").controller("CallLogCtrl", ["$rootScope", "$scope", "$log", "$timeout", "$filter", "linesFilter", "$uibModal", "callLogService", "linesTreeService", "utilitiesServices", "dbService", function ($rootScope, $scope, $log, $timeout, $filter, linesFilter, $uibModal, callLogService, linesTreeService, utilitiesServices, dbService) {
 			/*jslint node: true */
 			$rootScope.user = "DepAdmin";
 			$scope.paused = true;
@@ -264,10 +264,19 @@ var app;
 				minDate: this.fromToObj.from,
 				maxDate: new Date()
 			};
-			$rootScope.$on("columnsFiltered", function () {
-				var $prnt = $(".picked")[0];
-				console.info($prnt);
-			});
+			//			$rootScope.$on("columnsFiltered", function () {
+			//				$timeout(checkCols,1000);
+			//			});
+			$scope.$watch("columns", function () {
+				checkCols();
+			}, true);
+			var checkCols = function () {
+				var prnt = $(".picked")[0];
+				if (prnt !== undefined) {
+					//console.info($prnt.offsetTop);
+					$("#columnsScroll").scrollTop($(prnt).position().top);//-$("#columnsScroll").offset().top);
+				}
+			};
 			this.editObj = null;
 			this.callsLog = [];
 			this.wavesurfer = {};
@@ -336,9 +345,9 @@ var app;
 					}
 				}
 			});
-			this.currentMiniAudio={};
+			this.currentMiniAudio = {};
 			$scope.play = function (obj) {
-				_this.currentMiniAudio=obj;
+				_this.currentMiniAudio = obj;
 				if (!_this.wavesurferMini) {
 					return;
 				}
@@ -348,14 +357,14 @@ var app;
 				//				try {
 				//					_this.wavesurferMini.destroy();
 				//				} catch (ex) {}
-				if(_this.wavesurferMini.load==undefined)
-				_this.wavesurferMini = WaveSurfer.create({
-					container: '#mini-player',
-					waveColor: 'gray',
-					progressColor: 'white',
-					splitChannels: false,
-					height: 32
-				});
+				if (_this.wavesurferMini.load == undefined)
+					_this.wavesurferMini = WaveSurfer.create({
+						container: '#mini-player',
+						waveColor: 'gray',
+						progressColor: 'white',
+						splitChannels: false,
+						height: 32
+					});
 				_this.wavesurferMini.on('ready', function () {
 					_this.wavesurferMini.play();
 					$scope.$apply();
@@ -369,14 +378,14 @@ var app;
 
 				_this.wavesurferMini.on('pause', function () {
 					$scope.miniPaused = true;
-//					$scope.$apply();
+					//					$scope.$apply();
 				});
 				_this.wavesurferMini.load(obj.audio);
 			};
 
-			$scope.playAudio=function(dir){
-				var idx=$scope.filteredCallsLog.indexOf(_this.currentMiniAudio);
-				_this.editObj=$scope.filteredCallsLog[idx+dir];
+			$scope.playAudio = function (dir) {
+				var idx = $scope.filteredCallsLog.indexOf(_this.currentMiniAudio);
+				_this.editObj = $scope.filteredCallsLog[idx + dir];
 				$scope.play(_this.editObj);
 			};
 

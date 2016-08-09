@@ -103,19 +103,19 @@ var app;
 		};
 	});
 	mainApp.filter("columnsFilter", function ($rootScope, $timeout) {
-		console.log("columnsFilter")
 		return function (value, filterBy) {
+			console.log("columnsFilter")
 			angular.forEach(value, function (val, key) {
 				if (!angular.isUndefined(filterBy)) {
-					if (filterBy.toLowerCase() == val.title.toLowerCase())
+					if (filterBy.toLowerCase() !== "" && val.title.toLowerCase().indexOf(filterBy.toLowerCase()) !== -1) {
 						val["picked"] = true;
-					else
+						$rootScope.$broadcast("columnsFiltered");
+					} else
 						val["picked"] = false;
 				}
 			});
-//			var promise = $timeout(function () {
-//				$rootScope.$broadcast("columnsFiltered");
-//			}, 2000);
+			//			var promise = $timeout(function () {
+			//			}, 2000);
 			return value;
 		};
 	});
