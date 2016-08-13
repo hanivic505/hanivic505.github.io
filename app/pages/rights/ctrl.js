@@ -4,7 +4,7 @@ var app;
 	(function (Rights) {
 		var cntrlFn = (function () {
 			function cntrlFn($scope, $rootScope, $uibModal, linesTreeService, departmentsService, dbService) {
-				$rootScope.user = "DepAdmin";
+//				$rootScope.user = "DepAdmin";
 				$scope.treeConfig = {
 					lines: {},
 					treeObj: linesTreeService,

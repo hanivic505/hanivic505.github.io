@@ -1,0 +1,39 @@
+<div class="row login-layout no-vertical-overflow">
+	<div class="col-md-6 h100 bg-dark-blue fa-5x fa-inverse">
+		<i class="fa fa-1x fa-headphones"></i>
+		<i class="fa fa-3x fa-globe"></i>
+		<i class="fa fa-2x fa-group"></i>
+		<i class="fa fa-2x fa-gears"></i>
+		<i class="fa fa-2x fa-fax"></i>
+		<i class="fa fa-3x fa-phone"></i>
+		<i class="fa fa-3x fa-headphones"></i>
+		<i class="fa fa-4x fa-globe"></i>
+		<i class="fa fa-2x fa-group"></i>
+		<i class="fa fa-4x fa-gears"></i>
+		<i class="fa fa-3x fa-fax"></i>
+		<i class="fa fa-4x fa-phone"></i>
+		<i class="fa fa-4x fa-headphones"></i>
+		<i class="fa fa-2x fa-globe"></i>
+		<i class="fa fa-1x fa-group"></i>
+		<i class="fa fa-2x fa-gears"></i>
+		<i class="fa fa-1x fa-fax"></i>
+		<i class="fa fa-4x fa-phone"></i>
+	</div>
+	<div class="col-md-6 h100"></div>
+	<div class="col-md-4 col-md-push-4 login-form" ng-controller="LoginCtrl as vm">
+		<h2 class="page-header">Login</h2>
+		<form ng-submit="doLogin()">
+			<div class="col-md-12">
+				<label>User Name</label>
+				<input type="text" class="form-control" ng-model="user.userName" />
+			</div>
+			<div class="col-md-12">
+				<label>Password</label>
+				<input type="password" class="form-control" ng-model="user.password" />
+			</div>
+			<div class="col-md-12 btn-bar">
+				<button class="btn btn-primary btn-sm">Login</button>
+			</div>
+		</form>
+	</div>
+</div>

@@ -6,7 +6,7 @@ var app;
 		var cntrlFn = (function () {
 			function cntrlFn($scope, $rootScope, $uibModal, dbService) {
 				var _this = this;
-				$rootScope.user = "DepAdmin";
+//				$rootScope.user = "DepAdmin";
 				$scope.columns = {
 					childs: [
 						{

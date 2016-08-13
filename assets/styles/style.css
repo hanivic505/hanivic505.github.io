@@ -110,11 +110,21 @@ body {
 .hl-white a {
 	color: #fff !important;
 }
-.btn.fg-white:hover,.btn:hover .fg-white{color:#ddd !important;}
-.btn.fg-blue:hover,.btn:hover .fg-blue{color:#0a20c6 !important;}
-.btn.fg-yellow:hover,.btn:hover .fg-yellow{color:#cc0 !important;}
+.btn.fg-white:hover,
+.btn:hover .fg-white {
+	color: #ddd !important;
+}
+.btn.fg-blue:hover,
+.btn:hover .fg-blue {
+	color: #0a20c6 !important;
+}
+.btn.fg-yellow:hover,
+.btn:hover .fg-yellow {
+	color: #cc0 !important;
+}
 .no-padding {
-;	padding: 0 !important;
+	;
+	padding: 0 !important;
 }
 h1.page-header {
 	background: #0340C6;
@@ -695,10 +705,45 @@ div#waveform-timeline {
 .picked {
 	border: dashed 2px #31708f;
 }
-.mini-controls>label{padding-right: 15px;}
-.mini-controls>label>a{padding: 15px 0;}
-.mini-controls>label>a.btn-sm{margin:0 -5px;}
-.mini-controls>label>a:first-child{margin-left:15px;}
+.mini-controls>label {
+	padding-right: 15px;
+}
+.mini-controls>label>a {
+	padding: 15px 0;
+}
+.mini-controls>label>a.btn-sm {
+	margin: 0 -5px;
+}
+.mini-controls>label>a:first-child {
+	margin-left: 15px;
+}
+.login-form {
+	background: rgba(255, 255, 255, .75);
+	padding: 20px;
+	border-radius: 8px;
+	border: solid 1px #ddd;
+	box-shadow: 0 0 10px 0px #001f54;
+	position: absolute;
+	z-index: 10000;
+	top: 250px;
+}
+.login-form .btn-bar {
+	margin-top: 15px;
+}
+.login-layout {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	left: 0;
+}
+.login-layout .bg-dark-blue i {
+	opacity: .05;
+}
+.login-form .page-header {
+	margin: 0 0 20px;
+}
+
 /*Print Styles*/
 
 @media print {

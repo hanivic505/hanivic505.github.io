@@ -5,7 +5,7 @@ var app;
 	(function (System) {
 		var cntrlFn = (function () {
 			function cntrlFn($scope, $rootScope) {
-				$rootScope.user = "SysAdmin";
+//				$rootScope.user = "SysAdmin";
 				$scope.switchStatus = true;
 			}
 			return cntrlFn;

@@ -6,7 +6,13 @@ var app;
 			this.$stateProvider = $stateProvider;
 			this.$urlRouterProvider = $urlRouterProvider;
 			$locationProvider.html5Mode(true);
-			this.$stateProvider.state('calls-log', {
+			this.$stateProvider.state('login', {
+				url: '/login',
+				templateUrl: '/app/pages/login/view.html',
+				data: {
+					title: 'Login'
+				},
+			}).state('calls-log', {
 				url: '/calls-log',
 				templateUrl: '/app/pages/calls_log/view.html',
 				data: {
@@ -55,8 +61,15 @@ var app;
 					title: "User Access Rights",
 					authorizedRoles: [USER_ROLES.depAdmin]
 				}
+			}).state("departments", {
+				url: "/departments",
+				templateUrl: "/app/pages/departments/view.html",
+				data: {
+					title: "Departments",
+					authorizedRoles: [USER_ROLES.sysAdmin]
+				}
 			});
-			this.$urlRouterProvider.otherwise('/calls-log');
+			this.$urlRouterProvider.otherwise('/login');
 		}
 		return Config;
 	})();

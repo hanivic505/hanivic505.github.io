@@ -157,7 +157,7 @@ var app;
 		//		});
 		angular.module("IVRY-App").controller("CallLogCtrl", ["$rootScope", "$scope", "$log", "$timeout", "$filter", "linesFilter", "$uibModal", "callLogService", "linesTreeService", "utilitiesServices", "dbService", function ($rootScope, $scope, $log, $timeout, $filter, linesFilter, $uibModal, callLogService, linesTreeService, utilitiesServices, dbService) {
 			/*jslint node: true */
-			$rootScope.user = "DepAdmin";
+//			$rootScope.user = "DepAdmin";
 			$scope.paused = true;
 			var _this = this,
 				idx = 1;
