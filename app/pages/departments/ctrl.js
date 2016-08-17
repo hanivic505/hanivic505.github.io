@@ -1,44 +1,40 @@
 var app;
 (function (app) {
 	'use strict';
-	var User;
-	(function (User) {
+	var Department;
+	(function (Department) {
 		var cntrlFn = (function () {
 			function cntrlFn($scope, $rootScope, $uibModal, dbService) {
 				var _this = this;
-//				$rootScope.user = "DepAdmin";
 				$scope.columns = {
 					childs: [
 						{
-							title: "First Name",
-							prop: "firstName",
+							title: "Department Name",
+							prop: "title",
 							isOn: true
 						},
 						{
-							title: "Last Name",
-							prop: "lastName",
+							title: "Maximum Number of Recording Lines",
+							prop: "maxNoOfRecLines",
 							isOn: true
 						},
 						{
-							title: "Login Name",
-							prop: "loginName",
+							title: "Teams Count",
+							prop: "teamsCount",
 							isOn: true,
+							type: "func"
 						},
 						{
-							title: "Department",
-							prop: "department",
+							title: "Assigned Lines",
+							prop: "assignedLines",
 							isOn: true,
+							type: "func"
 						},
 						{
-							title: "Team",
-							prop: "team",
+							title: "Comment",
+							prop: "comment",
 							isOn: true,
 						},
-						{
-							title: "Role",
-							prop: "role",
-							isOn: true,
-						}
 					]
 				};
 				$scope.currentPage = 1;
@@ -66,10 +62,10 @@ var app;
 				this.filteredList = [];
 				var i;
 				for (i = 0; i < 23; i++)
-					this.filteredList.push(new User(i + 1, "User " + i, "LName" + i, "01010101010", "user@email.com", "loginName" + i, "P@ssw0rd", "Analyst", "Department name", "Team Name"));
+					this.filteredList.push(new Department("Department " + i, "comment no " + i, 7));
 
 				$scope.addNew = function () {
-					$scope.openPopup(new User(0, '', '', '', '', '', '', '', '', ''), '/app/pages/users/popup-edit.html', 'UserEditCtrl', 'lg')
+					$scope.openPopup(new Department('', '', 0), '/app/pages/departments/popup-edit.html', 'DepartmentEditCtrl', 'lg')
 				};
 				$scope.delete = function (obj) {
 					dbService.delete(_this.filteredList, obj);
@@ -101,9 +97,9 @@ var app;
 			return cntrlFn;
 		})();
 
-		angular.module("IVRY-App").controller("UsersCtrl", ["$scope", "$rootScope", "$uibModal", "dbService", cntrlFn]);
-		angular.module("IVRY-App").controller("UserEditCtrl", ["$scope", "$uibModalInstance", "dbService", "utilitiesServices", "obj", function ($scope, $uibModalInstance, dbService, utilitiesServices, obj) {
-			$scope.obj = obj;
+		angular.module("IVRY-App").controller("DepartmentsCtrl", ["$scope", "$rootScope", "$uibModal", "dbService", cntrlFn]);
+		angular.module("IVRY-App").controller("DepartmentEditCtrl", ["$scope", "$uibModalInstance", "dbService", "utilitiesServices", "obj", function ($scope, $uibModalInstance, dbService, utilitiesServices, obj) {
+			$scope.obj = obj.data;
 			this.mode = obj == null ? 1 /*Add Mode*/ : 2 /*Update Mode*/ ;
 			var _this = this;
 			console.info("mode", _this.mode);
@@ -119,14 +115,10 @@ var app;
 			};
 			$scope.selectedDepTeamLeads = [];
 			$scope.depTeamLeads = [];
-			for (var i = 6; i < 15; i++)
-				$scope.depTeamLeads.push(User(i + 1, "Team", "Lead " + i, "0101010102", "teamLead@mail.com", "TL_User" + i, 2, 1, 1));
 
 			$scope.moveItems = utilitiesServices.moveItems;
 		}]);
-		angular.module("IVRY-App").controller("UserRightsCtrl", ["$scope", "$uibModalInstance", "dbService", "utilitiesServices", "obj", function ($scope, $uibModalInstance, dbService, utilitiesServices, obj) {
 
-		}]);
 
-	})(User = app.User || (User = {}));
+	})(Department = app.Department || (User = {}));
 })(app || (app = {}));

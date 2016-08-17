@@ -4,10 +4,15 @@ var app;
 	var Team;
 	(function (Team, User) {
 		var Department = (function () {
-			function Department(title, comment) {
+			function Department(title, comment, maxNoOfRecLines) {
 				this.obj = {
 					title: title,
 					comment: comment,
+					maxNoOfRecLines: maxNoOfRecLines,
+					lines: [],
+					assignedLines: function () {
+						return this.lines.length;
+					},
 					teams: [],
 					teamsCount: function () {
 						return this.teams.length;
