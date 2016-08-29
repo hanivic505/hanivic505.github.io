@@ -3,17 +3,17 @@
 		<span class="input-group input-group-sm">
 			<span class="input-group-addon">Mark selected as</span>
 			<span class="dropdown form-control">
-				<a href="" data-toggle="dropdown" title="{{vm.getIcon(markAll.isMarked).title}}"><i class="fa" ng-class="vm.getIcon(markAll.isMarked).icon"></i> {{vm.getIcon(markAll.isMarked).title}} <i class="caret"></i></a>
+				<a href="" data-toggle="dropdown" title="{{vm.getIcon(markAll.sessionFlagId).title}}"><i class="fa" ng-class="vm.getIcon(markAll.sessionFlagId).icon"></i> {{vm.getIcon(markAll.sessionFlagId).title}} <i class="caret"></i></a>
 				<ul class="dropdown-menu">
-					<li><a href="" ng-click="markAll.isMarked=10"><i class="fa fa-circle-o"></i> Un Marked</a></li>
-					<li><a href="" ng-click="markAll.isMarked=11"><i class="fa fa-exclamation"></i> Important</a></li>
-					<li><a href="" ng-click="markAll.isMarked=12"><i class="fa fa-search"></i> Revise Later</a></li>
-					<li><a href="" ng-click="markAll.isMarked=13"><i class="fa fa-check"></i> Reviewed</a></li>
-					<li><a href="" ng-click="markAll.isMarked=14"><i class="fa fa-times"></i> Irrelevent</a></li>
+					<li><a href="" ng-click="markAll.sessionFlagId=null"><i class="fa fa-circle-o"></i> Un Marked</a></li>
+					<li><a href="" ng-click="markAll.sessionFlagId=1"><i class="fa fa-exclamation"></i> Important</a></li>
+					<li><a href="" ng-click="markAll.sessionFlagId=2"><i class="fa fa-search"></i> Revise Later</a></li>
+					<li><a href="" ng-click="markAll.sessionFlagId=3"><i class="fa fa-check"></i> Reviewed</a></li>
+					<li><a href="" ng-click="markAll.sessionFlagId=4"><i class="fa fa-times"></i> Irrelevent</a></li>
 				</ul>
 			</span>
 			<span class="input-group-btn">
-				<button ng-click="markSelected(selectedItems,markAll.isMarked)" class="btn btn-default">Apply</button>
+				<button ng-click="markSelected(selectedItems,markAll.sessionFlagId)" class="btn btn-default">Apply</button>
 			</span>
 		</span>
 	</div>

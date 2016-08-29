@@ -155,9 +155,12 @@ var app;
 		//				return url == activeUrl;
 		//			};
 		//		});
-		angular.module("IVRY-App").controller("CallLogCtrl", ["$rootScope", "$scope", "$log", "$timeout", "$filter", "linesFilter", "$uibModal", "callLogService", "linesTreeService", "utilitiesServices", "dbService", function ($rootScope, $scope, $log, $timeout, $filter, linesFilter, $uibModal, callLogService, linesTreeService, utilitiesServices, dbService) {
+		angular.module("IVRY-App").controller("CallLogCtrl", ["$rootScope", "$scope", "$log", "$timeout", "$filter", "linesFilter", "$uibModal",
+			"linesTreeService", "utilitiesServices", "dbService", "ctrlData", "callLogService", CallLogCtrlFn]);
+
+		function CallLogCtrlFn($rootScope, $scope, $log, $timeout, $filter, linesFilter, $uibModal, linesTreeService, utilitiesServices, dbService, ctrlData, callLogService) {
+
 			/*jslint node: true */
-//			$rootScope.user = "DepAdmin";
 			$scope.paused = true;
 			var _this = this,
 				idx = 1;
@@ -173,12 +176,12 @@ var app;
 			$scope.currentPage = 1;
 			$scope.numPerPage = 10;
 			this.advFltr = {
-				params: [{
-					attribute: null,
+				andConditions: [{
+					column: null,
 					operator: null,
 					value: null
 				}],
-				isLocked: null,
+				locked: null,
 				isUnMarked: false,
 				isImportant: false,
 				isIrrelevent: false,
@@ -224,7 +227,7 @@ var app;
 				var begin, end, index;
 				begin = ($scope.currentPage - 1) * $scope.numPerPage;
 				end = begin + $scope.numPerPage;
-				index = $scope.filteredCallsLog.indexOf(value);
+				index = _this.callsLog.indexOf(value);
 				return (begin <= index && index < end);
 			};
 
@@ -271,14 +274,15 @@ var app;
 				checkCols();
 			}, true);
 			var checkCols = function () {
-				var prnt = $(".picked")[0];
-				if (prnt !== undefined) {
+				var parnt = $(".picked")[0];
+				if (parnt !== undefined) {
 					//console.info($prnt.offsetTop);
-					$("#columnsScroll").scrollTop($(prnt).position().top);//-$("#columnsScroll").offset().top);
+					$("#columnsScroll").scrollTop($(parnt).position().top); //-$("#columnsScroll").offset().top);
 				}
 			};
 			this.editObj = null;
-			this.callsLog = [];
+			this.callsLog = ctrlData;
+
 			this.wavesurfer = {};
 			this.wavesurferMini = {};
 			$scope.miniPaused = true;
@@ -401,115 +405,138 @@ var app;
 							$scope.handleChkAll(obj.childs[i], prop, isHandleTree);
 					}
 			};
-			//Dummy database creation
-			this.callsLog = callLogService;
 			$scope.linesTreeObj = linesTreeService;
 			$scope.columns = {
 				childs: [
-					{
-						title: 'Mark',
-						prop: "isMarked",
-						isOn: true,
-						drag: false,
-						show: false
-					},
-					{
-						title: "Locked",
-						prop: "isBlocked",
-						isOn: true,
-						drag: false,
-						show: false
-					},
-					{
-						title: "Transcribed",
-						prop: "isTranscribe",
-						isOn: true,
-						drag: false,
-						show: false
-					},
-					{
-						title: 'Case Name',
-						prop: "caseName",
-						isOn: true,
-						drag: true,
-						show: true
-					},
-					{
-						title: 'Identity Name',
-						prop: "identityName",
-						isOn: true,
-						drag: true,
-						show: true
-					},
-					{
-						title: 'Line Name',
-						prop: "lineName",
-						isOn: true,
-						drag: true,
-						show: true
-					},
-					{
-						title: 'Line ID',
-						prop: "lineId",
-						isOn: true,
-						drag: true,
-						show: true
-					},
-					{
-						title: 'Date',
-						prop: "startDate",
-						isOn: true,
-						type: "date",
-						drag: true,
-						show: true
-					},
-					{
-						title: 'Start Time',
-						prop: "startDate",
-						isOn: false,
-						type: "time",
-						drag: true,
-						show: true
-					},
-					{
-						title: 'End Time',
-						prop: "endDate",
-						isOn: false,
-						type: "time",
-						drag: true,
-						show: true
-					},
-					{
-						title: 'Duration',
-						prop: "duration",
-						isOn: false,
-						type: "time",
-						drag: true,
-						show: true
-					},
-					{
-						title: 'Comment',
-						prop: "comment",
-						isOn: false,
-						drag: true,
-						show: true
-					},
-					{
-						title: 'Calling Number (a_number)',
-						prop: "sipCallingParty",
-						isOn: false,
-						drag: true,
-						show: true
-					},
-					{
-						title: 'Called Number (b_number)',
-						prop: "sipCalledParty",
-						isOn: false,
-						drag: true,
-						show: true
-					}
+//					{
+//						title: 'Mark',
+//						prop: "isMarked",
+//						isOn: true,
+//						drag: false,
+//						show: false
+//					},
+//					{
+//						title: "Locked",
+//						prop: "isBlocked",
+//						isOn: true,
+//						drag: false,
+//						show: false
+//					},
+//					{
+//						title: "Transcribed",
+//						prop: "isTranscribe",
+//						isOn: true,
+//						drag: false,
+//						show: false
+//					},
+//					{
+//						title: 'Case Name',
+//						prop: "targetCaseName",
+//						isOn: true,
+//						drag: true,
+//						show: true
+//					},
+//					{
+//						title: 'Identity Name',
+//						prop: "identityName",
+//						isOn: true,
+//						drag: true,
+//						show: true
+//					},
+//					{
+//						title: 'Line Name',
+//						prop: "lineName",
+//						isOn: true,
+//						drag: true,
+//						show: true
+//					},
+//					{
+//						title: 'Line ID',
+//						prop: "lineId",
+//						isOn: true,
+//						drag: true,
+//						show: true
+//					},
+//					{
+//						title: 'Date',
+//						prop: "startDate",
+//						isOn: true,
+//						type: "date",
+//						drag: true,
+//						show: true
+//					},
+//					{
+//						title: 'Start Time',
+//						prop: "startDate",
+//						isOn: false,
+//						type: "time",
+//						drag: true,
+//						show: true
+//					},
+//					{
+//						title: 'End Time',
+//						prop: "endDate",
+//						isOn: false,
+//						type: "time",
+//						drag: true,
+//						show: true
+//					},
+//					{
+//						title: 'Duration',
+//						prop: "duration",
+//						isOn: false,
+//						type: "time",
+//						drag: true,
+//						show: true
+//					},
+//					{
+//						title: 'Comment',
+//						prop: "comment",
+//						isOn: false,
+//						drag: true,
+//						show: true
+//					},
+//					{
+//						title: 'Calling Number (a_number)',
+//						prop: "sipCallingParty",
+//						isOn: false,
+//						drag: true,
+//						show: true
+//					},
+//					{
+//						title: 'Called Number (b_number)',
+//						prop: "sipCalledParty",
+//						isOn: false,
+//						drag: true,
+//						show: true
+//					}
 				]
 			};
+			//			var columnsAdapterIn = function (columns) {
+			//				angular.forEach(columns, function (val, key) {
+			//					angular.forEach(val, function (iVal, iKey, obj) {
+			//						if (iKey == "code") {
+			//							iVal = iVal.toLowerCase();
+			//							if (iVal.indexOf("_") > -1) {
+			//								var camelCased = iVal.replace(/_[a-z]/g, function (g) {
+			//									return g[1].toUpperCase();
+			//								});
+			//								iVal = camelCased;
+			//							}
+			//							obj[iKey] = iVal;
+			//						}
+			//						if (iKey == "desc") {
+			//							obj["title"] = iVal;
+			//						}
+			//						if (iKey == "visible") {
+			//							obj["drag"] = true;
+			//							obj["isOn"] = iVal;
+			//						}
+			//					});
+			//				});
+			//				return columns;
+			//			};
+			$scope.columns.childs = $rootScope.callsLogColumns;
 			$scope.dragControlListeners = {
 				accept: function (sourceItemHandleScope, destSortableScope, destItemScope) {
 					//					console.info(sourceItemHandleScope,destSortableScope,destItemScope)
@@ -536,13 +563,12 @@ var app;
 			};
 			$scope.lines = $scope.treeConfig.lines;
 
-			$scope.filteredCallsLog = linesFilter(this.callsLog, $scope.lines);
 			//            console.log($scope.filteredCallslog);
 			//            $scope.$watchCollection("linesTreeObj",function(nVal,oVal){
 			////                console.log("linesTreeObj.checked",nVal);
 			//            });
 			$scope.$watch("lines", function (nVal) {
-				$scope.filteredCallsLog = linesFilter(_this.callsLog, nVal);
+				//_this.callsLog = linesFilter(_this.callsLog, nVal);
 				//console.info(_this.filteredCallsLog);
 			}, true);
 			//			$scope.$watch("linesTreeObj", function (nVal) {
@@ -593,7 +619,7 @@ var app;
 			$scope.checkAll = false;
 			$scope.selectedItems = [];
 			$scope.selectAll = function () {
-				angular.forEach($scope.filteredCallsLog, function (item) {
+				angular.forEach(_this.callsLog, function (item) {
 					item.Selected = $scope.checkAll;
 					if ($scope.checkAll) {
 						if ($scope.selectedItems.indexOf(item) == -1)
@@ -624,6 +650,16 @@ var app;
 				});
 				console.info(list);
 			};
-        }]);
+			$scope.callLogService=callLogService;
+			$scope.doAdvancedSearch = function (obj) {
+				callLogService.get(10, 1, obj.andConditions).then(function (data) {
+					_this.callsLog =  data;
+				});
+				console.log("Advanced Filter", obj);
+			};
+//			$scope.updateSessionFlag=function(id,val){
+//				callLogService.updateSessionFlag(id,val);
+//			};
+		}
 	})(CallsLogItem = app.CallsLogItem || (CallsLogItem = {}));
 })(app || (app = {}));

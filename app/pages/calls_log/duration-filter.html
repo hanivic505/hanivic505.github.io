@@ -20,16 +20,16 @@
 		</div>
 		<div class="col-xs-6" ng-if="vm.durationOption==1">
 			<h4 class="text-center">From</h4>
-			<uib-datepicker ng-model="vm.fromToObj.from" datepicker-options="options1" class="well well-sm" datepicker-options="options1"></uib-datepicker>
+			<div uib-datepicker ng-model="vm.fromToObj.from" datepicker-options="options1" class="well well-sm" datepicker-options="options1"></div>
 			<div class="time-picker">
-				<uib-timepicker ng-model="vm.fromToObj.from" hour-step="1" minute-step="1" show-meridian="false"></uib-timepicker>
+				<div uib-timepicker ng-model="vm.fromToObj.from" hour-step="1" minute-step="1" show-meridian="false"></div>
 			</div>
 		</div>
 		<div class="col-xs-6" ng-if="vm.durationOption==1">
 			<h4 class="text-center">Till</h4>
-			<uib-datepicker ng-model="vm.fromToObj.to" class="well well-sm" datepicker-options="options2"></uib-datepicker>
+			<div uib-datepicker ng-model="vm.fromToObj.to" class="well well-sm" datepicker-options="options2"></div>
 			<div class="time-picker">
-				<uib-timepicker ng-model="vm.fromToObj.to" hour-step="1" minute-step="1" show-meridian="false"></uib-timepicker>
+				<div uib-timepicker ng-model="vm.fromToObj.to" hour-step="1" minute-step="1" show-meridian="false"></div>
 			</div>
 		</div>
 		<div class="col-md-12 text-center">

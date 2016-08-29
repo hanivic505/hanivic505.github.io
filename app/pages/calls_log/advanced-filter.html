@@ -1,130 +1,117 @@
 <div class="dropdown keep-on" uib-dropdown auto-close="disabled" on-toggle="toggled(open)">
 	<button uib-dropdown-toggle><i class="fa fa-filter"></i></button>
 	<div class="dropdown-menu keep-on calls-log-search" uib-dropdown-menu>
-		<form ng-submit="">
-			<h4 class="col-md-12">Advanced Calls Log Search <small></small></h4>
-			<div class="col-md-12">
-				<div class="panel-collapse collapse in">
-					<div class="panel-body">
-						<div class="row">
-							<div class="col-xs-6">
-								<label for="">Filter rows marked with</label>
-								<div class="row values">
-									<div class="col-xs-6">
-										<label>
-											<input type="checkbox" ng-model="advancedFilter.isUnMarked"> <i class="fa fa-circle-o"></i> Un Marked</label>
-									</div>
-									<div class="col-xs-6">
-										<label>
-											<input type="checkbox" ng-model="advancedFilter.isInportant"> <i class="fa fa-exclamation"></i> Important</label>
-									</div>
-									<div class="col-xs-6">
-										<label>
-											<input type="checkbox" ng-model="advancedFilter.isReviseLater"> <i class="fa fa-search"></i> Revise Later</label>
-									</div>
-									<div class="col-xs-6">
-										<label>
-											<input type="checkbox" ng-model="advancedFilter.isReviewed"> <i class="fa fa-check"></i> Reviewed</label>
-									</div>
-									<div class="col-xs-6">
-										<label>
-											<input type="checkbox" ng-model="advancedFilter.isIrrelevent"> <i class="fa fa-times"></i> Irrelevent</label>
-									</div>
+		<h4 class="col-md-12">Advanced Calls Log Search <small></small></h4>
+		<div class="col-md-12">
+			<div class="panel-collapse collapse in">
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-xs-6">
+							<label for="">Filter rows marked with</label>
+							<div class="row values">
+								<div class="col-xs-6">
+									<label>
+										<input type="checkbox" ng-model="advancedFilter.isUnMarked"> <i class="fa fa-circle-o"></i> Un Marked</label>
+								</div>
+								<div class="col-xs-6">
+									<label>
+										<input type="checkbox" ng-model="advancedFilter.isInportant"> <i class="fa fa-exclamation"></i> Important</label>
+								</div>
+								<div class="col-xs-6">
+									<label>
+										<input type="checkbox" ng-model="advancedFilter.isReviseLater"> <i class="fa fa-search"></i> Revise Later</label>
+								</div>
+								<div class="col-xs-6">
+									<label>
+										<input type="checkbox" ng-model="advancedFilter.isReviewed"> <i class="fa fa-check"></i> Reviewed</label>
+								</div>
+								<div class="col-xs-6">
+									<label>
+										<input type="checkbox" ng-model="advancedFilter.isIrrelevent"> <i class="fa fa-times"></i> Irrelevent</label>
 								</div>
 							</div>
-							<div class="col-xs-6">
-								<label for="">Filter rows with</label>
-								<div class="row values">
-									<div class="col-xs-6">
-										<label>
-											<input type="radio" ng-model="advancedFilter.isLocked" value="true"> <i class="fa fa-lock"></i> Locked</label>
-									</div>
-									<div class="col-xs-6">
-										<label>
-											<input type="radio" ng-model="advancedFilter.isLocked" value="false"> <i class="fa fa-unlock"></i> UnLocked</label>
-									</div>
+						</div>
+						<div class="col-xs-6">
+							<label for="">Filter rows with</label>
+							<div class="row values">
+								<div class="col-xs-6">
+									<label>
+										<input type="radio" ng-model="advancedFilter.locked" value="true"> <i class="fa fa-lock"></i> Locked</label>
 								</div>
-								<label>&nbsp;</label>
-								<label>
-									<input type="checkbox" ng-model="advancedFilter.isTranscribe"> Include ONLY records with transcribe</label>
+								<div class="col-xs-6">
+									<label>
+										<input type="radio" ng-model="advancedFilter.locked" value="false"> <i class="fa fa-unlock"></i> UnLocked</label>
+								</div>
 							</div>
+							<label>&nbsp;</label>
+							<label>
+								<input type="checkbox" ng-model="advancedFilter.isTranscribe"> Include ONLY records with transcribe</label>
 						</div>
-						<hr>
-						<div class="row">
-							<div class="col-xs-4">
-								<label for="">Attribute</label>
-							</div>
-							<div class="col-xs-2">
-								<label for="">Operator</label>
-							</div>
-							<div class="col-xs-4">
-								<label for="">Value</label>
-							</div>
+					</div>
+					<hr>
+					<div class="row">
+						<div class="col-xs-4">
+							<label for="">Attribute</label>
 						</div>
-						<div class="row controls-row" ng-repeat="f in advancedFilter.params">
-							<div class="col-xs-4">
-								<select ng-model="f.attribute" ng-options="o.prop as o.title for o in columns.childs | filter:{show:true}" class="form-control input-sm"></select>
-							</div>
-							<div class="col-xs-2">
-								<select ng-model="f.operator" class="form-control input-sm">
-									<option value="">Operator</option>
-									<option value="1">=</option>
-									<option value="2">LIKE</option>
-									<option value="3">
-										<</option>
-											<option value="4">></option>
-								</select>
-							</div>
-							<div class="col-xs-4">
-								<input ng-model="f.value" type="text" class="form-control input-sm">
-							</div>
-							<div class="col-xs-2">
-								<button type="button" ng-click="vm.pushNew(advancedFilter.params,{})" ng-show="$last" class="btn btn-success btn-xs"><i class="fa fa-plus"></i></button>
-								<button type="button" ng-click="vm.popOut(advancedFilter.params,f)" ng-show="advancedFilter.params.length>1" class="btn btn-danger btn-xs"><i class="fa fa-minus"></i></button>
-							</div>
+						<div class="col-xs-2">
+							<label for="">Operator</label>
+						</div>
+						<div class="col-xs-4">
+							<label for="">Value</label>
+						</div>
+					</div>
+					<div class="row controls-row" ng-repeat="f in advancedFilter.andConditions">
+						<div class="col-xs-4">
+							<select ng-model="f.column" ng-options="o.code as o.desc for o in columns.childs | filter:{visible:true}" class="form-control input-sm"></select>
+						</div>
+						<div class="col-xs-2">
+							<select ng-model="f.operator" class="form-control input-sm" ng-options="x.code as x.description for x in lookups.filterOperationLus"></select>
+						</div>
+						<div class="col-xs-4">
+							<input ng-model="f.value" type="text" class="form-control input-sm">
+						</div>
+						<div class="col-xs-2">
+							<button type="button" ng-click="vm.pushNew(advancedFilter.andConditions,{})" ng-show="$last" class="btn btn-success btn-xs"><i class="fa fa-plus"></i></button>
+							<button type="button" ng-click="vm.popOut(advancedFilter.andConditions,f)" ng-show="advancedFilter.andConditions.length>1" class="btn btn-danger btn-xs"><i class="fa fa-minus"></i></button>
 						</div>
 					</div>
 				</div>
-				<!--
-                  </div>
-                </div>
--->
 			</div>
-			<div class="col-md-12">
-				<hr/>
-				<div class="row">
-					<div class="col-xs-6">
-						<div class="row">
-							<div class="dropdown col-xs-4" ng-class="{'open':vm.tglSave}">
-								<a href="" ng-click="vm.tglSave=!vm.tglSave" class="btn btn-default btn-sm"><i class="fa fa-save"></i> Save <span class="caret"></span></a>
-								<div class="dropdown-menu keep-on" style="width:200px;">
-									<div class="container-fluid">
+		</div>
+		<div class="col-md-12">
+			<hr/>
+			<div class="row">
+				<div class="col-xs-6">
+					<div class="row">
+						<div class="dropdown col-xs-4" ng-class="{'open':vm.tglSave}">
+							<a href="" ng-click="vm.tglSave=!vm.tglSave" class="btn btn-default btn-sm"><i class="fa fa-save"></i> Save <span class="caret"></span></a>
+							<div class="dropdown-menu keep-on" style="width:200px;">
+								<div class="container-fluid">
 									<form ng-submit=""></form>
-										<span class="input-group input-group-sm">
+									<span class="input-group input-group-sm">
 											<input type="text" required class="form-control" ng-model="search.title">
 											<span class="input-group-btn">
 												<button ng-click="saveSearch(search.title)" class="btn btn-default"><i class="fa fa-save"></i></button>
 											</span>
-										</span>
-									</div>
+									</span>
 								</div>
 							</div>
-							<!--							<a href="" ng-click="saveSearch()" class="col-xs-4"><span class="fa-stack"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-save fa-inverse fa-stack-1x"></i></span> Save</a>-->
-							<span ng-if="savedSearch.length>0" class=" col-xs-8 input-group input-group-sm">
+						</div>
+						<!--							<a href="" ng-click="saveSearch()" class="col-xs-4"><span class="fa-stack"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-save fa-inverse fa-stack-1x"></i></span> Save</a>-->
+						<span ng-if="savedSearch.length>0" class=" col-xs-8 input-group input-group-sm">
 								<select ng-model="selectedSearch" ng-options="x.title for x in savedSearch" class="form-control"></select>
 								<span class="input-group-btn">
 									<button ng-if="selectedSearch" class="btn btn-default" ng-click="deleteSearch(selectedSearch)"><i class="fa fa-trash"></i></button>
 									<button ng-click="loadSearch(selectedSearch)" class="btn btn-default"><i class="fa fa-upload"></i> Load</button>
 								</span>
-							</span>
-						</div>
-					</div>
-					<div class="col-xs-6 text-right">
-						<button class="btn btn-default btn-sm" uib-dropdown-toggle ng-click="cancelSearch()"><i class="fa fa-times"></i> Cancel</button>
-						<button class="btn btn-primary btn-sm" uib-dropdown-toggle><i class="fa fa-search"></i> Search</button>
+						</span>
 					</div>
 				</div>
+				<div class="col-xs-6 text-right">
+					<button class="btn btn-default btn-sm" uib-dropdown-toggle ng-click="cancelSearch()"><i class="fa fa-times"></i> Cancel</button>
+					<button class="btn btn-primary btn-sm" uib-dropdown-toggle ng-click="doAdvancedSearch(advancedFilter)"><i class="fa fa-search"></i> Search</button>
+				</div>
 			</div>
-		</form>
+		</div>
 	</div>
 </div>

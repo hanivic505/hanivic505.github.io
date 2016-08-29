@@ -1,4 +1,4 @@
-<div ng-controller="CallLogCtrl as vm">
+<div>
 	<h1 class="page-header">
         <i class="fa fa-headphones fa-1x"></i> Calls log
 		<div id="mini-player"></div>
@@ -44,33 +44,33 @@
 							<th width="100">
 								<input type="checkbox" ng-model="checkAll" ng-click="selectAll();">
 							</th>
-							<th ng-repeat="col in columns.childs |  filter:{isOn:true,show:true}">{{col.title}}</th>
+							<th ng-repeat="col in columns.childs |  filter:{visible:true,REPORT_ID:1}">{{col.title}}</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-show="filteredCallsLog.length==0">
+						<tr ng-show="vm.callsLog.length==0">
 							<td colspan="20" class="text-center">No Records Found</td>
 						</tr>
-						<tr ng-repeat="x in filteredCallsLog | filter:paginate " ng-class="{'active':vm.editObj==x}">
-							<td width="120">
+						<tr ng-repeat="x in vm.callsLog | filter:paginate " ng-class="{'active':vm.editObj==x}">
+							<td style="width:120px">
 								<input type="checkbox" ng-model="x.Selected" ng-click="checkIfAllSelected(x)" />
-								<span class="dropdown" ng-if="columns.childs[0].isOn">
-                                    <a href="" data-toggle="dropdown" title="{{vm.getIcon(x.isMarked).title}}"><i class="fa" ng-class="vm.getIcon(x.isMarked).icon"></i><i class="caret"></i></a>
+								<span class="dropdown" ng-if="columns.childs[1].visible">
+                                    <a href="" data-toggle="dropdown" title="{{vm.getIcon(x.sessionFlagId).title}}"><i class="fa" ng-class="vm.getIcon(x.sessionFlagId).icon"></i><i class="caret"></i></a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="" class="btn btn-link" ng-click="x.isMarked=10"><i class="fa fa-circle-o"></i> Un Marked</a></li>
-                                        <li><a href="" class="btn btn-link" ng-click="x.isMarked=11"><i class="fa fa-exclamation"></i> Important</a></li>
-                                        <li><a href="" class="btn btn-link" ng-click="x.isMarked=12"><i class="fa fa-search"></i> Revise Later</a></li>
-                                        <li><a href="" class="btn btn-link" ng-click="x.isMarked=13"><i class="fa fa-check"></i> Reviewed</a></li>
-                                        <li><a href="" class="btn btn-link" ng-click="x.isMarked=14"><i class="fa fa-times"></i> Irrelevent</a></li>
+                                        <li><a ng-click="callLogService.updateSessionFlag(x.id,null)" href="" class="btn btn-link"><i class="fa fa-circle-o"></i> Un Marked</a></li>
+                                        <li><a ng-click="callLogService.updateSessionFlag(x.id,1)" href="" class="btn btn-link"><i class="fa fa-exclamation"></i> Important</a></li>
+                                        <li><a ng-click="callLogService.updateSessionFlag(x.id,2)" href="" class="btn btn-link"><i class="fa fa-search"></i> Revise Later</a></li>
+                                        <li><a ng-click="callLogService.updateSessionFlag(x.id,3)" href="" class="btn btn-link"><i class="fa fa-check"></i> Reviewed</a></li>
+                                        <li><a ng-click="callLogService.updateSessionFlag(x.id,4)" href="" class="btn btn-link"><i class="fa fa-times"></i> Irrelevent</a></li>
                                     </ul>
                                 </span>
-								<a href="" ng-if="columns.childs[1].isOn" class="btn btn-link" title="{{vm.getIcon(x.isLocked).title}}" ng-click="x.isLocked=!x.isLocked"><i class="fa" ng-class="vm.getIcon(x.isLocked).icon"></i></a>
-								<span ng-if="columns.childs[2].isOn" uib-tooltip="Transcribe Added" class="btn btn-link btn-sm"><i class="fa icon-paste text-warning" ng-if="x.transcribe"></i></span>
+								<a href="" ng-if="columns.childs[1].visible" class="btn btn-link" title="{{vm.getIcon(x.locked).title}}" ng-click="callLogService.updateSessionLock(x.id,!x.locked)"><i class="fa" ng-class="vm.getIcon(x.locked).icon"></i></a>
+								<span ng-if="columns.childs[11].visible" uib-tooltip="Transcribe Added" class="btn btn-link btn-sm"><i class="fa icon-paste text-warning" ng-if="x.hasTranscribe"></i></span>
 							</td>
-							<td ng-click="vm.editObj=x;" ng-repeat="col in columns.childs | filter:{isOn:true,show:true}">
-								<span class="btn btn-link" ng-bind="x[col.prop]" ng-show="col.type==undefined"></span>
-								<span class="btn btn-link" ng-bind="x[col.prop]|date:'dd/MM/yyyy'" ng-show="col.type=='date'"></span>
-								<span class="btn btn-link" ng-bind="x[col.prop]|date:'hh:mm'" ng-show="col.type=='time'"></span>
+							<td ng-click="vm.editObj=x;" ng-repeat="col in columns.childs | filter:{visible:true,REPORT_ID:1}">
+								<span class="btn btn-link" ng-bind="x[col.prop]" ng-show="col.columnType!='DATE' && col.columnType!='TIME'"></span>
+								<span class="btn btn-link" ng-bind="x[col.prop]|date:'dd/MM/yyyy'" ng-show="col.columnType=='DATE'"></span>
+								<span class="btn btn-link" ng-bind="x[col.prop]|date:'hh:mm'" ng-show="col.columnType=='TIME'"></span>
 							</td>
 							<td class="actions-bar">
 								<a href="" class="btn btn-link" tooltip-placement="top" uib-tooltip="Export Record Data" ng-click="openPopup(x,'/app/pages/calls_log/popup-export.html','exportCallLogCtrl','sm');"><i class="fa fa-external-link-square"></i></a>
@@ -82,9 +82,9 @@
 					</tbody>
 					<tfoot>
 						<tr>
-							<td colspan="20">
-								<span class="btn btn-link pull-left">Records Count {{filteredCallsLog.length}}</span>
-								<uib-pagination boundary-links="true" total-items="filteredCallsLog.length" ng-model="currentPage" class="pagination-sm" max-size="6" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>
+							<td colspan="200">
+								<span class="btn btn-link pull-left">Records Count {{vm.callsLog.length}}</span>
+								<ul uib-pagination boundary-links="true" total-items="vm.callsLog.length" ng-model="currentPage" class="pagination-sm" max-size="6" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
 							</td>
 						</tr>
 					</tfoot>
