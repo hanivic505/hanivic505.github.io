@@ -16,10 +16,8 @@ var app;
 								"X-Access-Token": store.get("token")
 							},
 						}).then(function (response) {
-							console.info(response, response.data.data.searchResults);
-							return response.data.data.searchResults;
+							return response.data.data;
 						}, function (error) {
-							console.info(error);
 							$rootScope.message = {
 								body: error.data.message,
 								type: 'danger',
@@ -36,8 +34,9 @@ var app;
 							headers: {
 								"X-Access-Token": store.get("token")
 							}
-						}).then(null, function (error) {
-							console.info(error);
+						}).then(function (data) {
+							$rootScope.$broadcast("refresh_data");
+						}, function (error) {
 							$rootScope.message = {
 								body: error.data.data.message,
 								type: 'danger',
@@ -53,8 +52,9 @@ var app;
 							headers: {
 								"X-Access-Token": store.get("token")
 							}
-						}).then(null, function (error) {
-							console.info(error);
+						}).then(function (data) {
+							$rootScope.$broadcast("refresh_data");
+						}, function (error) {
 							$rootScope.message = {
 								body: error.data.data.message,
 								type: 'danger',
@@ -62,6 +62,98 @@ var app;
 							};
 						});
 					},
+					updateSessionLog: function (obj) {
+						return $http.put(API_BASE_URL + "/session-log", {
+							id: obj.id,
+							sessionFlagId: obj.sessionFlagId,
+							locked: obj.locked,
+							comment: obj.comment,
+							transcript: obj.transcript
+						}, {
+							headers: {
+								"X-Access-Token": store.get("token")
+							}
+						}).then(function (data) {
+							$rootScope.$broadcast("refresh_data");
+							$rootScope.message = {
+								body: "Record Updated",
+								type: "success",
+								duration: 3000
+							}
+						}, function (error) {
+							$rootScope.message = {
+								body: error.data.data.message,
+								type: 'danger',
+								duration: 5000,
+							};
+						});
+					},
+					updateSessionLogComment: function (obj) {
+						return $http.put(API_BASE_URL + "/session-log/comment", {
+							id: obj.id,
+							comment: obj.comment
+						}, {
+							headers: {
+								"X-Access-Token": store.get("token")
+							}
+						}).then(function (data) {
+							$rootScope.$broadcast("refresh_data");
+							$rootScope.message = {
+								body: "Record Updated",
+								type: "success",
+								duration: 3000
+							}
+						}, function (error) {
+							$rootScope.message = {
+								body: error.data.data.message,
+								type: 'danger',
+								duration: 5000,
+							};
+						});
+					},
+					updateSessionLogTranscript: function (obj) {
+						return $http.put(API_BASE_URL + "/session-log/transcript", {
+							id: obj.id,
+							transcript: obj.transcript
+						}, {
+							headers: {
+								"X-Access-Token": store.get("token")
+							}
+						}).then(function (data) {
+							$rootScope.$broadcast("refresh_data");
+							$rootScope.message = {
+								body: "Record Updated",
+								type: "success",
+								duration: 3000
+							}
+						}, function (error) {
+							$rootScope.message = {
+								body: error.data.data.message,
+								type: 'danger',
+								duration: 5000,
+							};
+						});
+					},
+					deleteSessionLog: function (obj) {
+						return $http.delete(API_BASE_URL + "/session-log/" + obj.id, {
+							headers: {
+								"X-Access-Token": store.get("token")
+							}
+						}).then(function (data) {
+							$rootScope.$broadcast("refresh_data");
+							$rootScope.message = {
+								body: "Record Deleted!",
+								type: "success",
+								duration: 3000
+							}
+						}, function (error) {
+							$rootScope.message = {
+								body: error.data.data.message,
+								type: 'danger',
+								duration: 5000,
+							};
+						});
+					}
 				}
 			}
 			return serviceFn;

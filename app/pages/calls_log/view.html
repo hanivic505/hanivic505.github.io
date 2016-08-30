@@ -48,10 +48,10 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-show="vm.callsLog.length==0">
+						<tr ng-show="vm.callsLog.searchResults.length==0">
 							<td colspan="20" class="text-center">No Records Found</td>
 						</tr>
-						<tr ng-repeat="x in vm.callsLog | filter:paginate " ng-class="{'active':vm.editObj==x}">
+						<tr ng-repeat="x in vm.callsLog.searchResults | filter:paginate " ng-class="{'active':vm.editObj==x}">
 							<td style="width:120px">
 								<input type="checkbox" ng-model="x.Selected" ng-click="checkIfAllSelected(x)" />
 								<span class="dropdown" ng-if="columns.childs[1].visible">
@@ -65,7 +65,7 @@
                                     </ul>
                                 </span>
 								<a href="" ng-if="columns.childs[1].visible" class="btn btn-link" title="{{vm.getIcon(x.locked).title}}" ng-click="callLogService.updateSessionLock(x.id,!x.locked)"><i class="fa" ng-class="vm.getIcon(x.locked).icon"></i></a>
-								<span ng-if="columns.childs[11].visible" uib-tooltip="Transcribe Added" class="btn btn-link btn-sm"><i class="fa icon-paste text-warning" ng-if="x.hasTranscribe"></i></span>
+								<span ng-if="x.hasTranscript" uib-tooltip="Transcribe Added" class="btn btn-link btn-sm"><i class="fa icon-paste text-warning" ng-if="x.hasTranscript"></i></span>
 							</td>
 							<td ng-click="vm.editObj=x;" ng-repeat="col in columns.childs | filter:{visible:true,REPORT_ID:1}">
 								<span class="btn btn-link" ng-bind="x[col.prop]" ng-show="col.columnType!='DATE' && col.columnType!='TIME'"></span>
@@ -76,15 +76,15 @@
 								<a href="" class="btn btn-link" tooltip-placement="top" uib-tooltip="Export Record Data" ng-click="openPopup(x,'/app/pages/calls_log/popup-export.html','exportCallLogCtrl','sm');"><i class="fa fa-external-link-square"></i></a>
 								<a href="" class="btn btn-link" tooltip-placement="top" uib-tooltip="Play Audio File" ng-click="play(x)"><i class="fa fa-play-circle"></i></a>
 								<a href="" class="btn btn-link" tooltip-placement="top" uib-tooltip="Open Transcribe Window" ng-click="openPopup(x,'/app/pages/calls_log/popup-transcribe.html','callLogFullViewCtrl','lg')"><i class="fa icon-paste"></i></a>
-								<a href="" class="btn btn-link" tooltip-placement="top" uib-tooltip="Delete Record"><i class="fa fa-trash"></i></a>
+								<a href="" class="btn btn-link" tooltip-placement="top" uib-tooltip="Delete Record" ng-click="delete(x)"><i class="fa fa-trash"></i></a>
 							</td>
 						</tr>
 					</tbody>
 					<tfoot>
 						<tr>
 							<td colspan="200">
-								<span class="btn btn-link pull-left">Records Count {{vm.callsLog.length}}</span>
-								<ul uib-pagination boundary-links="true" total-items="vm.callsLog.length" ng-model="currentPage" class="pagination-sm" max-size="6" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
+								<span class="btn btn-link pull-left">Records Count {{vm.callsLog.totalNoOfResults}}</span>
+								<ul uib-pagination boundary-links="true" total-items="vm.callsLog.totalNoOfResults" ng-model="currentPage" class="pagination-sm" max-size="6" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
 							</td>
 						</tr>
 					</tfoot>

@@ -14,13 +14,13 @@
 		<div class="row">
 			<div class="col-md-12">
 				<label>Transcribe:</label>
-				<textarea ng-model="obj.transcribe" class="form-control rows-10"></textarea>
+				<textarea ng-model="obj.transcript" class="form-control rows-10"></textarea>
 			</div>
 		</div>
 	</div>
 	<div class="modal-footer no-print">
 		<button class="btn btn-default" type="button" ng-click="print()">Print</button>
 		<button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
-		<button class="btn btn-primary" type="button" ng-click="ok()">Save</button>
+		<button class="btn btn-primary" type="button" ng-click="callLogService.updateSessionLogTranscript(obj);ok();">Save</button>
 	</div>
 </div>

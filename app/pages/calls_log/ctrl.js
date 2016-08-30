@@ -40,12 +40,12 @@ var app;
 				$uibModalInstance.dismiss('cancel');
 			};
         }]);
-		angular.module("IVRY-App").controller("callLogFullViewCtrl", ["$scope", "$uibModalInstance", "utilitiesServices", "obj", function ($scope, $uibModalInstance, utilitiesServices, obj) {
+		angular.module("IVRY-App").controller("callLogFullViewCtrl", ["$scope", "$uibModalInstance", "utilitiesServices", "callLogService", "obj", function ($scope, $uibModalInstance, utilitiesServices, callLogService, obj) {
 			$scope.obj = obj;
 			$scope.ok = function () {
 				$uibModalInstance.close($scope.obj);
 			};
-
+			$scope.callLogService = callLogService;
 			$scope.cancel = function () {
 				$uibModalInstance.dismiss('cancel');
 			};
@@ -167,11 +167,12 @@ var app;
 			this.isOn = false;
 			this.isVisible = false;
 			this.durationOption = 0;
+			this.conditions = {andConditions:[]};
 			$scope.$watch(function () {
 				return _this.editObj;
 			}, function (nVal) {});
 			$scope.markAll = {
-				isMarked: 10
+				sessionFlagId: 0
 			};
 			$scope.currentPage = 1;
 			$scope.numPerPage = 10;
@@ -222,12 +223,14 @@ var app;
 				$log.log('Page changed to: ' + $scope.currentPage);
 			};
 
-
+			$rootScope.$on("refresh_data", function () {
+				$scope.doAdvancedSearch(_this.conditions);
+			});
 			$scope.paginate = function (value) {
 				var begin, end, index;
 				begin = ($scope.currentPage - 1) * $scope.numPerPage;
 				end = begin + $scope.numPerPage;
-				index = _this.callsLog.indexOf(value);
+				index = _this.callsLog.searchResults.indexOf(value);
 				return (begin <= index && index < end);
 			};
 
@@ -388,8 +391,8 @@ var app;
 			};
 
 			$scope.playAudio = function (dir) {
-				var idx = $scope.filteredCallsLog.indexOf(_this.currentMiniAudio);
-				_this.editObj = $scope.filteredCallsLog[idx + dir];
+				var idx = _this.callsLog.searchResults.indexOf(_this.currentMiniAudio);
+				_this.editObj = _this.callsLog.searchResults[idx + dir];
 				$scope.play(_this.editObj);
 			};
 
@@ -619,7 +622,7 @@ var app;
 			$scope.checkAll = false;
 			$scope.selectedItems = [];
 			$scope.selectAll = function () {
-				angular.forEach(_this.callsLog, function (item) {
+				angular.forEach(_this.callsLog.searchResults, function (item) {
 					item.Selected = $scope.checkAll;
 					if ($scope.checkAll) {
 						if ($scope.selectedItems.indexOf(item) == -1)
@@ -631,7 +634,7 @@ var app;
 			};
 
 			$scope.checkIfAllSelected = function (item) {
-				$scope.checkAll = $scope.filteredCallsLog.every(function (item) {
+				$scope.checkAll = _this.callsLog.searchResults.every(function (item) {
 					return item.Selected == true;
 				});
 				if (item.Selected) {
@@ -646,20 +649,22 @@ var app;
 			};
 			$scope.markSelected = function (list, val) {
 				angular.forEach(list, function (item) {
-					item.isMarked = val;
+					item.sessionFlagId = val;
 				});
-				console.info(list);
+//				console.info(list);
 			};
-			$scope.callLogService=callLogService;
+			$scope.callLogService = callLogService;
 			$scope.doAdvancedSearch = function (obj) {
-				callLogService.get(10, 1, obj.andConditions).then(function (data) {
-					_this.callsLog =  data;
+				_this.conditions = obj;
+				callLogService.get(20000, 1, _this.conditions.andConditions).then(function (data) {
+					_this.callsLog = data;
 				});
 				console.log("Advanced Filter", obj);
 			};
-//			$scope.updateSessionFlag=function(id,val){
-//				callLogService.updateSessionFlag(id,val);
-//			};
+			$scope.delete=function(x){
+				if(confirm('Are you sure, you want to delete this record?'))
+					callLogService.deleteSessionLog(x);
+			}
 		}
 	})(CallsLogItem = app.CallsLogItem || (CallsLogItem = {}));
 })(app || (app = {}));

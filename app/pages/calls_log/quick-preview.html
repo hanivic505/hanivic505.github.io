@@ -50,7 +50,7 @@
 						<div class="-form-group">
 							<label for="" class="label">Comment:</label>
 							<textarea ng-model="vm.editObj.comment" class="form-control" rows="3"></textarea>
-							<button ng-click="applyUpdates(vm.editObj,filteredCallsLog)" class="btn btn-link btn-sm pull-right" uib-tooltip="Save"><i class="fa fa-2x fa-save fg-white"></i></button>
+							<button ng-click="callLogService.updateSessionLogComment(editObj)" class="btn btn-link btn-sm pull-right" uib-tooltip="Save"><i class="fa fa-2x fa-save fg-white"></i></button>
 						</div>
 					</div>
 				</form>

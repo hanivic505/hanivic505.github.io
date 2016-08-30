@@ -1,61 +1,63 @@
 <div class="modal-header">
 	<h3 class="modal-title">{{obj.targetCaseName +" / "+obj.identityName+" / "+obj.lineName}}</h3>
 </div>
-<div class="modal-body">
-	<div class="row">
-		<!--
+<form ng-submit="callLogService.updateSessionLog(obj);ok();">
+	<div class="modal-body">
+		<div class="row">
+			<!--
         <div class="col-md-6">
 
                 <label>Case:</label>
                 <div for="" class="form-control-static" ng-bind="obj.caseName"></div>
         </div>
  -->
-		<div class="col-md-6">
-			<label>Mark As:</label>
-			<div class="btn-group">
-				<button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					<i class="fa" ng-class="getIcon(obj.isMarked).icon"></i> {{getIcon(obj.isMarked).title}} <span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu">
-					<li><a href="" ng-click="obj.isMarked=10"><i class="fa fa-circle-o"></i> Un Marked</a></li>
-					<li><a href="" ng-click="obj.isMarked=11"><i class="fa fa-exclamation"></i> Important</a></li>
-					<li><a href="" ng-click="obj.isMarked=12"><i class="fa fa-search"></i> Revise Later</a></li>
-					<li><a href="" ng-click="obj.isMarked=13"><i class="fa fa-check"></i> Reviewed</a></li>
-					<li><a href="" ng-click="obj.isMarked=14"><i class="fa fa-times"></i> Irrelevent</a></li>
-				</ul>
+			<div class="col-md-6">
+				<label>Mark As:</label>
+				<div class="btn-group">
+					<button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<i class="fa" ng-class="getIcon(obj.sessionFlagId).icon"></i> {{getIcon(obj.sessionFlagId).title}} <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu">
+						<li><a href="" ng-click="obj.sessionFlagId=0"><i class="fa fa-circle-o"></i> Un Marked</a></li>
+						<li><a href="" ng-click="obj.sessionFlagId=1"><i class="fa fa-exclamation"></i> Important</a></li>
+						<li><a href="" ng-click="obj.sessionFlagId=2"><i class="fa fa-search"></i> Revise Later</a></li>
+						<li><a href="" ng-click="obj.sessionFlagId=3"><i class="fa fa-check"></i> Reviewed</a></li>
+						<li><a href="" ng-click="obj.sessionFlagId=4"><i class="fa fa-times"></i> Irrelevent</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<label>(un)Lock? :</label>
+				<a href="" class="btn btn-default btn-sm" title="{{getIcon(obj.locked).title}}" ng-click="obj.locked=!obj.locked"><i class="fa" ng-class="getIcon(obj.locked).icon"></i> {{getIcon(obj.locked).title}}</a>
+			</div>
+			<div class="col-md-12">
+				<label>Date:</label>
+				<div for="" class="form-control-static" ng-bind="obj.startDate | date"></div>
+			</div>
+			<div class="col-md-6">
+				<label>Start Time:</label>
+				<div for="" class="form-control-static" ng-bind="obj.startDate | date:'hh:mm'"></div>
+			</div>
+			<div class="col-md-6">
+				<label>End Time:</label>
+				<div for="" class="form-control-static" ng-bind="obj.endDate | date:'hh:mm'"></div>
+			</div>
+			<div class="col-md-6">
+				<label>Duration:</label>
+				<div for="" class="form-control-static" ng-bind="obj.duration"></div>
+			</div>
+			<div class="col-md-12">
+				<label>Comment:</label>
+				<textarea ng-model="obj.comment" class="form-control" rows="3"></textarea>
+			</div>
+			<div class="col-md-12">
+				<label>Transcribe:</label>
+				<textarea ng-model="obj.transcript" class="form-control" rows="8"></textarea>
 			</div>
 		</div>
-		<div class="col-md-6">
-			<label>(un)Lock? :</label>
-			<a href="" class="btn btn-default btn-sm" title="{{getIcon(obj.locked).title}}" ng-click="obj.isLocked=!obj.isLocked"><i class="fa" ng-class="getIcon(obj.isLocked).icon"></i> {{getIcon(obj.isLocked).title}}</a>
-		</div>
-		<div class="col-md-12">
-			<label>Date:</label>
-			<div for="" class="form-control-static" ng-bind="obj.startDate | date"></div>
-		</div>
-		<div class="col-md-6">
-			<label>Start Time:</label>
-			<div for="" class="form-control-static" ng-bind="obj.startDate | date:'hh:mm'"></div>
-		</div>
-		<div class="col-md-6">
-			<label>End Time:</label>
-			<div for="" class="form-control-static" ng-bind="obj.endDate | date:'hh:mm'"></div>
-		</div>
-		<div class="col-md-6">
-			<label>Duration:</label>
-			<div for="" class="form-control-static" ng-bind="obj.duration"></div>
-		</div>
-		<div class="col-md-12">
-			<label>Comment:</label>
-			<textarea ng-model="obj.comment" class="form-control" rows="3"></textarea>
-		</div>
-		<div class="col-md-12">
-			<label>Transcribe:</label>
-			<textarea ng-model="obj.transcribe" class="form-control" rows="8"></textarea>
-		</div>
 	</div>
-</div>
-<div class="modal-footer">
-	<button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
-	<button class="btn btn-primary" type="button" ng-click="ok()">Save</button>
-</div>
+	<div class="modal-footer">
+		<button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+		<button class="btn btn-primary">Save</button>
+	</div>
+</form>
