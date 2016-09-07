@@ -13,7 +13,7 @@
 		<!--        <div class="col-md-6 scrollme" ng-scrollbar rebuild-on="rebuild:me">-->
 		<div class="col-md-6 scrollme">
 			<div class="row">
-				<form ng-submit="">
+				<form ng-submit="callLogService.updateSessionLogComment(vm.editObj)">
 					<div class="col-md-4">
 						<div class="-form-group">
 							<label for="" class="label">Case:</label>
@@ -29,28 +29,30 @@
 						</div>
 					</div>
 					<div class="col-md-4">
+<!--
 						<div class="-form-group">
 							<label for="" class="label">Date:</label>
 							<div for="" class="form-control-static" ng-bind="vm.editObj.startDate | date"></div>
 						</div>
+-->
 						<div class="-form-group">
-							<label for="" class="label">Start Time:</label>
-							<div for="" class="form-control-static" ng-bind="vm.editObj.startDate | date:'hh:mm'"></div>
+							<label for="" class="label">Start Date:</label>
+							<div for="" class="form-control-static" ng-bind="vm.editObj.startDate | date:'dd/MM/yy hh:mm'"></div>
 						</div>
 						<div class="-form-group">
-							<label for="" class="label">End Time:</label>
-							<div for="" class="form-control-static" ng-bind="vm.editObj.endDate | date:'hh:mm'"></div>
+							<label for="" class="label">End Date:</label>
+							<div for="" class="form-control-static" ng-bind="vm.editObj.endDate | date:'dd/MM/yy hh:mm'"></div>
 						</div>
-					</div>
-					<div class="col-md-4">
 						<div class="-form-group">
 							<label for="" class="label">Duration:</label>
 							<div for="" class="form-control-static" ng-bind="vm.editObj.duration"></div>
 						</div>
+					</div>
+					<div class="col-md-4">
 						<div class="-form-group">
 							<label for="" class="label">Comment:</label>
-							<textarea ng-model="vm.editObj.comment" class="form-control" rows="3"></textarea>
-							<button ng-click="callLogService.updateSessionLogComment(editObj)" class="btn btn-link btn-sm pull-right" uib-tooltip="Save"><i class="fa fa-2x fa-save fg-white"></i></button>
+							<textarea required maxlength="140" ng-model="vm.editObj.comment" class="form-control" rows="5"></textarea>
+							<button class="btn btn-link btn-sm pull-right" uib-tooltip="Save"><i class="fa fa-2x fa-save fg-white"></i></button>
 						</div>
 					</div>
 				</form>

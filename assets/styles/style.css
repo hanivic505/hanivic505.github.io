@@ -782,7 +782,6 @@ div#waveform-timeline {
 	margin: 0 0 20px;
 }
 #loadingWidget {
-	display: none;
 	position: absolute;
 	top: 0;
 	left: 0;

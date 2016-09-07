@@ -41,7 +41,11 @@ var app;
 			};
         }]);
 		angular.module("IVRY-App").controller("callLogFullViewCtrl", ["$scope", "$uibModalInstance", "utilitiesServices", "callLogService", "obj", function ($scope, $uibModalInstance, utilitiesServices, callLogService, obj) {
-			$scope.obj = obj;
+			callLogService.getCallLog(obj).then(function (data) {
+				$scope.obj = data;
+				console.log(data)
+			});
+			//			$scope.obj = obj;
 			$scope.ok = function () {
 				$uibModalInstance.close($scope.obj);
 			};
@@ -156,9 +160,9 @@ var app;
 		//			};
 		//		});
 		angular.module("IVRY-App").controller("CallLogCtrl", ["$rootScope", "$scope", "$log", "$timeout", "$filter", "linesFilter", "$uibModal",
-			"linesTreeService", "utilitiesServices", "dbService", "ctrlData", "callLogService", CallLogCtrlFn]);
+			"linesTreeService", "utilitiesServices", "dbService", "ctrlData", "linesData", "callLogService", CallLogCtrlFn]);
 
-		function CallLogCtrlFn($rootScope, $scope, $log, $timeout, $filter, linesFilter, $uibModal, linesTreeService, utilitiesServices, dbService, ctrlData, callLogService) {
+		function CallLogCtrlFn($rootScope, $scope, $log, $timeout, $filter, linesFilter, $uibModal, linesTreeService, utilitiesServices, dbService, ctrlData, linesData, callLogService) {
 
 			/*jslint node: true */
 			$scope.paused = true;
@@ -167,7 +171,6 @@ var app;
 			this.isOn = false;
 			this.isVisible = false;
 			this.durationOption = 0;
-			this.conditions = {andConditions:[]};
 			$scope.$watch(function () {
 				return _this.editObj;
 			}, function (nVal) {});
@@ -224,7 +227,8 @@ var app;
 			};
 
 			$rootScope.$on("refresh_data", function () {
-				$scope.doAdvancedSearch(_this.conditions);
+				console.info("refresh_data");
+				$scope.doAdvancedSearch(callLogService.conditions);
 			});
 			$scope.paginate = function (value) {
 				var begin, end, index;
@@ -233,7 +237,13 @@ var app;
 				index = _this.callsLog.searchResults.indexOf(value);
 				return (begin <= index && index < end);
 			};
-
+			$scope.$watch("currentPage", function (nVal, oVal) {
+				if (nVal != oVal)
+					callLogService.get(10, nVal, callLogService.conditions, ["lineName", "DESC"])
+					.then(function (data) {
+						_this.callsLog = data;
+					});
+			});
 			$scope.open1 = function () {
 				$scope.popup1.opened = true;
 			};
@@ -407,138 +417,28 @@ var app;
 						if (obj.childs[i].childs)
 							$scope.handleChkAll(obj.childs[i], prop, isHandleTree);
 					}
+
+				if (obj.identities) {
+					var idObjs = obj.identities;
+					for (var i = 0; i < idObjs.length; i++) {
+						idObjs[i][prop] = obj.checked;
+						if (isHandleTree && idObjs[i].id !== undefined)
+							ctrl.lines[idObjs[i].id] = obj.checked;
+						if (idObjs[i].lines)
+							$scope.handleChkAll(idObjs[i], prop, isHandleTree);
+					}
+				}
+				if (obj.lines)
+					for (var i = 0; i < obj.lines.length; i++) {
+						obj.lines[i][prop] = obj.checked;
+					}
 			};
-			$scope.linesTreeObj = linesTreeService;
+			$scope.filterLines = function (obj) {};
+			$scope.linesTreeObj = linesData; //linesTreeService.linesTreeObj;
+//			console.info("linesTreeObj", $scope.linesTreeObj);
 			$scope.columns = {
-				childs: [
-//					{
-//						title: 'Mark',
-//						prop: "isMarked",
-//						isOn: true,
-//						drag: false,
-//						show: false
-//					},
-//					{
-//						title: "Locked",
-//						prop: "isBlocked",
-//						isOn: true,
-//						drag: false,
-//						show: false
-//					},
-//					{
-//						title: "Transcribed",
-//						prop: "isTranscribe",
-//						isOn: true,
-//						drag: false,
-//						show: false
-//					},
-//					{
-//						title: 'Case Name',
-//						prop: "targetCaseName",
-//						isOn: true,
-//						drag: true,
-//						show: true
-//					},
-//					{
-//						title: 'Identity Name',
-//						prop: "identityName",
-//						isOn: true,
-//						drag: true,
-//						show: true
-//					},
-//					{
-//						title: 'Line Name',
-//						prop: "lineName",
-//						isOn: true,
-//						drag: true,
-//						show: true
-//					},
-//					{
-//						title: 'Line ID',
-//						prop: "lineId",
-//						isOn: true,
-//						drag: true,
-//						show: true
-//					},
-//					{
-//						title: 'Date',
-//						prop: "startDate",
-//						isOn: true,
-//						type: "date",
-//						drag: true,
-//						show: true
-//					},
-//					{
-//						title: 'Start Time',
-//						prop: "startDate",
-//						isOn: false,
-//						type: "time",
-//						drag: true,
-//						show: true
-//					},
-//					{
-//						title: 'End Time',
-//						prop: "endDate",
-//						isOn: false,
-//						type: "time",
-//						drag: true,
-//						show: true
-//					},
-//					{
-//						title: 'Duration',
-//						prop: "duration",
-//						isOn: false,
-//						type: "time",
-//						drag: true,
-//						show: true
-//					},
-//					{
-//						title: 'Comment',
-//						prop: "comment",
-//						isOn: false,
-//						drag: true,
-//						show: true
-//					},
-//					{
-//						title: 'Calling Number (a_number)',
-//						prop: "sipCallingParty",
-//						isOn: false,
-//						drag: true,
-//						show: true
-//					},
-//					{
-//						title: 'Called Number (b_number)',
-//						prop: "sipCalledParty",
-//						isOn: false,
-//						drag: true,
-//						show: true
-//					}
-				]
+				childs: []
 			};
-			//			var columnsAdapterIn = function (columns) {
-			//				angular.forEach(columns, function (val, key) {
-			//					angular.forEach(val, function (iVal, iKey, obj) {
-			//						if (iKey == "code") {
-			//							iVal = iVal.toLowerCase();
-			//							if (iVal.indexOf("_") > -1) {
-			//								var camelCased = iVal.replace(/_[a-z]/g, function (g) {
-			//									return g[1].toUpperCase();
-			//								});
-			//								iVal = camelCased;
-			//							}
-			//							obj[iKey] = iVal;
-			//						}
-			//						if (iKey == "desc") {
-			//							obj["title"] = iVal;
-			//						}
-			//						if (iKey == "visible") {
-			//							obj["drag"] = true;
-			//							obj["isOn"] = iVal;
-			//						}
-			//					});
-			//				});
-			//				return columns;
-			//			};
 			$scope.columns.childs = $rootScope.callsLogColumns;
 			$scope.dragControlListeners = {
 				accept: function (sourceItemHandleScope, destSortableScope, destItemScope) {
@@ -560,7 +460,7 @@ var app;
 			};
 			$scope.treeConfig = {
 				lines: {},
-				treeObj: linesTreeService,
+				treeObj: linesData,
 				multiSelect: true,
 				selectedNode: null
 			};
@@ -644,6 +544,23 @@ var app;
 					$scope.selectedItems.splice($scope.selectedItems.indexOf(item), 1);
 				console.info($scope.selectedItems.length, $scope.selectedItems);
 			};
+
+			$scope.selectedOptions = function (selectedList, key, op, val) {
+				var optionExisted = false;
+				angular.forEach(selectedList, function (nVal, nKey) {
+					if (nVal["column"] == key) {
+						nVal["value"] = val;
+						nVal["operator"] = op;
+						optionExisted = true;
+					}
+				});
+				if (!optionExisted)
+					selectedList.push({
+						column: key,
+						operator: op,
+						value: val
+					});
+			};
 			$scope.applyUpdates = function (obj, trgt) {
 				console.info(obj, trgt, trgt.indexOf(obj))
 			};
@@ -651,20 +568,27 @@ var app;
 				angular.forEach(list, function (item) {
 					item.sessionFlagId = val;
 				});
-//				console.info(list);
+				//				console.info(list);
 			};
 			$scope.callLogService = callLogService;
 			$scope.doAdvancedSearch = function (obj) {
-				_this.conditions = obj;
-				callLogService.get(20000, 1, _this.conditions.andConditions).then(function (data) {
+				console.info("doAdvancedSearch",obj);
+				callLogService.get(20000, 1, obj.andConditions, ['lineName', 'DESC']).then(function (data) {
 					_this.callsLog = data;
 				});
 				console.log("Advanced Filter", obj);
 			};
-			$scope.delete=function(x){
-				if(confirm('Are you sure, you want to delete this record?'))
+			$scope.delete = function (x) {
+				if (confirm('Are you sure, you want to delete this record?')) {
+					_this.editObj = null;
 					callLogService.deleteSessionLog(x);
-			}
+				}
+			};
+			$scope.loadItem = function (x) {
+				//				callLogService.getSessionLog(x).then(function (data) {
+				_this.editObj = /*data*/ x;
+				//				});
+			};
 		}
 	})(CallsLogItem = app.CallsLogItem || (CallsLogItem = {}));
 })(app || (app = {}));

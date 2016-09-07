@@ -24,8 +24,14 @@ var app;
 					controller: "CallLogCtrl as vm",
 					resolve: {
 						ctrlData: function (callLogService) {
-							return callLogService.get(10,1,[]).then(function (data) {
-								console.info("resolve",data);
+							return callLogService.get(10, 1, [], ['lineName', 'DESC']).then(function (data) {
+								console.info("resolve", data);
+								return data;
+							});
+						},
+						linesData: function (linesTreeService) {
+							return linesTreeService.get().then(function (data) {
+								console.info("lines resolve", data);
 								return data;
 							});
 						},
@@ -89,63 +95,7 @@ var app;
 				});
 			this.$urlRouterProvider.otherwise('/login');
 
-			var interceptor = ['$q', '$injector', function ($q, $injector) {
-				var error;
-				//				console.info("loading")
-
-				function success(response) {
-					// get $http via $injector because of circular dependency problem
-					$http = $http || $injector.get('$http');
-					if ($http.pendingRequests.length < 1) {
-						$('#loadingWidget').hide();
-					}
-					return response;
-				}
-
-				function error(response) {
-					// get $http via $injector because of circular dependency problem
-					$http = $http || $injector.get('$http');
-					if ($http.pendingRequests.length < 1) {
-						$('#loadingWidget').hide();
-					}
-					return $q.reject(response);
-				}
-
-				//				return function (promise) {
-				//					$('#loadingWidget').show();
-				//					return promise.then(success, error);
-				//				}
-				return {
-					'request': function (config) {
-						// same as above
-						$('#loadingWidget').show();
-						return config;
-					},
-					'requestError': function (rejection) {
-						// do something on error
-						$('#loadingWidget').hide();
-						//						if (canRecover(rejection)) {
-						//							return responseOrNewPromise
-						//						}
-
-						return $q.reject(rejection);
-					},
-					'response': function (response) {
-						// same as above
-						$('#loadingWidget').hide();
-						return response;
-					},
-					'responseError': function (rejection) {
-						// do something on error
-						$('#loadingWidget').hide();
-						//						if (canRecover(rejection)) {
-						//							return responseOrNewPromise
-						//						}
-						return $q.reject(rejection);
-					}
-				};
-        	}];
-			$httpProvider.interceptors.push(interceptor);
+			$httpProvider.interceptors.push("myHttpInterceptor");
 		}
 		return Config;
 	})();
@@ -153,15 +103,54 @@ var app;
 
 	var mainApp = angular.module("IVRY-App", ['ui.router', 'ui.bootstrap', 'ngFileUpload', 'angular-storage', 'uiSwitch', 'as.sortable']);
 	mainApp.config(Config);
-
+	mainApp.factory('myHttpInterceptor', ['$q', '$rootScope', '$injector',
+    	function ($q, $rootScope, $injector) {
+			$rootScope.showSpinner = false;
+			$rootScope.http = null;
+			return {
+				'request': function (config) {
+					$rootScope.showSpinner = true;
+					return config || $q.when(config);
+				},
+				'requestError': function (rejection) {
+					$rootScope.http = $rootScope.http || $injector.get('$http');
+					if ($rootScope.http.pendingRequests.length < 1) {
+						$rootScope.showSpinner = false;
+					}
+					//					if (canRecover(rejection)) {
+					////						return responseOrNewPromise
+					//					}
+					return $q.reject(rejection);
+				},
+				'response': function (response) {
+					$rootScope.http = $rootScope.http || $injector.get('$http');
+					if ($rootScope.http.pendingRequests.length < 1) {
+						$rootScope.showSpinner = false;
+					}
+					return response || $q.when(response);
+				},
+				'responseError': function (rejection) {
+					$rootScope.http = $rootScope.http || $injector.get('$http');
+					if ($rootScope.http.pendingRequests.length < 1) {
+						$rootScope.showSpinner = false;
+					}
+					//					if (canRecover(rejection)) {
+					////						return responseOrNewPromise
+					//					}
+					return $q.reject(rejection);
+				}
+			}
+    	}
+	]);
 	var initApp = function ($rootScope, $state, AUTH_EVENTS, AuthService) {
 		$rootScope.$state = $state;
+		$rootScope.showSpinner = false;
 		$rootScope.AuthService = AuthService;
 		$rootScope.closeAlert = function () {
 			$rootScope.message = null;
 		};
 		$rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams, options) {
-			$rootScope.message=null;
+			$rootScope.message = null;
 			//			console.info('$stateChangeStart', event, toState);
 			//			var authorizedRoles = next.data.authorizedRoles;
 			//			if (!AuthService.isAuthorized(authorizedRoles)) {
@@ -255,15 +244,15 @@ var app;
 				.success(function (res) {
 					console.log(res);
 					store.set("token", res.data.token);
-					Session.create(res.data.user);
 					$http.get(API_BASE_URL + "/lookups", {
 						headers: {
 							'X-Access-Token': store.get("token")
 						}
 					}).success(function (response) {
 						$rootScope.lookups = response.data;
-						$rootScope.callsLogColumns = utilitiesServices.columnsAdapterIn($rootScope.lookups.reportColumnLus);
-						console.log("lookups", response.data);
+						$rootScope.callsLogColumns = utilitiesServices.columnsAdapterIn($rootScope.lookups.reportLus[0].reportColumnLus);
+						console.log("lookups", response.data, $rootScope.callsLogColumns);
+						Session.create(res.data.user);
 					});
 					//				$httpProvider.defaults.headers.common['X-Access-token'] = store.get("token");
 					//						res.data.user.role);

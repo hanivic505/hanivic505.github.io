@@ -6,11 +6,18 @@ var app;
 		var serviceFn = (function ($rootScope, $http, store, API_BASE_URL) {
 			function serviceFn($rootScope, $http, store, API_BASE_URL) {
 				return {
-					get: function (pgSize, pgNum, condition) {
+					conditions: [],
+					orders: [],
+					get: function (pgSize, pgNum, condition, order) {
+						console.info("callLogService.get:before", this.conditions);
+						this.conditions = condition;
+						this.orders = order;
+						console.info("callLogService.get:after", this.conditions);
 						return $http.post(API_BASE_URL + "/call-log/search", {
-							pageSize: 20000,
+							pageSize: 10,
 							pageNumber: pgNum,
-							andConditions: condition
+							andConditions: this.conditions,
+							order: this.orders
 						}, {
 							headers: {
 								"X-Access-Token": store.get("token")
@@ -153,7 +160,25 @@ var app;
 								duration: 5000,
 							};
 						});
-					}
+					},
+					getCallLog: function (obj) {
+						return $http.get(API_BASE_URL + "/call-log/" + obj.id, {
+							headers: {
+								"X-Access-Token": store.get("token")
+							}
+						}).then(function (data) {
+							return data.data.data;
+						});
+					},
+					getSessionLog: function (obj) {
+						return $http.get(API_BASE_URL + "/session-log/" + obj.id, {
+							headers: {
+								"X-Access-Token": store.get("token")
+							}
+						}).then(function (data) {
+							return data.data.data;
+						});
+					},
 				}
 			}
 			return serviceFn;

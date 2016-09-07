@@ -44,14 +44,16 @@
 							<th width="100">
 								<input type="checkbox" ng-model="checkAll" ng-click="selectAll();">
 							</th>
-							<th ng-repeat="col in columns.childs |  filter:{visible:true,REPORT_ID:1}">{{col.title}}</th>
+							<th ng-repeat="col in columns.childs |  filter:{visible:true} | filter:{code:'!SESSION_FLAG_ID'} | filter:{code:'!LOCKED'}">
+								<a href="" class="fg-white" ng-bind="col.title"></a>
+							</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr ng-show="vm.callsLog.searchResults.length==0">
 							<td colspan="20" class="text-center">No Records Found</td>
 						</tr>
-						<tr ng-repeat="x in vm.callsLog.searchResults | filter:paginate " ng-class="{'active':vm.editObj==x}">
+						<tr ng-repeat="x in vm.callsLog.searchResults " ng-class="{'active':vm.editObj==x}">
 							<td style="width:120px">
 								<input type="checkbox" ng-model="x.Selected" ng-click="checkIfAllSelected(x)" />
 								<span class="dropdown" ng-if="columns.childs[1].visible">
@@ -67,9 +69,9 @@
 								<a href="" ng-if="columns.childs[1].visible" class="btn btn-link" title="{{vm.getIcon(x.locked).title}}" ng-click="callLogService.updateSessionLock(x.id,!x.locked)"><i class="fa" ng-class="vm.getIcon(x.locked).icon"></i></a>
 								<span ng-if="x.hasTranscript" uib-tooltip="Transcribe Added" class="btn btn-link btn-sm"><i class="fa icon-paste text-warning" ng-if="x.hasTranscript"></i></span>
 							</td>
-							<td ng-click="vm.editObj=x;" ng-repeat="col in columns.childs | filter:{visible:true,REPORT_ID:1}">
+							<td ng-click="loadItem(x)" ng-repeat="col in columns.childs | filter:{visible:true} | filter:{code:'!SESSION_FLAG_ID'} | filter:{code:'!LOCKED'}">
 								<span class="btn btn-link" ng-bind="x[col.prop]" ng-show="col.columnType!='DATE' && col.columnType!='TIME'"></span>
-								<span class="btn btn-link" ng-bind="x[col.prop]|date:'dd/MM/yyyy'" ng-show="col.columnType=='DATE'"></span>
+								<span class="btn btn-link" ng-bind="x[col.prop]|date:'dd/MM/yyyy hh:mm'" ng-show="col.columnType=='DATE'"></span>
 								<span class="btn btn-link" ng-bind="x[col.prop]|date:'hh:mm'" ng-show="col.columnType=='TIME'"></span>
 							</td>
 							<td class="actions-bar">

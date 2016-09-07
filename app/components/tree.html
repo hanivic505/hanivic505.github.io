@@ -8,16 +8,16 @@
 	<li ng-repeat="case in $ctrl.treeObj | filter:$ctrl.filterBy" ng-init="case.expand = !$ctrl.collapsed">
 		<i class="fa" ng-class="{'fa-plus-square':!case.expand,'fa-minus-square':case.expand}" ng-click="case.expand=!case.expand"></i>
 		<label class="btn btn-link" ng-click="$ctrl.setSelectedNode(case,'case')" ng-class="{'active':$ctrl.treeConfig.selectedNode.data==case}">
-			<input ng-if="$ctrl.multiSelect" type="checkbox" ng-change="handleChkAll(case,'checked',true)" ng-model="case.checked"> {{case.title}}</label>
+			<input ng-if="$ctrl.multiSelect" type="checkbox" ng-change="handleChkAll(case,'checked',true)" ng-model="case.checked"> {{case.caseName}}</label>
 		<span class="node-menu" ng-if="$ctrl.allowEdit">
 			<a href="" ng-click="dbService.add(case.childs==undefined?case.childs=[]:case.childs,{title:'New Identity'})" class="btn btn-link" title="Add Child Identity"><i class="fa fa-plus-circle"></i></a>
 			<a href="" class="btn btn-link" title="Delete This Case"><i class="fa fa-trash"></i></a>
 		</span>
 		<ul ng-show="case.expand">
-			<li ng-repeat="identity in (case.childs || case[$ctrl.treeScndLvl])" ng-init="identity.expand=!$ctrl.collapsed">
+			<li ng-repeat="identity in (case.identities || case[$ctrl.treeScndLvl])" ng-init="identity.expand=!$ctrl.collapsed">
 				-<i class="fa" ng-class="{'fa-plus-square':!identity.expand,'fa-minus-square':identity.expand}" ng-click="identity.expand=!identity.expand"></i>
 				<label class="btn btn-link" ng-click="$ctrl.setSelectedNode(identity,'identity')" ng-class="{'active':$ctrl.treeConfig.selectedNode.data==identity}">
-					<input ng-if="$ctrl.multiSelect" type="checkbox" ng-change="handleChkAll(identity,'checked',true)" ng-model="identity.checked"> {{identity.title || identity[$ctrl.treeScndLvlTitle]}}</label>
+					<input ng-if="$ctrl.multiSelect" type="checkbox" ng-change="handleChkAll(identity,'checked',true)" ng-model="identity.checked"> {{identity.identityName || identity[$ctrl.treeScndLvlTitle]}}</label>
 				<span class="node-menu" ng-if="$ctrl.allowEdit">
 					<a href="" ng-click="addLine(identity.childs==undefined?identity.childs=[]:identity.childs,'New Line Object')" class="btn btn-link" title="Add Child Line">
 						<i class="fa fa-plus-circle"></i>
@@ -27,10 +27,10 @@
 					</a>
 				</span>
 				<ul ng-show="identity.expand">
-					<li ng-repeat="line in (identity.childs || identity[$ctrl.treeThrdLvl])">
+					<li ng-repeat="line in (identity.lines || identity[$ctrl.treeThrdLvl])">
 						__
 						<label class="btn btn-link" ng-click="$ctrl.treeConfig.selectedNode={data:line,type:'line'}" ng-class="{'active':$ctrl.treeConfig.selectedNode.data==line}">
-							<input ng-if="$ctrl.multiSelect" type="checkbox" ng-model="line.checked" ng-change="handleChkAll(line,'checked',true)"> {{line.title || line[$ctrl.treeThrdLvlTitle]}}</label>
+							<input ng-if="$ctrl.multiSelect" type="checkbox" ng-model="line.checked" ng-change="handleChkAll(line,'checked',true)"> {{line.lineName || line[$ctrl.treeThrdLvlTitle]}}</label>
 						<span class="node-menu" ng-if="$ctrl.allowEdit"><a href="" class="btn btn-link" title="Delete This Line"><i class="fa fa-trash"></i></a></span>
 					</li>
 				</ul>

@@ -39,9 +39,14 @@ var app;
 				ctrl.collapsed = !ctrl.collapsed;
 				for (var i = 0, el = ctrl.treeObj; i < el.length; i++) {
 					el[i].expand = !ctrl.collapsed;
-					el[i].childs = el[i].childs || el[i][this.treeScndLvl] || el[i][this.treeThrdLvl]
-					if (el[i].childs != undefined)
-						for (var j = 0, sEl = el[i].childs; j < sEl.length; j++) {
+					//el[i].childs = el[i].childs || el[i][this.treeScndLvl] || el[i][this.treeThrdLvl]
+					//					if (el[i].childs != undefined)
+					if (el[i].identities != undefined)
+						for (var j = 0, sEl = el[i].identities; j < sEl.length; j++) {
+							sEl[j].expand = !ctrl.collapsed;
+						}
+					if (el[i].lines != undefined)
+						for (var j = 0, sEl = el[i].lines; j < sEl.length; j++) {
 							sEl[j].expand = !ctrl.collapsed;
 						}
 				}
@@ -64,6 +69,20 @@ var app;
 								ctrl.lines[obj.childs[i].id] = obj.checked;
 							if (obj.childs[i].childs)
 								$scope.handleChkAll(obj.childs[i], prop, isHandleTree);
+						}
+					if (obj.identities) {
+						var idObjs = obj.identities;
+						for (var i = 0; i < idObjs.length; i++) {
+							idObjs[i][prop] = obj.checked;
+							if (isHandleTree && idObjs[i].id !== undefined)
+								ctrl.lines[idObjs[i].id] = obj.checked;
+							if (idObjs[i].lines)
+								$scope.handleChkAll(idObjs[i], prop, isHandleTree);
+						}
+					}
+					if (obj.lines)
+						for (var i = 0; i < obj.lines.length; i++) {
+							obj.lines[i][prop] = obj.checked;
 						}
 				};
 				if (ctrl.lines != undefined)

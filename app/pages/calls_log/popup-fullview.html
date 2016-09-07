@@ -34,21 +34,21 @@
 				<label>Date:</label>
 				<div for="" class="form-control-static" ng-bind="obj.startDate | date"></div>
 			</div>
-			<div class="col-md-6">
+			<div class="col-md-4">
 				<label>Start Time:</label>
 				<div for="" class="form-control-static" ng-bind="obj.startDate | date:'hh:mm'"></div>
 			</div>
-			<div class="col-md-6">
+			<div class="col-md-4">
 				<label>End Time:</label>
 				<div for="" class="form-control-static" ng-bind="obj.endDate | date:'hh:mm'"></div>
 			</div>
-			<div class="col-md-6">
+			<div class="col-md-4">
 				<label>Duration:</label>
 				<div for="" class="form-control-static" ng-bind="obj.duration"></div>
 			</div>
 			<div class="col-md-12">
-				<label>Comment:</label>
-				<textarea ng-model="obj.comment" class="form-control" rows="3"></textarea>
+				<label>Comment: </label><span class="label label-default pull-right">{{obj.comment.length || 0}}/140</span>
+				<textarea maxlength="140" ng-model="obj.comment" class="form-control" rows="3"></textarea>
 			</div>
 			<div class="col-md-12">
 				<label>Transcribe:</label>

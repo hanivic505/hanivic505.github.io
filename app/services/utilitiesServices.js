@@ -103,7 +103,7 @@ var app;
 									}
 									obj["prop"] = iVal;
 								}
-								if (iKey == "desc") {
+								if (iKey == "description") {
 									obj["title"] = iVal;
 								}
 								if (iKey == "visible") {
