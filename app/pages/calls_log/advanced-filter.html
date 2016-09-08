@@ -7,28 +7,15 @@
 				<div class="panel-body">
 					<div class="row">
 						<div class="col-xs-6">
-<!--							<pre>{{advancedFilter | json}}</pre>-->
 							<label for="">Filter rows marked with</label>
 							<div class="row values">
-								<div class="col-xs-6">
+								<div class="col-xs-6" >
 									<label>
-										<input type="checkbox" ng-model="advancedFilter.isUnMarked"> <i class="fa fa-circle-o"></i> Un Marked</label>
+										<input type="checkbox" ng-model="advancedFilter.flags[null]"> <i class="fa fa-circle-o"></i> Un Marked</label>
 								</div>
-								<div class="col-xs-6">
+								<div class="col-xs-6" ng-repeat="z in lookups['sessionFlagLus']">
 									<label>
-										<input type="checkbox" ng-model="advancedFilter.isImportant"> <i class="fa fa-exclamation"></i> Important</label>
-								</div>
-								<div class="col-xs-6">
-									<label>
-										<input type="checkbox" ng-model="advancedFilter.isReviseLater"> <i class="fa fa-search"></i> Revise Later</label>
-								</div>
-								<div class="col-xs-6">
-									<label>
-										<input type="checkbox" ng-model="advancedFilter.isReviewed"> <i class="fa fa-check"></i> Reviewed</label>
-								</div>
-								<div class="col-xs-6">
-									<label>
-										<input type="checkbox" ng-model="advancedFilter.isIrrelevent"> <i class="fa fa-times"></i> Irrelevent</label>
+										<input type="checkbox" ng-model="advancedFilter.flags[z.id]"> <i class="fa" ng-class="{'fa-exclamation':z.id==1,'fa-search':z.id==2,'fa-check':z.id==3,'fa-times':z.id==4}"></i> {{z.description}}</label>
 								</div>
 							</div>
 						</div>

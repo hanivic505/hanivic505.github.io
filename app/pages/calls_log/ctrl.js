@@ -610,7 +610,16 @@ var app;
 						operatorCode: "EQUAL",
 						value: 4
 					});
-
+				var flagsObj = {
+					column: "SESSION_FLAG_ID",
+					operatorCode: "IN",
+					value: []
+				}
+				angular.forEach(obj.flags, function (val, key, obj) {
+					if (val)
+						flagsObj.value.push(key);
+				});
+				searchCondition.push(flagsObj);
 				if (obj.locked)
 					searchCondition.push({
 						column: "LOCKED",
