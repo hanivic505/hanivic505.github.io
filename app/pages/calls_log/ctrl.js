@@ -182,7 +182,7 @@ var app;
 			this.advFltr = {
 				andConditions: [{
 					column: null,
-					operator: null,
+					operatorCode: null,
 					value: null
 				}],
 				locked: null,
@@ -576,12 +576,69 @@ var app;
 				//				console.info(list);
 			};
 			$scope.callLogService = callLogService;
+			this.indexInArray = function (arr, key) {
+				angular.forEach(arr, function (nVal, nKey) {
+					if (nVal["column"] == key) {
+						arr.pop(nKey);
+					}
+				});
+			};
 			$scope.doAdvancedSearch = function (obj) {
 				console.info("doAdvancedSearch", obj);
-				callLogService.get(1, obj.andConditions).then(function (data) {
+				var searchCondition = [];
+				if (obj.isImportant)
+					searchCondition.push({
+						column: "SESSION_FLAG_ID",
+						operatorCode: "EQUAL",
+						value: 1
+					});
+				if (obj.isReviseLater)
+					searchCondition.push({
+						column: "SESSION_FLAG_ID",
+						operatorCode: "EQUAL",
+						value: 2
+					});
+				if (obj.isReviewed)
+					searchCondition.push({
+						column: "SESSION_FLAG_ID",
+						operatorCode: "EQUAL",
+						value: 3
+					});
+				if (obj.isIrrelevent)
+					searchCondition.push({
+						column: "SESSION_FLAG_ID",
+						operatorCode: "EQUAL",
+						value: 4
+					});
+
+				if (obj.locked)
+					searchCondition.push({
+						column: "LOCKED",
+						operatorCode: "EQUAL",
+						value: true
+					});
+				else if (obj.locked == false)
+					searchCondition.push({
+						column: "LOCKED",
+						operatorCode: "EQUAL",
+						value: false
+					});
+
+				if (obj.isTranscribe)
+					searchCondition.push({
+						column: "HAS_TRANSCRIPT",
+						operatorCode: "EQUAL",
+						value: true
+					});
+
+				for (var i = 0; i < obj.andConditions.length; i++) {
+					searchCondition.push(obj.andConditions[i]);
+				};
+
+				callLogService.get(1, searchCondition).then(function (data) {
 					_this.callsLog = data;
 				});
-				console.log("Advanced Filter", obj);
+				console.log("Advanced Filter", searchCondition);
 			};
 			$scope.delete = function (x) {
 				if (confirm('Are you sure, you want to delete this record?')) {

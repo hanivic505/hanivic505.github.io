@@ -59,8 +59,8 @@
 								<span class="dropdown" ng-if="columns.childs[1].visible">
                                     <a href="" data-toggle="dropdown" title="{{vm.getIcon(x.sessionFlagId).title}}"><i class="fa" ng-class="vm.getIcon(x.sessionFlagId).icon"></i><i class="caret"></i></a>
                                     <ul class="dropdown-menu">
-                                        <li><a ng-click="callLogService.updateSessionFlag(x.id,null)" href="" class="btn btn-link"><i class="fa fa-circle-o"></i> Un Marked</a></li>
-                                        <li ng-repeat="z in lookups['sessionFlagLus']"><a ng-click="callLogService.updateSessionFlag(x.id,z.id)" href="" class="btn btn-link"><i class="fa" ng-class="{'fa-exclamation':z.id==1,'fa-search':z.id==2,'fa-check':z.id==3,'fa-times':z.id==4}"></i> {{z.description}}</a></li>
+                                        <li><a ng-click="callLogService.updateSessionFlag(x.sessionLogId,null)" href="" class="btn btn-link"><i class="fa fa-circle-o"></i> Un Marked</a></li>
+                                        <li ng-repeat="z in lookups['sessionFlagLus']"><a ng-click="callLogService.updateSessionFlag(x.sessionLogId,z.id)" href="" class="btn btn-link"><i class="fa" ng-class="{'fa-exclamation':z.id==1,'fa-search':z.id==2,'fa-check':z.id==3,'fa-times':z.id==4}"></i> {{z.description}}</a></li>
 <!--
                                         <li><a ng-click="callLogService.updateSessionFlag(x.id,2)" href="" class="btn btn-link"><i class="fa fa-search"></i> Revise Later</a></li>
                                         <li><a ng-click="callLogService.updateSessionFlag(x.id,3)" href="" class="btn btn-link"><i class="fa fa-check"></i> Reviewed</a></li>
@@ -68,7 +68,7 @@
 -->
                                     </ul>
                                 </span>
-								<a href="" ng-if="columns.childs[1].visible" class="btn btn-link" title="{{vm.getIcon(x.locked).title}}" ng-click="callLogService.updateSessionLock(x.id,!x.locked)"><i class="fa" ng-class="vm.getIcon(x.locked).icon"></i></a>
+								<a href="" ng-if="columns.childs[1].visible" class="btn btn-link" title="{{vm.getIcon(x.locked).title}}" ng-click="callLogService.updateSessionLock(x.sessionLogId,!x.locked)"><i class="fa" ng-class="vm.getIcon(x.locked).icon"></i></a>
 								<span ng-if="x.hasTranscript" uib-tooltip="Transcribe Added" class="btn btn-link btn-sm"><i class="fa icon-paste text-warning" ng-if="x.hasTranscript"></i></span>
 							</td>
 							<td ng-click="loadItem(x)" ng-repeat="col in columns.childs | filter:{visible:true} | filter:{code:'!SESSION_FLAG_ID'} | filter:{code:'!LOCKED'}">

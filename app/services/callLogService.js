@@ -7,7 +7,7 @@ var app;
 			function serviceFn($rootScope, $http, store, API_BASE_URL) {
 				return {
 					conditions: [],
-					orders: ["lineName", "DESC"],
+					orders: ["sessionLogId", "DESC"],
 					pageSize: 10,
 					currentPage: 1,
 					get: function (pgNum, condition) {
@@ -74,7 +74,7 @@ var app;
 					},
 					updateSessionLog: function (obj) {
 						return $http.put(API_BASE_URL + "/session-log", {
-							id: obj.id,
+							id: obj.sessionLogId,
 							sessionFlagId: obj.sessionFlagId,
 							locked: obj.locked,
 							comment: obj.comment,
@@ -100,7 +100,7 @@ var app;
 					},
 					updateSessionLogComment: function (obj) {
 						return $http.put(API_BASE_URL + "/session-log/comment", {
-							id: obj.id,
+							id: obj.sessionLogId,
 							comment: obj.comment
 						}, {
 							headers: {
@@ -123,7 +123,7 @@ var app;
 					},
 					updateSessionLogTranscript: function (obj) {
 						return $http.put(API_BASE_URL + "/session-log/transcript", {
-							id: obj.id,
+							id: obj.sessionLogId,
 							transcript: obj.transcript
 						}, {
 							headers: {
@@ -187,8 +187,9 @@ var app;
 						if (this.orders.indexOf(order) > -1)
 							dir = this.orders[1] == "DESC" ? "ASC" : "DESC";
 						this.orders = [order, dir];
-						this.get(1);
-						console.info("orderBy Current Page",this.currentPage);
+//						this.get(1);
+						console.info("orderBy Current Page", this.currentPage);
+						$rootScope.$broadcast("refresh_data");
 						return this.currentPage;
 					},
 				}

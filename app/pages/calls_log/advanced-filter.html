@@ -12,23 +12,23 @@
 							<div class="row values">
 								<div class="col-xs-6">
 									<label>
-										<input type="checkbox" ng-change="selectedOptions(advancedFilter.andConditions,'SESSION_FLAG_ID','EQUAL',advancedFilter.isUnmarked)" ng-model="advancedFilter.isUnMarked"> <i class="fa fa-circle-o"></i> Un Marked</label>
+										<input type="checkbox" ng-model="advancedFilter.isUnMarked"> <i class="fa fa-circle-o"></i> Un Marked</label>
 								</div>
 								<div class="col-xs-6">
 									<label>
-										<input type="checkbox" ng-change="selectedOptions(advancedFilter.andConditions,'SESSION_FLAG_ID','EQUAL',advancedFilter.isImportant)" ng-model="advancedFilter.isInportant"> <i class="fa fa-exclamation"></i> Important</label>
+										<input type="checkbox" ng-model="advancedFilter.isImportant"> <i class="fa fa-exclamation"></i> Important</label>
 								</div>
 								<div class="col-xs-6">
 									<label>
-										<input type="checkbox" ng-change="selectedOptions(advancedFilter.andConditions,'SESSION_FLAG_ID','EQUAL',advancedFilter.isReviseLater)" ng-model="advancedFilter.isReviseLater"> <i class="fa fa-search"></i> Revise Later</label>
+										<input type="checkbox" ng-model="advancedFilter.isReviseLater"> <i class="fa fa-search"></i> Revise Later</label>
 								</div>
 								<div class="col-xs-6">
 									<label>
-										<input type="checkbox" ng-change="selectedOptions(advancedFilter.andConditions,'SESSION_FLAG_ID','EQUAL',advancedFilter.isReviewed)" ng-model="advancedFilter.isReviewed"> <i class="fa fa-check"></i> Reviewed</label>
+										<input type="checkbox" ng-model="advancedFilter.isReviewed"> <i class="fa fa-check"></i> Reviewed</label>
 								</div>
 								<div class="col-xs-6">
 									<label>
-										<input type="checkbox" ng-change="selectedOptions(advancedFilter.andConditions,'SESSION_FLAG_ID','EQUAL',advancedFilter.isIrrelevent)" ng-model="advancedFilter.isIrrelevent"> <i class="fa fa-times"></i> Irrelevent</label>
+										<input type="checkbox" ng-model="advancedFilter.isIrrelevent"> <i class="fa fa-times"></i> Irrelevent</label>
 								</div>
 							</div>
 						</div>
@@ -37,16 +37,16 @@
 							<div class="row values">
 								<div class="col-xs-6">
 									<label>
-										<input type="radio" ng-change="selectedOptions(advancedFilter.andConditions,'LOCKED','EQUAL',advancedFilter.locked)" ng-model="advancedFilter.locked" value="true"> <i class="fa fa-lock"></i> Locked</label>
+										<input type="radio" ng-model="advancedFilter.locked" ng-value="true"> <i class="fa fa-lock"></i> Locked</label>
 								</div>
 								<div class="col-xs-6">
 									<label>
-										<input type="radio" ng-change="selectedOptions(advancedFilter.andConditions,'LOCKED','EQUAL',advancedFilter.locked)" ng-model="advancedFilter.locked" value="false"> <i class="fa fa-unlock"></i> UnLocked</label>
+										<input type="radio" ng-model="advancedFilter.locked" ng-value="false"> <i class="fa fa-unlock"></i> UnLocked</label>
 								</div>
 							</div>
 							<label>&nbsp;</label>
 							<label>
-								<input type="checkbox" ng-change="selectedOptions(advancedFilter.andConditions,'HAS_TRANSCRIPT','EQUAL',advancedFilter.isTranscribe)" ng-model="advancedFilter.isTranscribe"> Include ONLY records with transcribe</label>
+								<input type="checkbox" ng-model="advancedFilter.isTranscribe"> Include ONLY records with transcribe</label>
 						</div>
 					</div>
 					<hr>
@@ -66,7 +66,7 @@
 							<select ng-model="f.column" ng-options="o.code as o.description for o in columns.childs | filter:{visible:true}" class="form-control input-sm"></select>
 						</div>
 						<div class="col-xs-2">
-							<select ng-model="f.operator" class="form-control input-sm" ng-options="x.code as x.description for x in lookups.filterOperationLus | filter:{code : '!in'} | filter:{code : '!between'}"></select>
+							<select ng-model="f.operatorCode" class="form-control input-sm" ng-options="x.operator as x.description for x in lookups.filterOperationLus | filter:{code : '!in'} | filter:{code : '!between'}"></select>
 						</div>
 						<div class="col-xs-4">
 							<input ng-model="f.value" type="text" class="form-control input-sm">
