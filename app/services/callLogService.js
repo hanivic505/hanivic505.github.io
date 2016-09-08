@@ -7,15 +7,18 @@ var app;
 			function serviceFn($rootScope, $http, store, API_BASE_URL) {
 				return {
 					conditions: [],
-					orders: [],
-					get: function (pgSize, pgNum, condition, order) {
-						console.info("callLogService.get:before", this.conditions);
-						this.conditions = condition;
-						this.orders = order;
-						console.info("callLogService.get:after", this.conditions);
+					orders: ["lineName", "DESC"],
+					pageSize: 10,
+					currentPage: 1,
+					get: function (pgNum, condition) {
+						console.info("callLogService.get:before", this.currentPage, this.conditions, this.orders);
+						this.conditions = condition == undefined ? this.conditions : condition;
+						//this.orders = order;
+						this.currentPage = pgNum == undefined ? this.currentPage : pgNum;
+						console.info("callLogService.get:after", this.currentPage, this.conditions, this.orders);
 						return $http.post(API_BASE_URL + "/call-log/search", {
-							pageSize: 10,
-							pageNumber: pgNum,
+							pageSize: this.pageSize,
+							pageNumber: this.currentPage,
 							andConditions: this.conditions,
 							order: this.orders
 						}, {
@@ -178,6 +181,15 @@ var app;
 						}).then(function (data) {
 							return data.data.data;
 						});
+					},
+					orderBy: function (order) {
+						var dir = "DESC";
+						if (this.orders.indexOf(order) > -1)
+							dir = this.orders[1] == "DESC" ? "ASC" : "DESC";
+						this.orders = [order, dir];
+						this.get(1);
+						console.info("orderBy Current Page",this.currentPage);
+						return this.currentPage;
 					},
 				}
 			}

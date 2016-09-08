@@ -24,7 +24,7 @@ var app;
 					controller: "CallLogCtrl as vm",
 					resolve: {
 						ctrlData: function (callLogService) {
-							return callLogService.get(10, 1, [], ['lineName', 'DESC']).then(function (data) {
+							return callLogService.get(1).then(function (data) {
 								console.info("resolve", data);
 								return data;
 							});

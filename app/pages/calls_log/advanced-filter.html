@@ -66,7 +66,7 @@
 							<select ng-model="f.column" ng-options="o.code as o.description for o in columns.childs | filter:{visible:true}" class="form-control input-sm"></select>
 						</div>
 						<div class="col-xs-2">
-							<select ng-model="f.operator" class="form-control input-sm" ng-options="x.sql as x.description for x in lookups.filterOperationLus | filter:{code : '!in'} | filter:{code : '!between'}"></select>
+							<select ng-model="f.operator" class="form-control input-sm" ng-options="x.code as x.description for x in lookups.filterOperationLus | filter:{code : '!in'} | filter:{code : '!between'}"></select>
 						</div>
 						<div class="col-xs-4">
 							<input ng-model="f.value" type="text" class="form-control input-sm">

@@ -43,7 +43,7 @@ var app;
 		angular.module("IVRY-App").controller("callLogFullViewCtrl", ["$scope", "$uibModalInstance", "utilitiesServices", "callLogService", "obj", function ($scope, $uibModalInstance, utilitiesServices, callLogService, obj) {
 			callLogService.getCallLog(obj).then(function (data) {
 				$scope.obj = data;
-				console.log(data)
+				console.log("Load Full Call Log Data", data)
 			});
 			//			$scope.obj = obj;
 			$scope.ok = function () {
@@ -226,10 +226,6 @@ var app;
 				$log.log('Page changed to: ' + $scope.currentPage);
 			};
 
-			$rootScope.$on("refresh_data", function () {
-				console.info("refresh_data");
-				$scope.doAdvancedSearch(callLogService.conditions);
-			});
 			$scope.paginate = function (value) {
 				var begin, end, index;
 				begin = ($scope.currentPage - 1) * $scope.numPerPage;
@@ -238,11 +234,20 @@ var app;
 				return (begin <= index && index < end);
 			};
 			$scope.$watch("currentPage", function (nVal, oVal) {
+				console.info("currentPage", nVal, oVal);
 				if (nVal != oVal)
-					callLogService.get(10, nVal, callLogService.conditions, ["lineName", "DESC"])
+					callLogService.get(nVal)
 					.then(function (data) {
 						_this.callsLog = data;
 					});
+			});
+			$rootScope.$on("refresh_data", function () {
+				console.info("refresh_data");
+				callLogService.get()
+					.then(function (data) {
+						_this.callsLog = data;
+					});;
+				//				$scope.doAdvancedSearch(callLogService.conditions);
 			});
 			$scope.open1 = function () {
 				$scope.popup1.opened = true;
@@ -435,7 +440,7 @@ var app;
 			};
 			$scope.filterLines = function (obj) {};
 			$scope.linesTreeObj = linesData; //linesTreeService.linesTreeObj;
-//			console.info("linesTreeObj", $scope.linesTreeObj);
+			//			console.info("linesTreeObj", $scope.linesTreeObj);
 			$scope.columns = {
 				childs: []
 			};
@@ -530,7 +535,7 @@ var app;
 					} else
 						$scope.selectedItems.splice($scope.selectedItems.indexOf(item), 1);
 				});
-				console.info($scope.selectedItems.length, $scope.selectedItems);
+				console.info("Select All", $scope.selectedItems.length, $scope.selectedItems);
 			};
 
 			$scope.checkIfAllSelected = function (item) {
@@ -542,7 +547,7 @@ var app;
 						$scope.selectedItems.push(item);
 				} else
 					$scope.selectedItems.splice($scope.selectedItems.indexOf(item), 1);
-				console.info($scope.selectedItems.length, $scope.selectedItems);
+				console.info("Check if All Selected", $scope.selectedItems.length, $scope.selectedItems);
 			};
 
 			$scope.selectedOptions = function (selectedList, key, op, val) {
@@ -562,7 +567,7 @@ var app;
 					});
 			};
 			$scope.applyUpdates = function (obj, trgt) {
-				console.info(obj, trgt, trgt.indexOf(obj))
+				console.info("Apply Updates", obj, trgt, trgt.indexOf(obj))
 			};
 			$scope.markSelected = function (list, val) {
 				angular.forEach(list, function (item) {
@@ -572,8 +577,8 @@ var app;
 			};
 			$scope.callLogService = callLogService;
 			$scope.doAdvancedSearch = function (obj) {
-				console.info("doAdvancedSearch",obj);
-				callLogService.get(20000, 1, obj.andConditions, ['lineName', 'DESC']).then(function (data) {
+				console.info("doAdvancedSearch", obj);
+				callLogService.get(1, obj.andConditions).then(function (data) {
 					_this.callsLog = data;
 				});
 				console.log("Advanced Filter", obj);
