@@ -223,7 +223,7 @@ var app;
 			};
 
 			$scope.pageChanged = function () {
-				$log.log('Page changed to: ' + $scope.currentPage);
+				$log.debug('Page changed to: ' + $scope.currentPage);
 			};
 
 			$scope.paginate = function (value) {
@@ -234,7 +234,7 @@ var app;
 				return (begin <= index && index < end);
 			};
 			$scope.$watch("currentPage", function (nVal, oVal) {
-				console.info("currentPage", nVal, oVal);
+				$log.debug("currentPage", nVal, oVal);
 				if (nVal != oVal)
 					callLogService.get(nVal)
 					.then(function (data) {
@@ -242,7 +242,7 @@ var app;
 					});
 			});
 			$rootScope.$on("refresh_data", function () {
-				console.info("refresh_data");
+				$log.debug("refresh_data");
 				callLogService.get()
 					.then(function (data) {
 						_this.callsLog = data;
@@ -294,7 +294,7 @@ var app;
 			var checkCols = function () {
 				var parnt = $(".picked")[0];
 				if (parnt !== undefined) {
-					//console.info($prnt.offsetTop);
+					//$log.debug($prnt.offsetTop);
 					$("#columnsScroll").scrollTop($(parnt).position().top); //-$("#columnsScroll").offset().top);
 				}
 			};
@@ -443,32 +443,32 @@ var app;
 				_this.filterByLines = [];
 				angular.forEach(obj.lines, function (val, key, o) {
 
-					console.info(key, val, o);
+					$log.debug(key, val, o);
 					if (val)
 						_this.filterByLines.push(key);
 				});
-				console.info(_this.filterByLines);
+				$log.debug(_this.filterByLines);
 				$scope.doAdvancedSearch($scope.advancedFilter);
 			};
 			$scope.linesTreeObj = linesData; //linesTreeService.linesTreeObj;
-			//			console.info("linesTreeObj", $scope.linesTreeObj);
+			//			$log.debug("linesTreeObj", $scope.linesTreeObj);
 			$scope.columns = {
 				childs: []
 			};
 			$scope.columns.childs = $rootScope.callsLogColumns;
 			$scope.dragControlListeners = {
 				accept: function (sourceItemHandleScope, destSortableScope, destItemScope) {
-					//					console.info(sourceItemHandleScope,destSortableScope,destItemScope)
+					//					$log.debug(sourceItemHandleScope,destSortableScope,destItemScope)
 					if (destItemScope === undefined)
 						return sourceItemHandleScope.itemScope.modelValue.drag;
 					else
 						return sourceItemHandleScope.itemScope.modelValue.drag && destItemScope.modelValue.drag;
 				}, //override to determine drag is allowed or not. default is true.
 				itemMoved: function (event) {
-					//					console.info(event)
+					//					$log.debug(event)
 				},
 				orderChanged: function (event) {
-					//					console.log(event, $scope.columns)
+					//					$log.debug(event, $scope.columns)
 				},
 				containment: '#board', //optional param.
 				clone: false, //optional param for clone feature.
@@ -482,26 +482,26 @@ var app;
 			};
 			$scope.lines = $scope.treeConfig.lines;
 
-			//            console.log($scope.filteredCallslog);
+			//            $log.debug($scope.filteredCallslog);
 			//            $scope.$watchCollection("linesTreeObj",function(nVal,oVal){
-			////                console.log("linesTreeObj.checked",nVal);
+			////                $log.debug("linesTreeObj.checked",nVal);
 			//            });
 			$scope.$watch("lines", function (nVal) {
 				//_this.callsLog = linesFilter(_this.callsLog, nVal);
-				//console.info(_this.filteredCallsLog);
+				//$log.debug(_this.filteredCallsLog);
 			}, true);
 			//			$scope.$watch("linesTreeObj", function (nVal) {
 			//                angular.forEach(nVal,function(val,key){
 			//                    if(nVal.checked)
 			//                        $scope.lines[nVal.lineId]=true;
 			//                });
-			//console.info(nVal,$scope.lines);
+			//$log.debug(nVal,$scope.lines);
 			//			}, true);
 			//            $scope.linesFilter=function(value,index){
 			//                //var filter=value.lineId && $scope.lines.indexOf(value.lineId) !== -1;
-			////                console.info(filter);
+			////                $log.debug(filter);
 			//                var filter=$scope.lines[value.lineId];
-			//                console.log(filter);
+			//                $log.debug(filter);
 			//                return filter;
 			//            };
 			$scope.getLineName = utilitiesServices.getLineName;
@@ -522,7 +522,7 @@ var app;
 				modalInstance.result.then(function (selectedItem) {
 					$scope.selected = selectedItem;
 				}, function () {
-					$log.info('Modal dismissed at: ' + new Date());
+					$log.debug('Modal dismissed at: ' + new Date());
 				});
 			};
 			this.pushNew = function (scopeListName, obj) {
@@ -546,7 +546,7 @@ var app;
 					} else
 						$scope.selectedItems.splice($scope.selectedItems.indexOf(item), 1);
 				});
-				console.info("Select All", $scope.selectedItems.length, $scope.selectedItems);
+				$log.debug("Select All", $scope.selectedItems.length, $scope.selectedItems);
 			};
 
 			$scope.checkIfAllSelected = function (item) {
@@ -558,7 +558,7 @@ var app;
 						$scope.selectedItems.push(item);
 				} else
 					$scope.selectedItems.splice($scope.selectedItems.indexOf(item), 1);
-				console.info("Check if All Selected", $scope.selectedItems.length, $scope.selectedItems);
+				$log.debug("Check if All Selected", $scope.selectedItems.length, $scope.selectedItems);
 			};
 
 			$scope.selectedOptions = function (selectedList, key, op, val) {
@@ -578,13 +578,13 @@ var app;
 					});
 			};
 			$scope.applyUpdates = function (obj, trgt) {
-				console.info("Apply Updates", obj, trgt, trgt.indexOf(obj))
+				$log.debug("Apply Updates", obj, trgt, trgt.indexOf(obj))
 			};
 			$scope.markSelected = function (list, val) {
 				angular.forEach(list, function (item) {
 					item.sessionFlagId = val;
 				});
-				//				console.info(list);
+				//				$log.debug(list);
 			};
 			$scope.callLogService = callLogService;
 			this.indexInArray = function (arr, key) {
@@ -595,7 +595,7 @@ var app;
 				});
 			};
 			$scope.doAdvancedSearch = function (obj) {
-				console.info("doAdvancedSearch", obj);
+				$log.debug("doAdvancedSearch", obj);
 				var searchCondition = [];
 				if (obj.isImportant)
 					searchCondition.push({
@@ -658,7 +658,7 @@ var app;
 				for (var i = 0; i < obj.andConditions.length; i++) {
 					searchCondition.push(obj.andConditions[i]);
 				};
-				console.info("_this.filterByLines",_this.filterByLines)
+				$log.debug("_this.filterByLines",_this.filterByLines);
 				if (_this.filterByLines.length > 0)
 					searchCondition.push({
 						column: 'LINE_ID',
@@ -668,7 +668,7 @@ var app;
 				callLogService.get(1, searchCondition).then(function (data) {
 					_this.callsLog = data;
 				});
-				console.log("Advanced Filter", searchCondition);
+				$log.debug("Advanced Filter", searchCondition);
 			};
 			$scope.delete = function (x) {
 				if (confirm('Are you sure, you want to delete this record?')) {

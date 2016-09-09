@@ -2,9 +2,10 @@ var app;
 
 (function (app) {
 	var Config = (function () {
-		function Config($httpProvider, $urlRouterProvider, $stateProvider, $locationProvider, USER_ROLES) {
+		function Config($httpProvider,$logProvider, $urlRouterProvider, $stateProvider, $locationProvider, USER_ROLES) {
 			this.$stateProvider = $stateProvider;
 			this.$urlRouterProvider = $urlRouterProvider;
+			$logProvider.debugEnabled(false);
 			$locationProvider.html5Mode(true);
 			this.$stateProvider
 				.state('login', {
@@ -99,7 +100,7 @@ var app;
 		}
 		return Config;
 	})();
-	Config.$inject = ["$httpProvider", '$urlRouterProvider', '$stateProvider', "$locationProvider", 'USER_ROLES'];
+	Config.$inject = ["$httpProvider","$logProvider", '$urlRouterProvider', '$stateProvider', "$locationProvider", 'USER_ROLES'];
 
 	var mainApp = angular.module("IVRY-App", ['ui.router', 'ui.bootstrap', 'ngFileUpload', 'angular-storage', 'uiSwitch', 'as.sortable']);
 	mainApp.config(Config);
