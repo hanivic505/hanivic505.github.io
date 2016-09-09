@@ -145,7 +145,7 @@ var app;
 						});
 					},
 					deleteSessionLog: function (obj) {
-						return $http.delete(API_BASE_URL + "/session-log/" + obj.id, {
+						return $http.delete(API_BASE_URL + "/session-log/" + obj.sessionLogId, {
 							headers: {
 								"X-Access-Token": store.get("token")
 							}
@@ -165,7 +165,7 @@ var app;
 						});
 					},
 					getCallLog: function (obj) {
-						return $http.get(API_BASE_URL + "/call-log/" + obj.id, {
+						return $http.get(API_BASE_URL + "/call-log/" + obj.sessionLogId, {
 							headers: {
 								"X-Access-Token": store.get("token")
 							}
@@ -174,7 +174,7 @@ var app;
 						});
 					},
 					getSessionLog: function (obj) {
-						return $http.get(API_BASE_URL + "/session-log/" + obj.id, {
+						return $http.get(API_BASE_URL + "/session-log/" + obj.sessionLogId, {
 							headers: {
 								"X-Access-Token": store.get("token")
 							}

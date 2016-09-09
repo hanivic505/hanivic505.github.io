@@ -36,6 +36,10 @@ var app;
 								obj.icon = "fa-times fg-red";
 								obj.title = "Irrelevent";
 								break;
+							case 5:
+								obj.icon = "fa-circle-o";
+								obj.title = "Un-Marked";
+								break;
 							default:
 								break;
 						}
@@ -125,6 +129,14 @@ var app;
 							});
 						});
 						return tempColumns;
+					},
+					checkAll: function (obj, prop) {
+						if (obj.childs)
+							for (var i = 0; i < obj.childs.length; i++) {
+								obj.childs[i][prop] = obj.checked;
+								if (obj.childs[i].childs)
+									$scope.handleChkAll(obj.childs[i], prop);
+							}
 					},
 				}
 			}

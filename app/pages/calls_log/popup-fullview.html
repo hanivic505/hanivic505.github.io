@@ -18,8 +18,8 @@
 						<i class="fa" ng-class="getIcon(obj.sessionFlagId).icon"></i> {{getIcon(obj.sessionFlagId).title}} <span class="caret"></span>
 					</button>
 					<ul class="dropdown-menu">
-						<li><a ng-click="obj.sessionFlagId=null" href="" class="btn btn-link"><i class="fa fa-circle-o"></i> Un Marked</a></li>
-						<li ng-repeat="z in lookups['sessionFlagLus']"><a ng-click="obj.sessionFlagId=z.id" href="" class="btn btn-link"><i class="fa" ng-class="{'fa-exclamation':z.id==1,'fa-search':z.id==2,'fa-check':z.id==3,'fa-times':z.id==4}"></i> {{z.description}}</a></li>
+<!--						<li><a ng-click="obj.sessionFlagId=null" href="" class="btn btn-link"><i class="fa fa-circle-o"></i> Un Marked</a></li>-->
+						<li ng-repeat="z in lookups['sessionFlagLus']"><a ng-click="obj.sessionFlagId=z.id" href="" class="btn btn-link"><i class="fa" ng-class="{'fa-exclamation':z.id==1,'fa-search':z.id==2,'fa-check':z.id==3,'fa-times':z.id==4,'fa-circle-o':z.id==5}"></i> {{z.description}}</a></li>
 					</ul>
 				</div>
 			</div>

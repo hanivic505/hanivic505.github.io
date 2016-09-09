@@ -410,35 +410,46 @@ var app;
 				_this.editObj = _this.callsLog.searchResults[idx + dir];
 				$scope.play(_this.editObj);
 			};
+			$scope.handleChkAll = utilitiesServices.checkAll;
+			//			$scope.handleChkAll = function (obj, prop, isHandleTree = false) {
+			//				if (isHandleTree && obj.id !== undefined)
+			//					ctrl.lines[obj.id] = obj.checked;
+			//				if (obj.childs)
+			//					for (var i = 0; i < obj.childs.length; i++) {
+			//						obj.childs[i][prop] = obj.checked;
+			//						if (isHandleTree && obj.childs[i].id !== undefined)
+			//							ctrl.lines[obj.childs[i].id] = obj.checked;
+			//						if (obj.childs[i].childs)
+			//							$scope.handleChkAll(obj.childs[i], prop, isHandleTree);
+			//					}
+			//
+			//				if (obj.identities) {
+			//					var idObjs = obj.identities;
+			//					for (var i = 0; i < idObjs.length; i++) {
+			//						idObjs[i][prop] = obj.checked;
+			//						if (isHandleTree && idObjs[i].id !== undefined)
+			//							ctrl.lines[idObjs[i].id] = obj.checked;
+			//						if (idObjs[i].lines)
+			//							$scope.handleChkAll(idObjs[i], prop, isHandleTree);
+			//					}
+			//				}
+			//				if (obj.lines)
+			//					for (var i = 0; i < obj.lines.length; i++) {
+			//						obj.lines[i][prop] = obj.checked;
+			//					}
+			//			};
+			this.filterByLines = [];
+			$scope.filterLines = function (obj) {
+				_this.filterByLines = [];
+				angular.forEach(obj.lines, function (val, key, o) {
 
-			$scope.handleChkAll = function (obj, prop, isHandleTree = false) {
-				if (isHandleTree && obj.id !== undefined)
-					ctrl.lines[obj.id] = obj.checked;
-				if (obj.childs)
-					for (var i = 0; i < obj.childs.length; i++) {
-						obj.childs[i][prop] = obj.checked;
-						if (isHandleTree && obj.childs[i].id !== undefined)
-							ctrl.lines[obj.childs[i].id] = obj.checked;
-						if (obj.childs[i].childs)
-							$scope.handleChkAll(obj.childs[i], prop, isHandleTree);
-					}
-
-				if (obj.identities) {
-					var idObjs = obj.identities;
-					for (var i = 0; i < idObjs.length; i++) {
-						idObjs[i][prop] = obj.checked;
-						if (isHandleTree && idObjs[i].id !== undefined)
-							ctrl.lines[idObjs[i].id] = obj.checked;
-						if (idObjs[i].lines)
-							$scope.handleChkAll(idObjs[i], prop, isHandleTree);
-					}
-				}
-				if (obj.lines)
-					for (var i = 0; i < obj.lines.length; i++) {
-						obj.lines[i][prop] = obj.checked;
-					}
+					console.info(key, val, o);
+					if (val)
+						_this.filterByLines.push(key);
+				});
+				console.info(_this.filterByLines);
+				$scope.doAdvancedSearch($scope.advancedFilter);
 			};
-			$scope.filterLines = function (obj) {};
 			$scope.linesTreeObj = linesData; //linesTreeService.linesTreeObj;
 			//			console.info("linesTreeObj", $scope.linesTreeObj);
 			$scope.columns = {
@@ -617,9 +628,13 @@ var app;
 				}
 				angular.forEach(obj.flags, function (val, key, obj) {
 					if (val)
-						flagsObj.value.push(key);
+						if (key == "null")
+							flagsObj.value.push(null);
+						else
+							flagsObj.value.push(key);
 				});
-				searchCondition.push(flagsObj);
+				if (flagsObj.value.length > 0)
+					searchCondition.push(flagsObj);
 				if (obj.locked)
 					searchCondition.push({
 						column: "LOCKED",
@@ -643,7 +658,13 @@ var app;
 				for (var i = 0; i < obj.andConditions.length; i++) {
 					searchCondition.push(obj.andConditions[i]);
 				};
-
+				console.info("_this.filterByLines",_this.filterByLines)
+				if (_this.filterByLines.length > 0)
+					searchCondition.push({
+						column: 'LINE_ID',
+						operatorCode: 'IN',
+						value: _this.filterByLines
+					});
 				callLogService.get(1, searchCondition).then(function (data) {
 					_this.callsLog = data;
 				});
