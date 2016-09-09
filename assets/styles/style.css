@@ -178,15 +178,15 @@ h1.page-header {
 	float: left;
 	padding-right: 55px;
 }
-.alert-danger{
+.alert-danger {
 	background: #833;
-	color:#e8b2b2;
+	color: #e8b2b2;
 }
-.alert-success{
+.alert-success {
 	background: #383;
 	color: #bdedbd;
 }
-.alert-warning{
+.alert-warning {
 	background: #bb9700;
 	color: #f8eeb7;
 }
@@ -235,7 +235,7 @@ h1.page-header {
 .table.with-actions-bar>tbody>tr {
 	position: relative;
 }
-.table.with-actions-bar>tbody>tr>td[ng-click]{
+.table.with-actions-bar>tbody>tr>td[ng-click] {
 	cursor: pointer;
 }
 .no-vertical-overflow {
@@ -355,6 +355,21 @@ tr:hover .actions-bar a.btn {
 .table-hover>tbody>tr>th.active:hover {
 	background: #ac5;
 }
+.order-by {
+	color: #ee9 !important;
+}
+.order-by.desc:after {
+	content: "\f175";
+	display: inline-block;
+	font-family: "FontAwesome";
+	margin-left: 4px;
+}
+.order-by.asc:after {
+	content: "\f176";
+	display: inline-block;
+	font-family: "FontAwesome";
+	margin-left: 4px;
+}
 .pagination>li>a:focus,
 .pagination>li>a:hover,
 .pagination>li>span:focus,
@@ -378,7 +393,8 @@ tr:hover .actions-bar a.btn {
 	background: transparent;
 	color: #ccc;
 }
-.uib-daypicker>table,table.uib-timepicker {
+.uib-daypicker>table,
+table.uib-timepicker {
 	margin: 0 auto;
 }
 .open>.dropdown-menu {
@@ -465,8 +481,8 @@ tree+div>hr {
 	border-right: solid 1px;
 }
 .clock {
-    font-size: 1em;
-    padding: 0 15px;
+	font-size: 1em;
+	padding: 0 15px;
 }
 ul.tree,
 ul.tree ul {
@@ -792,9 +808,9 @@ div#waveform-timeline {
 	z-index: 90000;
 	background-size: 10%;
 }
-body>.alert{
+body>.alert {
 	position: absolute;
-	top:50px;
+	top: 50px;
 	left: 30%;
 	right: 30%;
 	text-align: center;
@@ -802,6 +818,7 @@ body>.alert{
 	border-radius: 0;
 	padding: 8px 30px 8px 8px;
 }
+
 /*Print Styles*/
 
 @media print {

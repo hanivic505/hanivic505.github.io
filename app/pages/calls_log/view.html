@@ -45,7 +45,7 @@
 								<input type="checkbox" ng-model="checkAll" ng-click="selectAll();">
 							</th>
 							<th ng-repeat="col in columns.childs |  filter:{visible:true} | filter:{code:'!SESSION_FLAG_ID'} | filter:{code:'!LOCKED'}">
-								<a href="" ng-click="setPage(callLogService.orderBy(col.prop))" class="fg-white" ng-bind="col.title"></a>
+								<a href="" ng-click="setPage(callLogService.orderBy(col.prop))" class="fg-white" ng-bind="col.title" ng-class="{'order-by':callLogService.orders[0]==col.prop,'asc':callLogService.orders[1]=='ASC','desc':callLogService.orders[1]=='DESC'}"></a>
 							</th>
 						</tr>
 					</thead>
