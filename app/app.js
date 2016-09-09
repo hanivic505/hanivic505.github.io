@@ -5,7 +5,7 @@ var app;
 		function Config($httpProvider,$logProvider, $urlRouterProvider, $stateProvider, $locationProvider, USER_ROLES) {
 			this.$stateProvider = $stateProvider;
 			this.$urlRouterProvider = $urlRouterProvider;
-			$logProvider.debugEnabled(false);
+//			$logProvider.debugEnabled(false);
 			$locationProvider.html5Mode(true);
 			this.$stateProvider
 				.state('login', {

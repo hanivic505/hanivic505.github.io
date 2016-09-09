@@ -9,7 +9,7 @@
 						<div class="col-xs-6">
 							<label for="">Filter rows marked with</label>
 							<div class="row values">
-<!--
+								<!--
 								<div class="col-xs-6" >
 									<label>
 										<input type="checkbox" ng-model="advancedFilter.flags[null]"> <i class="fa fa-circle-o"></i> Un Marked</label>
@@ -98,6 +98,7 @@
 					</div>
 				</div>
 				<div class="col-xs-6 text-right">
+					<button class="btn btn-link btn-sm" ng-click="cancelSearch()" type="button">Reset</button>
 					<button class="btn btn-default btn-sm" uib-dropdown-toggle ng-click="cancelSearch()"><i class="fa fa-times"></i> Cancel</button>
 					<button class="btn btn-primary btn-sm" uib-dropdown-toggle ng-click="doAdvancedSearch(advancedFilter)"><i class="fa fa-search"></i> Search</button>
 				</div>

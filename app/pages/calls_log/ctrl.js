@@ -220,6 +220,7 @@ var app;
 			};
 			$scope.setPage = function (pageNo) {
 				$scope.currentPage = pageNo;
+
 			};
 
 			$scope.pageChanged = function () {
@@ -235,11 +236,14 @@ var app;
 			};
 			$scope.$watch("currentPage", function (nVal, oVal) {
 				$log.debug("currentPage", nVal, oVal);
-				if (nVal != oVal)
+				if (nVal != oVal) {
+					$scope.selectedItems = [];
+					$scope.checkAll = false;
 					callLogService.get(nVal)
-					.then(function (data) {
-						_this.callsLog = data;
-					});
+						.then(function (data) {
+							_this.callsLog = data;
+						});
+				}
 			});
 			$rootScope.$on("refresh_data", function () {
 				$log.debug("refresh_data");
@@ -450,7 +454,20 @@ var app;
 				$log.debug(_this.filterByLines);
 				$scope.doAdvancedSearch($scope.advancedFilter);
 			};
-			$scope.linesTreeObj = linesData; //linesTreeService.linesTreeObj;
+			linesData.map(function (currentValue, index, arr) {
+				delete(currentValue.id);
+				for (var i = 0; i < currentValue.identities.length; i++) {
+					delete(currentValue.identities[i].id);
+					if (currentValue.identities[i].lines.length < 1) {
+						currentValue.identities.pop(i);
+						i--;
+					}
+				}
+				//				$log.debug("CASE ::after", currentValue.identities, currentValue, index, arr);
+				if (currentValue.identities.length < 1)
+					arr.pop(index);
+			});
+			$scope.linesTreeObj = linesData;
 			//			$log.debug("linesTreeObj", $scope.linesTreeObj);
 			$scope.columns = {
 				childs: []
@@ -478,7 +495,8 @@ var app;
 				lines: {},
 				treeObj: linesData,
 				multiSelect: true,
-				selectedNode: null
+				selectedNode: null,
+				filterOutEmptyIdentity: true,
 			};
 			$scope.lines = $scope.treeConfig.lines;
 
@@ -581,9 +599,14 @@ var app;
 				$log.debug("Apply Updates", obj, trgt, trgt.indexOf(obj))
 			};
 			$scope.markSelected = function (list, val) {
+				$log.debug(list, val);
 				angular.forEach(list, function (item) {
 					item.sessionFlagId = val;
+					callLogService.updateSessionFlag(item.sessionLogId, val);
+					$log.debug(item);
 				});
+				$scope.selectedItems = [];
+				$scope.checkAll = false;
 				//				$log.debug(list);
 			};
 			$scope.callLogService = callLogService;
@@ -658,7 +681,7 @@ var app;
 				for (var i = 0; i < obj.andConditions.length; i++) {
 					searchCondition.push(obj.andConditions[i]);
 				};
-				$log.debug("_this.filterByLines",_this.filterByLines);
+				$log.debug("_this.filterByLines", _this.filterByLines);
 				if (_this.filterByLines.length > 0)
 					searchCondition.push({
 						column: 'LINE_ID',

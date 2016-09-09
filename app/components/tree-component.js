@@ -10,7 +10,7 @@ var app;
 			}
 		});
 
-		function treeComponent($scope, $element, $attrs, dbService) {
+		function treeComponent($scope, $log, $element, $attrs, dbService) {
 
 			var ctrl = this;
 			$scope.dbService = dbService;
@@ -60,6 +60,7 @@ var app;
 			// enable checkboxes to select multiple elements
 			if (this.multiSelect) {
 				$scope.handleChkAll = function (obj, prop, isHandleTree = false) {
+					$log.debug("treeComp", obj, prop);
 					if (isHandleTree && obj.id !== undefined)
 						ctrl.lines[obj.id] = obj.checked;
 					if (obj.childs)
@@ -80,10 +81,13 @@ var app;
 								$scope.handleChkAll(idObjs[i], prop, isHandleTree);
 						}
 					}
-					if (obj.lines)
-						for (var i = 0; i < obj.lines.length; i++) {
-							obj.lines[i][prop] = obj.checked;
+					if (obj.lines) {
+						var idObjs = obj.lines;
+						for (var i = 0; i < idObjs.length; i++) {
+							idObjs[i][prop] = obj.checked;
+							ctrl.lines[idObjs[i].id] = obj.checked;
 						}
+					}
 				};
 				if (ctrl.lines != undefined)
 					$scope.handleChkAll(this.treeObj[0], "checked", true);

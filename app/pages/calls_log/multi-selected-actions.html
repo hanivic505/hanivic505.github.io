@@ -5,11 +5,7 @@
 			<span class="dropdown form-control">
 				<a href="" data-toggle="dropdown" title="{{vm.getIcon(markAll.sessionFlagId).title}}"><i class="fa" ng-class="vm.getIcon(markAll.sessionFlagId).icon"></i> {{vm.getIcon(markAll.sessionFlagId).title}} <i class="caret"></i></a>
 				<ul class="dropdown-menu">
-					<li><a href="" ng-click="markAll.sessionFlagId=null"><i class="fa fa-circle-o"></i> Un Marked</a></li>
-					<li><a href="" ng-click="markAll.sessionFlagId=1"><i class="fa fa-exclamation"></i> Important</a></li>
-					<li><a href="" ng-click="markAll.sessionFlagId=2"><i class="fa fa-search"></i> Revise Later</a></li>
-					<li><a href="" ng-click="markAll.sessionFlagId=3"><i class="fa fa-check"></i> Reviewed</a></li>
-					<li><a href="" ng-click="markAll.sessionFlagId=4"><i class="fa fa-times"></i> Irrelevent</a></li>
+					<li ng-repeat="z in lookups['sessionFlagLus']"><a ng-click="markAll.sessionFlagId=z.id" href=""><i class="fa" ng-class="{'fa-exclamation':z.id==1,'fa-search':z.id==2,'fa-check':z.id==3,'fa-times':z.id==4,'fa-circle-o':z.id==5}"></i> {{z.description}}</a></li>
 				</ul>
 			</span>
 			<span class="input-group-btn">
