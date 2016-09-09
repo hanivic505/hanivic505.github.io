@@ -459,13 +459,13 @@ var app;
 				for (var i = 0; i < currentValue.identities.length; i++) {
 					delete(currentValue.identities[i].id);
 					if (currentValue.identities[i].lines.length < 1) {
-						currentValue.identities.pop(i);
+						currentValue.identities.splice(i, 1);
 						i--;
 					}
 				}
 				//				$log.debug("CASE ::after", currentValue.identities, currentValue, index, arr);
 				if (currentValue.identities.length < 1)
-					arr.pop(index);
+					arr.splice(index, 1);
 			});
 			$scope.linesTreeObj = linesData;
 			//			$log.debug("linesTreeObj", $scope.linesTreeObj);
@@ -579,22 +579,22 @@ var app;
 				$log.debug("Check if All Selected", $scope.selectedItems.length, $scope.selectedItems);
 			};
 
-			$scope.selectedOptions = function (selectedList, key, op, val) {
-				var optionExisted = false;
-				angular.forEach(selectedList, function (nVal, nKey) {
-					if (nVal["column"] == key) {
-						nVal["value"] = val;
-						nVal["operator"] = op;
-						optionExisted = true;
-					}
-				});
-				if (!optionExisted)
-					selectedList.push({
-						column: key,
-						operator: op,
-						value: val
-					});
-			};
+			//			$scope.selectedOptions = function (selectedList, key, op, val) {
+			//				var optionExisted = false;
+			//				angular.forEach(selectedList, function (nVal, nKey) {
+			//					if (nVal["column"] == key) {
+			//						nVal["value"] = val;
+			//						nVal["operator"] = op;
+			//						optionExisted = true;
+			//					}
+			//				});
+			//				if (!optionExisted)
+			//					selectedList.push({
+			//						column: key,
+			//						operator: op,
+			//						value: val
+			//					});
+			//			};
 			$scope.applyUpdates = function (obj, trgt) {
 				$log.debug("Apply Updates", obj, trgt, trgt.indexOf(obj))
 			};
@@ -613,9 +613,63 @@ var app;
 			this.indexInArray = function (arr, key) {
 				angular.forEach(arr, function (nVal, nKey) {
 					if (nVal["column"] == key) {
-						arr.pop(nKey);
+						arr.splice(nKey, 1);
 					}
 				});
+			};
+			this.filterByDuration = [];
+			$scope.filterDuration = function (obj) {
+				if (!_this.durationOption)
+					switch (obj.period) {
+						case "1":
+							obj.to = utilitiesServices.getSystemDate();
+							obj.from = new Date(obj.from.getTime() - (1000 * 60 * 60));
+							_this.filterByDuration.push({
+								column: "START_DATE",
+								operatorCode: "BETWEEN",
+								value: [obj.from, obj.to]
+							});
+							break;
+						case "2":
+							obj.to = utilitiesServices.getSystemDate();
+							obj.from = new Date(obj.from.getTime() - (24 * 1000 * 60 * 60));
+							_this.filterByDuration.push({
+								column: "START_DATE",
+								operatorCode: "BETWEEN",
+								value: [obj.from, obj.to]
+							});
+							break;
+						case "3":
+							obj.to = utilitiesServices.getSystemDate();
+							obj.from = new Date(obj.from.getTime() - (7 * 24 * 1000 * 60 * 60));
+							_this.filterByDuration.push({
+								column: "START_DATE",
+								operatorCode: "BETWEEN",
+								value: [obj.from, obj.to]
+							});
+							break;
+						case "4":
+							obj.to = utilitiesServices.getSystemDate();
+							obj.from = new Date(obj.from.getTime() - (30 * 24 * 1000 * 60 * 60));
+							_this.filterByDuration.push({
+								column: "START_DATE",
+								operatorCode: "BETWEEN",
+								value: [obj.from, obj.to]
+							});
+							break;
+						default:
+							obj.to = utilitiesServices.getSystemDate();
+							obj.from = utilitiesServices.getSystemDate();
+							_this.filterByDuration = [];
+							break;
+					} else
+					_this.filterByDuration.push({
+						column: "START_DATE",
+						operatorCode: "BETWEEN",
+						value: [obj.from, obj.to]
+					});
+				$log.debug(_this.durationOption, obj);
+				$scope.doAdvancedSearch($scope.advancedFilter);
 			};
 			$scope.doAdvancedSearch = function (obj) {
 				$log.debug("doAdvancedSearch", obj);
@@ -688,6 +742,10 @@ var app;
 						operatorCode: 'IN',
 						value: _this.filterByLines
 					});
+				if (_this.filterByDuration.length > 0)
+					searchCondition.push(_this.filterByDuration[0]);
+				if (searchCondition[0].column == null)
+					searchCondition.shift();
 				callLogService.get(1, searchCondition).then(function (data) {
 					_this.callsLog = data;
 				});

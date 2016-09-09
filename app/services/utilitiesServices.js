@@ -138,6 +138,9 @@ var app;
 									$scope.handleChkAll(obj.childs[i], prop);
 							}
 					},
+					getSystemDate:function(){
+						return new Date();
+					}
 				}
 			}
 			return serviceFn;
