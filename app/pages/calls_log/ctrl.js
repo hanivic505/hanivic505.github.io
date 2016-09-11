@@ -8,7 +8,7 @@ var app;
 
 	var CallsLogItem;
 	(function (CallsLogItem) {
-		angular.module("IVRY-App").controller("exportCallLogCtrl", ["$scope", "$filter", "$uibModalInstance", "obj", function ($scope, $filter, $uibModalInstance, obj) {
+		angular.module("IVRY-App").controller("exportCallLogCtrl", ["$scope", "$filter", "$uibModalInstance", "callLogService", "obj", function ($scope, $filter, $uibModalInstance, callLogService, obj) {
 			$scope.obj = obj;
 			$scope.objType = Object.prototype.toString.call(obj);
 			$scope.exported = false;
@@ -30,10 +30,38 @@ var app;
 			}
 
 			$scope.ok = function () {
+				var condition = [];
 				if ($scope.exported)
 					$uibModalInstance.close($scope.obj);
-				else
-					$scope.exported = true;
+				else {
+					console.log("EXPORT", obj);
+					if ($scope.objType == "[object Object]") {
+						condition.push({
+							column: "SESSION_LOG_ID",
+							operatorCode: "EQUAL",
+							value: obj.sessionLogId
+						});
+					} else {
+						var ids = [];
+						for (var i = 0; i < obj.length; i++)
+							ids.push(obj[i].sessionLogId);
+						condition.push({
+							column: "SESSION_LOG_ID",
+							operatorCode: "IN",
+							value: ids
+						});
+					}
+					callLogService.export(1, condition).then(function (response) {
+						console.log(response);
+						$scope.exported = true;
+					}, function (error) {
+						$rootScope.message = {
+							body: error.data.data.message,
+							type: 'danger',
+							duration: 5000,
+						};
+					});
+				}
 			};
 
 			$scope.cancel = function () {

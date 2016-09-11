@@ -182,12 +182,26 @@ var app;
 							return data.data.data;
 						});
 					},
+					export: function (pgNum, condition) {
+						return $http.post(API_BASE_URL + "/call-log/download", {
+							pageSize: this.pageSize,
+							pageNumber: this.currentPage,
+							andConditions: condition,
+							order: this.orders
+						}, {
+							headers: {
+								"X-Access-Token": store.get("token")
+							}
+						}).then(function (response) {
+							return response.data.data;
+						}, function (error) {});
+					},
 					orderBy: function (order) {
 						var dir = "DESC";
 						if (this.orders.indexOf(order) > -1)
 							dir = this.orders[1] == "DESC" ? "ASC" : "DESC";
 						this.orders = [order, dir];
-//						this.get(1);
+						//						this.get(1);
 						console.info("orderBy Current Page", this.currentPage);
 						$rootScope.$broadcast("refresh_data");
 						return this.currentPage;
