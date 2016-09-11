@@ -619,11 +619,12 @@ var app;
 			};
 			this.filterByDuration = [];
 			$scope.filterDuration = function (obj) {
+				_this.filterByDuration = [];
 				if (!_this.durationOption)
 					switch (obj.period) {
 						case "1":
 							obj.to = utilitiesServices.getSystemDate();
-							obj.from = new Date(obj.from.getTime() - (1000 * 60 * 60));
+							obj.from = new Date(obj.to.getTime() - (1000 * 60 * 60));
 							_this.filterByDuration.push({
 								column: "START_DATE",
 								operatorCode: "BETWEEN",
@@ -632,7 +633,7 @@ var app;
 							break;
 						case "2":
 							obj.to = utilitiesServices.getSystemDate();
-							obj.from = new Date(obj.from.getTime() - (24 * 1000 * 60 * 60));
+							obj.from = new Date(obj.to.getTime() - (24 * 1000 * 60 * 60));
 							_this.filterByDuration.push({
 								column: "START_DATE",
 								operatorCode: "BETWEEN",
@@ -641,7 +642,7 @@ var app;
 							break;
 						case "3":
 							obj.to = utilitiesServices.getSystemDate();
-							obj.from = new Date(obj.from.getTime() - (7 * 24 * 1000 * 60 * 60));
+							obj.from = new Date(obj.to.getTime() - (7 * 24 * 1000 * 60 * 60));
 							_this.filterByDuration.push({
 								column: "START_DATE",
 								operatorCode: "BETWEEN",
@@ -650,7 +651,7 @@ var app;
 							break;
 						case "4":
 							obj.to = utilitiesServices.getSystemDate();
-							obj.from = new Date(obj.from.getTime() - (30 * 24 * 1000 * 60 * 60));
+							obj.from = new Date(obj.to.getTime() - (30 * 24 * 1000 * 60 * 60));
 							_this.filterByDuration.push({
 								column: "START_DATE",
 								operatorCode: "BETWEEN",
@@ -663,11 +664,11 @@ var app;
 							_this.filterByDuration = [];
 							break;
 					} else
-					_this.filterByDuration.push({
-						column: "START_DATE",
-						operatorCode: "BETWEEN",
-						value: [obj.from, obj.to]
-					});
+						_this.filterByDuration.push({
+							column: "START_DATE",
+							operatorCode: "BETWEEN",
+							value: [obj.from, obj.to]
+						});
 				$log.debug(_this.durationOption, obj);
 				$scope.doAdvancedSearch($scope.advancedFilter);
 			};

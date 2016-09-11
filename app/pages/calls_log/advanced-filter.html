@@ -52,7 +52,7 @@
 					</div>
 					<div class="row controls-row" ng-repeat="f in advancedFilter.andConditions">
 						<div class="col-xs-4">
-							<select ng-model="f.column" ng-options="o.code as o.description for o in columns.childs | filter:{visible:true}" class="form-control input-sm"></select>
+							<select ng-model="f.column" ng-options="o.code as o.description for o in columns.childs | filter:{visible:true} | filter:{code:'!START_DATE'} | filter:{code:'!END_DATE'} | filter:{code:'!LOCKED'} | filter:{code:'!SESSION_FLAG_ID'} | filter:{code:'!HAS_TRANSCRIPT'}" class="form-control input-sm"></select>
 						</div>
 						<div class="col-xs-2">
 							<select ng-model="f.operatorCode" class="form-control input-sm" ng-options="x.operator as x.description for x in lookups.filterOperationLus | filter:{code : '!in'} | filter:{code : '!between'}"></select>
