@@ -14,7 +14,7 @@ var app;
 			$scope.exported = false;
 			if ($scope.objType == "[object Object]") {
 				$scope.exp = {
-					name: obj.lineName + '_' + $filter('date')(obj.startDate, 'dd.MM.yyyy.HH.mm'),
+					name: obj.lineName + '_' + $filter('date')(obj.startDate, 'dd.MM.yyyy.HH.mm')+".csv",
 					options: {
 						audio: true,
 						excel: false
@@ -28,39 +28,44 @@ var app;
 					}
 				}
 			}
-
-			$scope.ok = function () {
+			$scope.download = function () {
 				var condition = [];
+				console.log("EXPORT", $scope.obj);
+				if ($scope.objType == "[object Object]") {
+					condition.push({
+						column: "SESSION_LOG_ID",
+						operatorCode: "EQUAL",
+						value: $scope.obj.sessionLogId
+					});
+				} else {
+					var ids = [];
+					for (var i = 0; i < $scope.obj.length; i++)
+						ids.push($scope.obj[i].sessionLogId);
+					condition.push({
+						column: "SESSION_LOG_ID",
+						operatorCode: "IN",
+						value: ids
+					});
+				}
+				callLogService.export(1, condition).then(function (response) {
+					console.log(response);
+					var file = new Blob([response], {
+						type: 'text/csv'
+					});
+					saveAs(file, $scope.exp.name);
+				}, function (error) {
+					$rootScope.message = {
+						body: error.data.data.message,
+						type: 'danger',
+						duration: 5000,
+					};
+				});
+			}
+			$scope.ok = function () {
 				if ($scope.exported)
 					$uibModalInstance.close($scope.obj);
 				else {
-					console.log("EXPORT", obj);
-					if ($scope.objType == "[object Object]") {
-						condition.push({
-							column: "SESSION_LOG_ID",
-							operatorCode: "EQUAL",
-							value: obj.sessionLogId
-						});
-					} else {
-						var ids = [];
-						for (var i = 0; i < obj.length; i++)
-							ids.push(obj[i].sessionLogId);
-						condition.push({
-							column: "SESSION_LOG_ID",
-							operatorCode: "IN",
-							value: ids
-						});
-					}
-					callLogService.export(1, condition).then(function (response) {
-						console.log(response);
-						$scope.exported = true;
-					}, function (error) {
-						$rootScope.message = {
-							body: error.data.data.message,
-							type: 'danger',
-							duration: 5000,
-						};
-					});
+					$scope.exported = true;
 				}
 			};
 
@@ -786,6 +791,15 @@ var app;
 					callLogService.deleteSessionLog(x);
 				}
 			};
+			$scope.deleteMulti = function (x) {
+				$log.debug(x);
+				if (confirm("Are you sure!, you want to delete this records?")) {
+					var ids = [];
+					for (var i = 0; i < x.length; i++)
+						ids.push(x[i].sessionLogId)
+					callLogService.deleteMultiSessionLog(ids);
+				}
+			}
 			$scope.loadItem = function (x) {
 				//				callLogService.getSessionLog(x).then(function (data) {
 				_this.editObj = /*data*/ x;

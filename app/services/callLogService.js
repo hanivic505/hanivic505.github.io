@@ -164,6 +164,31 @@ var app;
 							};
 						});
 					},
+					deleteMultiSessionLog: function (obj) {
+						return $http({
+							method: "DELETE",
+							url: API_BASE_URL + "/session-log/",
+							data: {
+								ids: obj
+							},
+							headers: {
+								"X-Access-Token": store.get("token")
+							}
+						}).then(function (data) {
+							$rootScope.$broadcast("refresh_data");
+							$rootScope.message = {
+								body: "Record Deleted!",
+								type: "success",
+								duration: 3000
+							}
+						}, function (error) {
+							$rootScope.message = {
+								body: error.data.data.message,
+								type: 'danger',
+								duration: 5000,
+							};
+						});
+					},
 					getCallLog: function (obj) {
 						return $http.get(API_BASE_URL + "/call-log/" + obj.sessionLogId, {
 							headers: {

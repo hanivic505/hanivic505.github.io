@@ -18,10 +18,10 @@
 			</div>
 		</div>
 		<div class="col-md-12" ng-if="exported">
-			<a href="" class="btn btn-link" ng-if="exp.options.excel" title="{{exp.name+'.xls'}}">
+			<a href="" ng-click="download()" class="btn btn-link" ng-if="exp.options.excel" title="{{exp.name+'.xls'}}">
 				<i class="fa fa-3x fa-download"></i> Download Data File
 			</a>
-			<a href="" class="btn btn-link" ng-if="exp.options.audio" title="{{exp.name+'.zip'}}">
+			<a href="" ng-click="download()" class="btn btn-link" ng-if="exp.options.audio" title="{{exp.name+'.zip'}}">
 				<i class="fa fa-3x fa-download"></i> Download Audio File
 			</a>
 		</div>
