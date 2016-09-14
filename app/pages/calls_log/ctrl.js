@@ -22,6 +22,7 @@ var app;
 				}
 			} else {
 				$scope.exp = {
+					name:"Call_Log_"+new Date()+".csv",
 					options: {
 						audio: false,
 						excel: true

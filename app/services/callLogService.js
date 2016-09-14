@@ -208,17 +208,20 @@ var app;
 						});
 					},
 					export: function (pgNum, condition) {
-						return $http.post(API_BASE_URL + "/call-log/download", {
-							pageSize: this.pageSize,
-							pageNumber: this.currentPage,
-							andConditions: condition,
-							order: this.orders
-						}, {
+						return $http({
+							method: "POST",
+							url: API_BASE_URL + "/call-log/download",
+							data: {
+								pageSize: this.pageSize,
+								pageNumber: this.currentPage,
+								andConditions: condition,
+								order: this.orders
+							},
 							headers: {
-								"X-Access-Token": store.get("token")
+								"X-Access-Token": store.get("token"),
 							}
 						}).then(function (response) {
-							return response.data.data;
+							return response.data;
 						}, function (error) {});
 					},
 					orderBy: function (order) {
