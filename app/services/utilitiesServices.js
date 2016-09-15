@@ -2,8 +2,8 @@ var app;
 (function (app) {
 	var services;
 	(function (services) {
-		var serviceFn = (function () {
-			function serviceFn() {
+		var serviceFn = (function ($uibModal) {
+			function serviceFn($uibModal) {
 				return {
 					getIcon: function (param) {
 						var obj = {};
@@ -138,13 +138,31 @@ var app;
 									$scope.handleChkAll(obj.childs[i], prop);
 							}
 					},
-					getSystemDate:function(){
+					getSystemDate: function () {
 						return new Date();
-					}
+					},
+					openPopup: function (_obj, tmpltURL, cntrl, size = "",animate=true) {
+						var modalInstance = $uibModal.open({
+							animation: animate,
+							templateUrl: tmpltURL,
+							controller: cntrl,
+							size: size,
+							resolve: {
+								obj: function () {
+									return _obj;
+								}
+							}
+						});
+						modalInstance.result.then(function (selectedItem) {
+//							$scope.selected = selectedItem;
+						}, function () {
+//							$log.debug('Modal dismissed at: ' + new Date());
+						});
+					},
 				}
 			}
 			return serviceFn;
 		})();
-		angular.module("IVRY-App").factory("utilitiesServices", [serviceFn]);
+		angular.module("IVRY-App").factory("utilitiesServices", ["$uibModal",serviceFn]);
 	})(services = app.services || (services = {}));
 })(app || (app = {}));

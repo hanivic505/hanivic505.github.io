@@ -53,7 +53,7 @@
 						<tr ng-show="vm.callsLog.searchResults.length==0">
 							<td colspan="20" class="text-center">No Records Found</td>
 						</tr>
-						<tr ng-repeat="x in vm.callsLog.searchResults " ng-class="{'active':vm.editObj==x}">
+						<tr ng-repeat="x in vm.callsLog.searchResults " ng-class="{'active':vm.editObj==x,'selected':x.Selected}">
 							<td style="width:120px">
 								<input type="checkbox" ng-model="x.Selected" ng-click="checkIfAllSelected(x)" />
 								<span class="dropdown" ng-if="columns.childs[1].visible">

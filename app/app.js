@@ -2,10 +2,10 @@ var app;
 
 (function (app) {
 	var Config = (function () {
-		function Config($httpProvider,$logProvider, $urlRouterProvider, $stateProvider, $locationProvider, USER_ROLES) {
+		function Config($httpProvider, $logProvider, $urlRouterProvider, $stateProvider, $locationProvider, USER_ROLES) {
 			this.$stateProvider = $stateProvider;
 			this.$urlRouterProvider = $urlRouterProvider;
-//			$logProvider.debugEnabled(false);
+			//			$logProvider.debugEnabled(false);
 			$locationProvider.html5Mode(true);
 			this.$stateProvider
 				.state('login', {
@@ -20,7 +20,7 @@ var app;
 					templateUrl: '/app/pages/calls_log/view.html',
 					data: {
 						title: 'Calls Log',
-						authorizedRoles: [USER_ROLES.sysAdmin, USER_ROLES.depAdmin]
+						authorizedRoles: [USER_ROLES.sysAdmin, USER_ROLES.depAdmin, USER_ROLES.teamLead]
 					},
 					controller: "CallLogCtrl as vm",
 					resolve: {
@@ -100,49 +100,11 @@ var app;
 		}
 		return Config;
 	})();
-	Config.$inject = ["$httpProvider","$logProvider", '$urlRouterProvider', '$stateProvider', "$locationProvider", 'USER_ROLES'];
+	Config.$inject = ["$httpProvider", "$logProvider", '$urlRouterProvider', '$stateProvider', "$locationProvider", 'USER_ROLES'];
 
-	var mainApp = angular.module("IVRY-App", ['ui.router', 'ui.bootstrap', 'ngFileUpload', 'angular-storage', 'uiSwitch', 'as.sortable']);
+	var mainApp = angular.module("IVRY-App", ['ui.router', 'ui.bootstrap', 'ngFileUpload','ngSanitize', 'angular-storage', 'uiSwitch', 'as.sortable']);
 	mainApp.config(Config);
-	mainApp.factory('myHttpInterceptor', ['$q', '$rootScope', '$injector',
-    	function ($q, $rootScope, $injector) {
-			$rootScope.showSpinner = false;
-			$rootScope.http = null;
-			return {
-				'request': function (config) {
-					$rootScope.showSpinner = true;
-					return config || $q.when(config);
-				},
-				'requestError': function (rejection) {
-					$rootScope.http = $rootScope.http || $injector.get('$http');
-					if ($rootScope.http.pendingRequests.length < 1) {
-						$rootScope.showSpinner = false;
-					}
-					//					if (canRecover(rejection)) {
-					////						return responseOrNewPromise
-					//					}
-					return $q.reject(rejection);
-				},
-				'response': function (response) {
-					$rootScope.http = $rootScope.http || $injector.get('$http');
-					if ($rootScope.http.pendingRequests.length < 1) {
-						$rootScope.showSpinner = false;
-					}
-					return response || $q.when(response);
-				},
-				'responseError': function (rejection) {
-					$rootScope.http = $rootScope.http || $injector.get('$http');
-					if ($rootScope.http.pendingRequests.length < 1) {
-						$rootScope.showSpinner = false;
-					}
-					//					if (canRecover(rejection)) {
-					////						return responseOrNewPromise
-					//					}
-					return $q.reject(rejection);
-				}
-			}
-    	}
-	]);
+
 	var initApp = function ($rootScope, $state, AUTH_EVENTS, AuthService) {
 		$rootScope.$state = $state;
 		$rootScope.showSpinner = false;
@@ -152,18 +114,35 @@ var app;
 		};
 		$rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams, options) {
 			$rootScope.message = null;
-			//			console.info('$stateChangeStart', event, toState);
-			//			var authorizedRoles = next.data.authorizedRoles;
-			//			if (!AuthService.isAuthorized(authorizedRoles)) {
-			//				event.preventDefault();
-			//				if (AuthService.isAuthenticated()) {
-			//					// user is not allowed
-			//					$rootScope.$broadcast(AUTH_EVENTS.notAuthorized);
-			//				} else {
-			//					// user is not logged in
-			//					$rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
-			//				}
-			//			}
+//			console.info('$stateChangeStart', event, toState, toParams, fromState, fromParams, options);
+			var authorizedRoles = toState.data.authorizedRoles;
+//			console.log(toState.url != "/login" && AuthService.isAuthorized(authorizedRoles));
+			if (toState.url != "/login" && !AuthService.isAuthorized(authorizedRoles)) {
+				event.preventDefault();
+				if (AuthService.isAuthenticated()) {
+					// user is not allowed
+//					console.warn(AUTH_EVENTS.notAuthorized);
+					$rootScope.$broadcast(AUTH_EVENTS.notAuthorized);
+				} else {
+					// user is not logged in
+//					console.warn(AUTH_EVENTS.notAuthenticated);
+					$rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
+				}
+			}
+		});
+		$rootScope.$on(AUTH_EVENTS.notAuthorized,function(){
+			$rootScope.message={
+				body:"You are not AUTHORIZED to Access this location !!",
+				type:"warning",
+				duration:3000
+			}
+		});
+		$rootScope.$on(AUTH_EVENTS.notAuthenticated,function(){
+			$rootScope.message={
+				body:"You are not LOGGED IN Yet!!, to Access this location you MUST need to <a href='/login'>LOGIN</a> !!",
+				type:"warning",
+				duration:3000
+			}
 		});
 	};
 	initApp.$inject = ["$rootScope", "$state", "AUTH_EVENTS", "AuthService"];
@@ -172,49 +151,6 @@ var app;
 	mainApp.controller("MainMenuCtrl", ["$scope", "$rootScope", function ($scope, $rootScope) {
 
 	}]);
-	mainApp.filter("lines", function () {
-		return function (value, selected) {
-			var filtered = [];
-			angular.forEach(selected, function (val, key) {
-				angular.forEach(value, function (iVal, iKey) {
-					if (iVal.lineId == key)
-						if (val) {
-							filtered.push(iVal);
-						}
-				});
-			});
-			return filtered;
-		};
-	});
-	mainApp.filter("columnsFilter", function ($rootScope, $timeout) {
-		return function (value, filterBy) {
-			//			console.log("columnsFilter")
-			angular.forEach(value, function (val, key) {
-				if (!angular.isUndefined(filterBy)) {
-					if (filterBy.toLowerCase() !== "" && val.title.toLowerCase().indexOf(filterBy.toLowerCase()) !== -1) {
-						val["picked"] = true;
-						$rootScope.$broadcast("columnsFiltered");
-					} else
-						val["picked"] = false;
-				}
-			});
-			//			var promise = $timeout(function () {
-			//			}, 2000);
-			return value;
-		};
-	});
-	mainApp.filter('wavesurferTimeFormat', function () {
-		return function (input) {
-			if (!input) {
-				return "00:00";
-			}
-
-			var minutes = Math.floor(input / 60);
-			var seconds = Math.ceil(input) % 60;
-
-			return (minutes < 10 ? '0' : '') + minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
-		};
-	});
 	//
 	mainApp.constant('AUTH_EVENTS', {
 		loginSuccess: 'auth-login-success',
@@ -230,91 +166,10 @@ var app;
 		teamLead: 'TEAM_LEADER',
 		analyst: 'ANALYST'
 	}).constant("API_BASE_URL", "http://git.solve-it-services.com:8000/ivry-web");
-	mainApp.factory('AuthService', function ($rootScope, $http, store, Session, utilitiesServices, API_BASE_URL) {
-		var authService = {};
 
-		authService.login = function (credentials) {
-			return $http({
-					method: "POST",
-					url: API_BASE_URL + '/auth/login',
-					headers: {
-						'X-User-Name': credentials.userName,
-						'X-Password': credentials.password
-					},
-				})
-				.success(function (res) {
-					console.log(res);
-					store.set("token", res.data.token);
-					$http.get(API_BASE_URL + "/lookups", {
-						headers: {
-							'X-Access-Token': store.get("token")
-						}
-					}).success(function (response) {
-						$rootScope.lookups = response.data;
-						$rootScope.callsLogColumns = utilitiesServices.columnsAdapterIn($rootScope.lookups.reportLus[0].reportColumnLus);
-						console.log("lookups", response.data, $rootScope.callsLogColumns);
-						Session.create(res.data.user);
-					});
-					//				$httpProvider.defaults.headers.common['X-Access-token'] = store.get("token");
-					//						res.data.user.role);
-					//					return res.data.user;
-				}).error(function (err) {
-					$rootScope.message = {
-						body: err.data.message,
-						type: 'danger',
-						duration: 50000
-					}
-				});
-		};
-		authService.logout = function () {
-			Session.destroy();
-		};
-		authService.isAuthenticated = function () {
-			return !!Session.userName;
-		};
-
-		authService.isAuthorized = function (authorizedRoles) {
-			if (!angular.isArray(authorizedRoles)) {
-				authorizedRoles = [authorizedRoles];
-			}
-			return (authService.isAuthenticated() &&
-				authorizedRoles.indexOf(Session.userRole) !== -1);
-		};
-
-		return authService;
-	});
-	mainApp.service('Session', function ($rootScope, $state, store, USER_ROLES) {
-		this.create = function (user) {
-			this.userName = user.firstName + " " + user.lastName;
-			this.role = user.accessRoles[0].code;
-			$rootScope.session = this;
-			$rootScope.userRoles = USER_ROLES;
-			//			console.info(this)
-			switch (this.role) {
-				case USER_ROLES.sysAdmin:
-					$state.go("system");
-					break;
-				case USER_ROLES.depAdmin:
-					$state.go("calls-log");
-					break;
-				case USER_ROLES.teamLead:
-					$state.go("calls-log");
-					break;
-				case USER_ROLES.analyst:
-					$state.go("calls-log");
-					break;
-				default:
-					$state.go("login");
-					break;
-			}
-		};
-		this.destroy = function () {
-			this.userName = null;
-			store.remove("token");
-			$state.go("login");
-		};
-	});
 })(app || (app = {}));
+
+//jQuery Plugins overrides
 $(function () {
 	$("body").on("mousedown", '.dropdown-menu.keep-on,.uib-monthpicker button', function (e) {
 		//e.stopPropagation();

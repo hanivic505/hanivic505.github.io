@@ -268,7 +268,7 @@ h1.page-header {
 	right: 0;
 	opacity: 0;
 	/*    display: none;*/
-	transition: all ease-in-out .5s;
+	transition: all ease-in-out 2.5s;
 	width: 0;
 	height: 43px;
 }
@@ -298,9 +298,13 @@ tr:hover .actions-bar {
 	/*    display: block;*/
 	opacity: 1;
 	width: 160px;
+	transition:all ease-in-out .5s;
 }
 tr:hover .actions-bar a.btn {
 	opacity: 1;
+}
+tr.selected{
+	background: rgba(125,125,225,.2) !important;
 }
 .table span.btn.btn-link,
 .table span.btn.btn-link:hover,
@@ -353,7 +357,7 @@ tr:hover .actions-bar a.btn {
 .table-hover>tbody>tr:hover>.active,
 .table-hover>tbody>tr>td.active:hover,
 .table-hover>tbody>tr>th.active:hover {
-	background: #ac5;
+	background: rgba(125,225,125,.5);
 }
 .order-by {
 	color: #ee9 !important;

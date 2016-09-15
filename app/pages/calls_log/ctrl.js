@@ -558,25 +558,10 @@ var app;
 			//            };
 			$scope.getLineName = utilitiesServices.getLineName;
 
-			$scope.openPopup = function (_obj, tmpltURL, cntrl, size = "") {
-				var modalInstance = $uibModal.open({
-					animation: $scope.animationsEnabled,
-					templateUrl: tmpltURL,
-					controller: cntrl,
-					size: size,
-					resolve: {
-						obj: function () {
-							return _obj;
-						}
-					}
-				});
+			$scope.openPopup = utilitiesServices.openPopup;
 
-				modalInstance.result.then(function (selectedItem) {
-					$scope.selected = selectedItem;
-				}, function () {
-					$log.debug('Modal dismissed at: ' + new Date());
-				});
-			};
+
+//			};
 			this.pushNew = function (scopeListName, obj) {
 				scopeListName.push(obj);
 			};

@@ -26,7 +26,7 @@
 
 <body>
 	<div ng-if="showSpinner" id="loadingWidget"></div>
-	<div uib-alert dismiss-on-timeout="10000" ng-if="message.body!=null" ng-class="'alert-'+(message.type || 'warning')" close="closeAlert()">{{message.body}}</div>
+	<div uib-alert dismiss-on-timeout="10000" ng-if="message.body!=null" ng-class="'alert-'+(message.type || 'warning')" close="closeAlert()"><span ng-bind-html="message.body"></span></div>
 	<header ng-include="'app/tplt/header.html'" ng-if="session.userName"></header>
 	<div class="container-fluid" ui-view></div>
 
@@ -68,6 +68,8 @@
 	<script src="app/entities/audit.js"></script>
 	<script src="app/entities/datepicker.js"></script>
 	<script src="app/app.js"></script>
+	<script src="app/filters.js"></script>
+	<script src="app/services/secureFactories.js"></script>
 	<script src="app/services/linesTreeService.js"></script>
 	<script src="app/services/dbService.js"></script>
 	<script src="app/services/usersServices.js"></script>
