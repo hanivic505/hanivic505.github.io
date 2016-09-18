@@ -194,9 +194,9 @@ var app;
 		//			};
 		//		});
 		angular.module("IVRY-App").controller("CallLogCtrl", ["$rootScope", "$scope", "$log", "$timeout", "$filter", "linesFilter", "$uibModal",
-			"linesTreeService", "utilitiesServices", "dbService", "ctrlData", "linesData", "callLogService", CallLogCtrlFn]);
+			"utilitiesServices", "dbService", "ctrlData", "linesData", "callLogService", CallLogCtrlFn]);
 
-		function CallLogCtrlFn($rootScope, $scope, $log, $timeout, $filter, linesFilter, $uibModal, linesTreeService, utilitiesServices, dbService, ctrlData, linesData, callLogService) {
+		function CallLogCtrlFn($rootScope, $scope, $log, $timeout, $filter, linesFilter, $uibModal, utilitiesServices, dbService, ctrlData, linesData, callLogService) {
 
 			/*jslint node: true */
 			$scope.paused = true;

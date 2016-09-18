@@ -52,6 +52,15 @@ var app;
 					data: {
 						title: "Target",
 						authorizedRoles: [USER_ROLES.depAdmin, USER_ROLES.teamLead]
+					},
+					controller: "TargetCtrl as vm",
+					resolve: {
+						linesData: function (linesTreeService) {
+							return linesTreeService.get().then(function (data) {
+								console.info("lines resolve", data);
+								return data;
+							});
+						},
 					}
 				})
 				.state("teams", {

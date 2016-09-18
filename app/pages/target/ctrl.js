@@ -3,17 +3,17 @@ var app;
 	var Target;
 	(function (Target) {
 		var cntrlFn = (function () {
-			function cntrlFn($scope, $rootScope, $uibModal, linesTreeService, dbService) {
+			function cntrlFn($scope, $rootScope, $uibModal, linesData, dbService) {
 //				$rootScope.user = "DepAdmin";
 				$scope.treeConfig = {
 					lines: {},
-					treeObj: linesTreeService,
+					treeObj: linesData,
 					multiSelect: false,
 					selectedNode: null,
 					allowEdit: true,
 					allowFilter: true
 				};
-				$scope.linesTreeObj = linesTreeService;
+				$scope.linesTreeObj = linesData;
 				$scope.dbService = dbService;
 				$rootScope.$on("dbServiceAdded", function () {
 					$scope.editObj = null;
@@ -50,7 +50,7 @@ var app;
 			return cntrlFn;
 		})();
 
-		angular.module("IVRY-App").controller("TargetCtrl", ["$scope", "$rootScope", "$uibModal", "linesTreeService", "dbService", cntrlFn]);
+		angular.module("IVRY-App").controller("TargetCtrl", ["$scope", "$rootScope", "$uibModal", "linesData", "dbService", cntrlFn]);
 
 		angular.module("IVRY-App").controller("AssignUsersCtrl", ["$scope", "$uibModalInstance", "utilitiesServices", "obj", function ($scope, $uibModalInstance, utilitiesServices, obj) {
 			console.info("AssignUsersCtrl", obj);
@@ -82,10 +82,10 @@ var app;
 				$uibModalInstance.dismiss('cancel');
 			};
 		}]);
-		angular.module("IVRY-App").controller("ACLCtrl", ["$scope", "$uibModalInstance", "utilitiesServices", "linesTreeService", function ($scope, $uibModalInstance, utilitiesServices, linesTreeService) {
+		angular.module("IVRY-App").controller("ACLCtrl", ["$scope", "$uibModalInstance", "utilitiesServices", "linesData", function ($scope, $uibModalInstance, utilitiesServices, linesData) {
 			$scope.treeConfigs = {
 				lines: {},
-				treeObj: linesTreeService,
+				treeObj: linesData,
 				multiSelect: true,
 				selectedNode: null,
 				allowEdit: false,

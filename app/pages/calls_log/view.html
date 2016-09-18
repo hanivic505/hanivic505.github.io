@@ -59,13 +59,7 @@
 								<span class="dropdown" ng-if="columns.childs[1].visible">
                                     <a href="" data-toggle="dropdown" title="{{vm.getIcon(x.sessionFlagId).title}}"><i class="fa" ng-class="vm.getIcon(x.sessionFlagId).icon"></i><i class="caret"></i></a>
                                     <ul class="dropdown-menu">
-<!--                                        <li><a ng-click="callLogService.updateSessionFlag(x.sessionLogId,null)" href="" class="btn btn-link"><i class="fa fa-circle-o"></i> Un Marked</a></li>-->
                                         <li ng-repeat="z in lookups['sessionFlagLus']"><a ng-click="callLogService.updateSessionFlag(x.sessionLogId,z.id)" href="" class="btn btn-link"><i class="fa" ng-class="{'fa-exclamation':z.id==1,'fa-search':z.id==2,'fa-check':z.id==3,'fa-times':z.id==4,'fa-circle-o':z.id==5}"></i> {{z.description}}</a></li>
-<!--
-                                        <li><a ng-click="callLogService.updateSessionFlag(x.id,2)" href="" class="btn btn-link"><i class="fa fa-search"></i> Revise Later</a></li>
-                                        <li><a ng-click="callLogService.updateSessionFlag(x.id,3)" href="" class="btn btn-link"><i class="fa fa-check"></i> Reviewed</a></li>
-                                        <li><a ng-click="callLogService.updateSessionFlag(x.id,4)" href="" class="btn btn-link"><i class="fa fa-times"></i> Irrelevent</a></li>
--->
                                     </ul>
                                 </span>
 								<a href="" ng-if="columns.childs[1].visible" class="btn btn-link" title="{{vm.getIcon(x.locked).title}}" ng-click="callLogService.updateSessionLock(x.sessionLogId,!x.locked)"><i class="fa" ng-class="vm.getIcon(x.locked).icon"></i></a>
