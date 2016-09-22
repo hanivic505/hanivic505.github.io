@@ -1,7 +1,7 @@
 <ul class="tree">
 	<li class="tree-nav"><a href="" class=" btn btn-link" ng-click="$ctrl.toggleCollapsed()"><i class="fa fa-toggle-off" ng-class="{'fa-toggle-on':!$ctrl.collapsed}"></i> <span ng-bind="$ctrl.collapsed?'Expand All':'Collapse All'"></span></a></li>
 	<li ng-if="$ctrl.treeConfig.allowFilter">
-		<div class="input-group"><span class="input-group-addon"><i class="fa fa-search"></i></span>
+		<div class="input-group transparent"><span class="input-group-addon"><i class="fa fa-search"></i></span>
 			<input type="search" placeholder="Filter Tree" ng-model="$ctrl.filterBy" class="form-control input-sm" />
 		</div>
 	</li>
@@ -10,8 +10,8 @@
 		<label class="btn btn-link" ng-click="$ctrl.setSelectedNode(case,'case')" ng-class="{'active':$ctrl.treeConfig.selectedNode.data==case}">
 			<input ng-if="$ctrl.multiSelect" type="checkbox" ng-change="handleChkAll(case,'checked',true)" ng-model="case.checked"> {{case.caseName}}</label>
 		<span class="node-menu" ng-if="$ctrl.allowEdit">
-			<a href="" ng-click="dbService.add(case.childs==undefined?case.childs=[]:case.childs,{title:'New Identity'})" class="btn btn-link" title="Add Child Identity"><i class="fa fa-plus-circle"></i></a>
-			<a href="" class="btn btn-link" title="Delete This Case"><i class="fa fa-trash"></i></a>
+			<a href="" ng-click="$ctrl.addNewIdentity(case)" class="btn btn-link" title="Add Child Identity"><i class="fa fa-plus-circle"></i></a>
+			<a href="" ng-click="dbService.delete(1,case)" class="btn btn-link" title="Delete This Case"><i class="fa fa-trash"></i></a>
 		</span>
 		<ul ng-show="case.expand">
 			<li ng-repeat="identity in (case.identities || case[$ctrl.treeScndLvl])" ng-init="identity.expand=!$ctrl.collapsed">
@@ -19,10 +19,10 @@
 				<label class="btn btn-link" ng-click="$ctrl.setSelectedNode(identity,'identity')" ng-class="{'active':$ctrl.treeConfig.selectedNode.data==identity}">
 					<input ng-if="$ctrl.multiSelect" type="checkbox" ng-change="handleChkAll(identity,'checked',true)" ng-model="identity.checked"> {{identity.identityName || identity[$ctrl.treeScndLvlTitle]}}</label>
 				<span class="node-menu" ng-if="$ctrl.allowEdit">
-					<a href="" ng-click="addLine(identity.childs==undefined?identity.childs=[]:identity.childs,'New Line Object')" class="btn btn-link" title="Add Child Line">
+					<a href="" ng-click="$ctrl.addLine(identity)" class="btn btn-link" title="Add Child Line">
 						<i class="fa fa-plus-circle"></i>
 					</a>
-					<a href="" class="btn btn-link" title="Delete This Identity">
+					<a href="" ng-click="dbService.delete(2,identity)" class="btn btn-link" title="Delete This Identity">
 						<i class="fa fa-trash"></i>
 					</a>
 				</span>
@@ -31,7 +31,9 @@
 						__
 						<label class="btn btn-link" ng-click="$ctrl.treeConfig.selectedNode={data:line,type:'line'}" ng-class="{'active':$ctrl.treeConfig.selectedNode.data==line}">
 							<input ng-if="$ctrl.multiSelect" type="checkbox" ng-model="line.checked" ng-change="handleChkAll(line,'checked',true)"> {{line.lineName || line[$ctrl.treeThrdLvlTitle]}}</label>
-						<span class="node-menu" ng-if="$ctrl.allowEdit"><a href="" class="btn btn-link" title="Delete This Line"><i class="fa fa-trash"></i></a></span>
+						<span class="node-menu" ng-if="$ctrl.allowEdit">
+							<a href="" ng-click="dbService.delete(3,line)" class="btn btn-link" title="Delete This Line"><i class="fa fa-trash"></i></a>
+						</span>
 					</li>
 				</ul>
 			</li>

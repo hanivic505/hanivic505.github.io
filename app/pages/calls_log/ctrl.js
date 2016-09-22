@@ -151,48 +151,7 @@ var app;
 			};
 
         }]);
-		//		angular.module("IVRY-App").controller('PlaylistController', function ($scope) {
-		//			var activeUrl = null;
-		//			var _this = this;
-		//			this.paused = true;
-		//
-		//			$scope.$on('wavesurferInit', function (e, wavesurfer) {
-		//				$scope.wavesurfer = wavesurfer;
-		//				console.info(wavesurfer);
-		//				$scope.wavesurfer.on('play', function () {
-		//					_this.paused = false;
-		//				});
-		//
-		//				$scope.wavesurfer.on('pause', function () {
-		//					_this.paused = true;
-		//				});
-		//
-		//				$scope.wavesurfer.on('finish', function () {
-		//					_this.paused = true;
-		//					$scope.wavesurfer.seekTo(0);
-		//					$scope.$apply();
-		//				});
-		//			});
-		//
-		//			$scope.play = function (url) {
-		//				if (!$scope.wavesurfer) {
-		//					return;
-		//				}
-		//
-		//				activeUrl = url;
-		//
-		//				$scope.wavesurfer.once('ready', function () {
-		//					$scope.wavesurfer.play();
-		//					$scope.$apply();
-		//				});
-		//
-		//				$scope.wavesurfer.load(activeUrl);
-		//			};
-		//
-		//			$scope.isPlaying = function (url) {
-		//				return url == activeUrl;
-		//			};
-		//		});
+
 		angular.module("IVRY-App").controller("CallLogCtrl", ["$rootScope", "$scope", "$log", "$timeout", "$filter", "linesFilter", "$uibModal",
 			"utilitiesServices", "dbService", "ctrlData", "linesData", "callLogService", CallLogCtrlFn]);
 
@@ -792,5 +751,48 @@ var app;
 				//				});
 			};
 		}
+
+	//		angular.module("IVRY-App").controller('PlaylistController', function ($scope) {
+		//			var activeUrl = null;
+		//			var _this = this;
+		//			this.paused = true;
+		//
+		//			$scope.$on('wavesurferInit', function (e, wavesurfer) {
+		//				$scope.wavesurfer = wavesurfer;
+		//				console.info(wavesurfer);
+		//				$scope.wavesurfer.on('play', function () {
+		//					_this.paused = false;
+		//				});
+		//
+		//				$scope.wavesurfer.on('pause', function () {
+		//					_this.paused = true;
+		//				});
+		//
+		//				$scope.wavesurfer.on('finish', function () {
+		//					_this.paused = true;
+		//					$scope.wavesurfer.seekTo(0);
+		//					$scope.$apply();
+		//				});
+		//			});
+		//
+		//			$scope.play = function (url) {
+		//				if (!$scope.wavesurfer) {
+		//					return;
+		//				}
+		//
+		//				activeUrl = url;
+		//
+		//				$scope.wavesurfer.once('ready', function () {
+		//					$scope.wavesurfer.play();
+		//					$scope.$apply();
+		//				});
+		//
+		//				$scope.wavesurfer.load(activeUrl);
+		//			};
+		//
+		//			$scope.isPlaying = function (url) {
+		//				return url == activeUrl;
+		//			};
+		//		});
 	})(CallsLogItem = app.CallsLogItem || (CallsLogItem = {}));
 })(app || (app = {}));

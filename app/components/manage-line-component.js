@@ -6,23 +6,21 @@ angular.module("IVRY-App").component("manageLine", {
 	}
 });
 
-function manageLineComponent($scope, $element, $attrs, usersService) {
+function manageLineComponent($scope, $element, $attrs, targetService, usersService) {
 	var ctrl = this;
 	this.editObj = {
-		isRecordCalls: false,
-		recordingDate: {
-			from: new Date()
-		}
+		recordCalls: false,
+		recordingPeriodFrom: new Date()
 	};
 	$scope.popup1 = new app.DatePicker(false);
-	$scope.popup2 = new app.DatePicker(false, "dd/MM/yyyy", ctrl.editObj.recordingDate.from, new Date());
+	$scope.popup2 = new app.DatePicker(false, "dd/MM/yyyy", ctrl.editObj.recordingPeriodFrom, new Date());
 
 
 	$scope.$watch(function () {
 		return ctrl.data;
 	}, function (nVal) {
 		ctrl.load();
-		ctrl.loadAssignedUsers(1);
+		ctrl.loadAssignedUsers(ctrl.data);
 	});
 	this.load = function () {
 		this.editObj = angular.copy(this.data);
@@ -31,14 +29,18 @@ function manageLineComponent($scope, $element, $attrs, usersService) {
 		this.editObj = angular.copy(this.data);
 	};
 	this.getStatusClass = function (mode) {
-		var state = ctrl.data.status.state;
-		if (mode == 2)
-			return state == 0 ? "label-danger" : state == 1 ? "label-success" : state == 2 ? "label-warning" : "label-default";
-		else
-			return state == 0 ? "text-danger" : state == 1 ? "text-success" : state == 2 ? "text-warning" : "text-default";
-
+		//		commented until we agree on the status
+		//		var state = ctrl.data.status.state;
+		//		if (mode == 2)
+		//			return state == 0 ? "label-danger" : state == 1 ? "label-success" : state == 2 ? "label-warning" : "label-default";
+		//		else
+		//			return state == 0 ? "text-danger" : state == 1 ? "text-success" : state == 2 ? "text-warning" : "text-default";
+		return "text-success";
 	};
 	this.loadAssignedUsers = function (line) {
-		$scope.$emit("lineNodeSelected", usersService);
+		$scope.$emit("lineNodeSelected", line);
+	};
+	this.save = function (obj) {
+		targetService.update(3, obj);
 	};
 }

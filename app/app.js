@@ -111,7 +111,7 @@ var app;
 	})();
 	Config.$inject = ["$httpProvider", "$logProvider", '$urlRouterProvider', '$stateProvider', "$locationProvider", 'USER_ROLES'];
 
-	var mainApp = angular.module("IVRY-App", ['ui.router', 'ui.bootstrap', 'ngFileUpload','ngSanitize', 'angular-storage', 'uiSwitch', 'as.sortable']);
+	var mainApp = angular.module("IVRY-App", ['ui.router', 'ui.bootstrap', 'ngFileUpload', 'ngSanitize', 'angular-storage', 'uiSwitch', 'as.sortable']);
 	mainApp.config(Config);
 
 	var initApp = function ($rootScope, $state, AUTH_EVENTS, AuthService) {
@@ -123,34 +123,34 @@ var app;
 		};
 		$rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams, options) {
 			$rootScope.message = null;
-//			console.info('$stateChangeStart', event, toState, toParams, fromState, fromParams, options);
+			//			console.info('$stateChangeStart', event, toState, toParams, fromState, fromParams, options);
 			var authorizedRoles = toState.data.authorizedRoles;
-//			console.log(toState.url != "/login" && AuthService.isAuthorized(authorizedRoles));
+			//			console.log(toState.url != "/login" && AuthService.isAuthorized(authorizedRoles));
 			if (toState.url != "/login" && !AuthService.isAuthorized(authorizedRoles)) {
 				event.preventDefault();
 				if (AuthService.isAuthenticated()) {
 					// user is not allowed
-//					console.warn(AUTH_EVENTS.notAuthorized);
+					//					console.warn(AUTH_EVENTS.notAuthorized);
 					$rootScope.$broadcast(AUTH_EVENTS.notAuthorized);
 				} else {
 					// user is not logged in
-//					console.warn(AUTH_EVENTS.notAuthenticated);
+					//					console.warn(AUTH_EVENTS.notAuthenticated);
 					$rootScope.$broadcast(AUTH_EVENTS.notAuthenticated);
 				}
 			}
 		});
-		$rootScope.$on(AUTH_EVENTS.notAuthorized,function(){
-			$rootScope.message={
-				body:"You are not AUTHORIZED to Access this location !!",
-				type:"warning",
-				duration:3000
+		$rootScope.$on(AUTH_EVENTS.notAuthorized, function () {
+			$rootScope.message = {
+				body: "You are not AUTHORIZED to Access this location !!",
+				type: "warning",
+				duration: 3000
 			}
 		});
-		$rootScope.$on(AUTH_EVENTS.notAuthenticated,function(){
-			$rootScope.message={
-				body:"You are not LOGGED IN Yet!!, to Access this location you MUST need to <a href='/login'>LOGIN</a> !!",
-				type:"warning",
-				duration:3000
+		$rootScope.$on(AUTH_EVENTS.notAuthenticated, function () {
+			$rootScope.message = {
+				body: "You are not LOGGED IN Yet!!, to Access this location you MUST need to <a href='/login'>LOGIN</a> !!",
+				type: "warning",
+				duration: 3000
 			}
 		});
 	};
@@ -160,6 +160,19 @@ var app;
 	mainApp.controller("MainMenuCtrl", ["$scope", "$rootScope", function ($scope, $rootScope) {
 
 	}]);
+	mainApp.directive('convertToNumber', function () {
+		return {
+			require: 'ngModel',
+			link: function (scope, element, attrs, ngModel) {
+				ngModel.$parsers.push(function (val) {
+					return val != null ? parseInt(val, 10) : null;
+				});
+				ngModel.$formatters.push(function (val) {
+					return val != null ? '' + val : null;
+				});
+			}
+		};
+	});
 	//
 	mainApp.constant('AUTH_EVENTS', {
 		loginSuccess: 'auth-login-success',

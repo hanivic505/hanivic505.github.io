@@ -1,9 +1,9 @@
 <h3>Manage Case <small>{{$ctrl.data.title}}</small></h3>
-<form ng-submit="">
+<form ng-submit="$ctrl.save($ctrl.data)">
 	<div class="row">
 		<div class="form-group col-md-12">
 			<label for="">Case Title</label>
-			<input ng-model="$ctrl.data.title" type="text" placeholder="Case Title" class="form-control">
+			<input ng-model="$ctrl.data.caseName" type="text" placeholder="Case Title" class="form-control">
 		</div>
 		<div class="form-group col-md-12">
 			<label for="">Comment</label>
@@ -13,6 +13,6 @@
 	<div class="btn-bar">
 		<button class="btn btn-primary">Save</button>
 		<button class="btn btn-default" type="button" ng-click="$ctrl.cancel()">Cancel</button>
-		<a href="" class="btn btn-link"><i class="fa fa-plus-circle"></i> Add Child Identity</a>
+<!--		<a href="" class="btn btn-link"><i class="fa fa-plus-circle"></i> Add Child Identity</a>-->
 	</div>
 </form>

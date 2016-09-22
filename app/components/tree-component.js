@@ -6,18 +6,25 @@ var app;
 			templateUrl: "/app/components/tree.html",
 			controller: treeComponent,
 			bindings: {
-				treeConfig: "="
+				treeConfig: "=",
 			}
 		});
 
-		function treeComponent($scope, $log, $element, $attrs, dbService) {
+		function treeComponent($rootScope, $scope, $log, $element, $attrs, targetService, linesTreeService) {
 
 			var ctrl = this;
-			$scope.dbService = dbService;
-			$scope.addLine = function (trgt, title) {
-				dbService.add(trgt, new Target.Line('New Line Object'));
-			};
-
+			$scope.dbService = targetService;
+			//			ctrl.$onChanges = function (changesObj) {
+			//				console.info("ctrl.$onChanges", changesObj);
+			//				ctrl.treeObj = changesObj.treeConfig.currentValue.treeObj;
+			//			}
+			$rootScope.$on("refresh_data", function () {
+				console.info("TREE refresh data");
+				linesTreeService.get().then(function (data) {
+					ctrl.treeObj = data;
+					console.info("ctrl.treeObj", ctrl.treeObj);
+				});
+			});
 			this.collapsed = true;
 			//	this.selectedNode=this.treeConfig.selectedNode;
 			this.lines = this.treeConfig.lines;
@@ -35,6 +42,29 @@ var app;
 			}, function (nVal) {
 				$scope.$emit("treeNodeSelected", nVal);
 			});
+			this.addNewIdentity = function (caseObj) {
+				console.log("add New Identity", caseObj)
+				$scope.dbService.add(2, {
+					identityName: 'NEW DRAFT IDENTITY',
+					targetCaseId: caseObj.id
+				});
+			};
+			this.addLine = function (trgt) {
+				$scope.dbService.add(3, {
+					"identityId": trgt.id,
+					"lineNumber": "123456789",
+					"lineTypeId": 1,
+					"lineName": "NEW DRAFT LINE",
+					"comment": "",
+					"recordCalls": true,
+					"rercordingTimeFrom": "10:18",
+					"rercordingTimeTo": "11:18",
+					"rercordingPeriodFrom": "09-26-2016",
+					"rercordingPeriodTo": "10-20-2016",
+					"recordCalls": false
+				});
+				console.info("treeComponent :: addLine", trgt);
+			};
 			this.toggleCollapsed = function () {
 				ctrl.collapsed = !ctrl.collapsed;
 				for (var i = 0, el = ctrl.treeObj; i < el.length; i++) {

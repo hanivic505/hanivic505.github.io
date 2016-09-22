@@ -8,9 +8,9 @@
 			<div class="col-md-12 browser h100">
 				<div class="col-md-3 h100">
 					<div class="row h100 no-vertical-overflow">
-						<form ng-submit="dbService.add(linesTreeObj,editObj)">
+						<form ng-submit="addCase(editObj)">
 							<div class="-col-md-3 input-group">
-								<input type="text" ng-required="true" ng-model="editObj.title" placeholder="Enter New Case Name" class="form-control"><span class="input-group-btn"><button class="btn btn-default"><i class="fa fa-save"></i></button></span>
+								<input type="text" ng-required="true" ng-model="editObj.caseName" placeholder="Enter New Case Name" class="form-control"><span class="input-group-btn"><button class="btn btn-default"><i class="fa fa-save"></i></button></span>
 							</div>
 						</form>
 						<div class="h100 vertical-scroll" style="padding-bottom:30px;">

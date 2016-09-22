@@ -2,55 +2,63 @@ var app;
 (function (app) {
 	var Target;
 	(function (Target) {
-		var cntrlFn = (function () {
-			function cntrlFn($scope, $rootScope, $uibModal, linesData, dbService) {
-//				$rootScope.user = "DepAdmin";
-				$scope.treeConfig = {
-					lines: {},
-					treeObj: linesData,
-					multiSelect: false,
-					selectedNode: null,
-					allowEdit: true,
-					allowFilter: true
-				};
-				$scope.linesTreeObj = linesData;
-				$scope.dbService = dbService;
-				$rootScope.$on("dbServiceAdded", function () {
-					$scope.editObj = null;
-				});
-				$scope.$on("treeNodeSelected", function (e, node) {
-					console.info("treeNodeSelected", e, node)
-					$scope.lineAssignedUsers = null;
-					$scope.selectedNode = node;
-				});
-				$scope.$on("lineNodeSelected", function (e, list) {
-					console.info("lineNodeSelected", e, list)
-					$scope.lineAssignedUsers = list;
-				});
-				$scope.openPopup = function (_obj, tmpltURL, cntrl, size = "") {
-					var modalInstance = $uibModal.open({
-						animation: $scope.animationsEnabled,
-						templateUrl: tmpltURL,
-						controller: cntrl,
-						size: size,
-						resolve: {
-							obj: function () {
-								return _obj;
-							}
-						}
-					});
-
-					modalInstance.result.then(function (selectedItem) {
-						$scope.selected = selectedItem;
-					}, function () {
-						console.info('Modal dismissed at: ' + new Date());
-					});
-				};
+		function cntrlFn($scope, $rootScope, $uibModal, linesData, targetService, linesTreeService, usersService) {
+			//				$rootScope.user = "DepAdmin";
+			var _this = this;
+			$scope.treeConfig = {
+				lines: {},
+				treeObj: linesData,
+				multiSelect: false,
+				selectedNode: null,
+				allowEdit: true,
+				allowFilter: true
+			};
+			$scope.linesTreeObj = linesData;
+			$scope.dbService = targetService;
+			$rootScope.$on("dbServiceAdded", function () {
+				$scope.editObj = null;
+			});
+			$scope.addCase = function (obj) {
+				$scope.dbService.add(1, obj);
+				$scope.editObj = null;
 			}
-			return cntrlFn;
-		})();
+			$scope.$on("treeNodeSelected", function (e, node) {
+				console.info("treeNodeSelected", e, node)
+				$scope.lineAssignedUsers = null;
+				$scope.selectedNode = node;
+			});
+			$scope.$on("lineNodeSelected", function (e, line) {
+				console.info("lineNodeSelected");
+				usersService.get().then(function (data) {
+					console.log(data);
+					$scope.lineAssignedUsers = data.searchResults;
+				})
+			});
+			$scope.openPopup = function (_obj, tmpltURL, cntrl, size = "") {
+				var modalInstance = $uibModal.open({
+					animation: $scope.animationsEnabled,
+					templateUrl: tmpltURL,
+					controller: cntrl,
+					size: size,
+					resolve: {
+						obj: function () {
+							return _obj;
+						},
+						linesData: function () {
+							return linesData;
+						}
+					}
+				});
 
-		angular.module("IVRY-App").controller("TargetCtrl", ["$scope", "$rootScope", "$uibModal", "linesData", "dbService", cntrlFn]);
+				modalInstance.result.then(function (selectedItem) {
+					$scope.selected = selectedItem;
+				}, function () {
+					console.info('Modal dismissed at: ' + new Date());
+				});
+			};
+		}
+
+		angular.module("IVRY-App").controller("TargetCtrl", ["$scope", "$rootScope", "$uibModal", "linesData", "targetService", "linesTreeService", "usersService", cntrlFn]);
 
 		angular.module("IVRY-App").controller("AssignUsersCtrl", ["$scope", "$uibModalInstance", "utilitiesServices", "obj", function ($scope, $uibModalInstance, utilitiesServices, obj) {
 			console.info("AssignUsersCtrl", obj);
