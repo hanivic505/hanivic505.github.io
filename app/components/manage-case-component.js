@@ -20,12 +20,12 @@ function manageCaseComponent($scope, $element, $attrs, targetService) {
 		this.editObj = angular.copy(this.data);
 	};
 	this.save = function (obj) {
-		//		targetService.update(1, {
-		//			id: obj.id,
-		//			caseName: obj.caseName,
-		//			comment: obj.comment,
-		//			departmentId: obj.departmentId
-		//		});
-		targetService.update(1, obj);
+				targetService.update(1, {
+					id: obj.id,
+					caseName: obj.caseName,
+					comment: obj.comment,
+					departmentId: obj.departmentId
+				});
+//		targetService.update(1, obj);
 	};
 }

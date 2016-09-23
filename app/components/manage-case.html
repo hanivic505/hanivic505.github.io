@@ -1,13 +1,13 @@
 <h3>Manage Case <small>{{$ctrl.data.title}}</small></h3>
-<form ng-submit="$ctrl.save($ctrl.data)">
+<form ng-submit="$ctrl.save($ctrl.editObj)">
 	<div class="row">
 		<div class="form-group col-md-12">
 			<label for="">Case Title</label>
-			<input ng-model="$ctrl.data.caseName" type="text" placeholder="Case Title" class="form-control">
+			<input ng-model="$ctrl.editObj.caseName" type="text" placeholder="Case Title" class="form-control">
 		</div>
 		<div class="form-group col-md-12">
 			<label for="">Comment</label>
-			<textarea ng-model="$ctrl.data.comment" placeholder="Case Comment" class="form-control"></textarea>
+			<textarea ng-model="$ctrl.editObj.comment" placeholder="Case Comment" class="form-control"></textarea>
 		</div>
 	</div>
 	<div class="btn-bar">

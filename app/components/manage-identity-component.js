@@ -6,7 +6,7 @@ angular.module("IVRY-App").component("manageIdentity", {
 	}
 });
 
-function manageIdentityComponent($scope, $element, $attrs) {
+function manageIdentityComponent($scope, $element, $attrs,targetService) {
 	var ctrl = this;
 	$scope.$watch(function () {
 		return ctrl.data;
@@ -18,5 +18,8 @@ function manageIdentityComponent($scope, $element, $attrs) {
 	};
 	this.cancel = function () {
 		this.editObj = angular.copy(this.data);
+	};
+	this.save = function (obj) {
+		targetService.update(2, obj);
 	};
 }
