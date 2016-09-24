@@ -139,6 +139,9 @@ var app;
 				}
 			}
 		});
+		$rootScope.$on("$stateChangeError", function (event, toState, toParams, fromState, fromParams, error) {
+			$log.debug("$stateChangeError", error);
+		});
 		$rootScope.$on(AUTH_EVENTS.notAuthorized, function () {
 			$rootScope.message = {
 				body: "You are not AUTHORIZED to Access this location !!",

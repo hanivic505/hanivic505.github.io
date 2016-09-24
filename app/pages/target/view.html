@@ -24,9 +24,9 @@
 					<manage-line ng-switch-when="line" data="treeConfig.selectedNode.data"></manage-line>
 				</div>
 				<div class="col-md-3 h100 vertical-scroll"><i class="fa fa-users"></i>
-					<div ng-if="lineAssignedUsers">
-						<h5><b>Line Assigned Users <a tooltip-append-to-body="true" uib-tooltip="Manage Assigned Users" href="" ng-click="openPopup(lineAssignedUsers,'/app/pages/target/modal-assign-user.html','AssignUsersCtrl')" class="-btn -btn-link -fg-white"><span class="fa-stack"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-user-plus fa-stack-1x fa-inverse"></i></span></a></b></h5>
-						<div class="list-group">
+					<div ng-if="lineSelected">
+						<h4><b>Line Assigned Users <a tooltip-append-to-body="true" uib-tooltip="Manage Assigned Users" href="" ng-click="openAssignPopup(selectedLine,'/app/pages/target/modal-assign-user.html','AssignUsersCtrl')" class="-btn -btn-link -fg-white"><span class="fa-stack"><i class="fa fa-circle fa-stack-2x"></i><i class="fa fa-user-plus fa-stack-1x fa-inverse"></i></span></a></b></h4>
+						<div class="list-group" ng-if="lineAssignedUsers">
 							<div class="list-group-item">
 								<div class="input-group">
 									<div class="input-group-addon">
@@ -36,7 +36,7 @@
 								</div>
 								<div class="list-group mh-20-em vertical-scroll">
 									<div class="list-group-item" ng-repeat="x in lineAssignedUsers | filter:fltrLineAssignedUsers">
-										<span ng-bind="x.firstName+' '+x.lastName"></span>
+										<span ng-bind="x.user.firstName+' '+x.user.lastName"></span>
 										<span class="node-menu pull-right">
 											<a href="" class="btn btn-link" tooltip-append-to-body="true" uib-tooltip="Manage Access Rights" ng-click="openPopup(x,'/app/pages/target/modal-acl.html','ACLCtrl','lg')"><i class="fa fa-shield"></i></a>
 										</span>

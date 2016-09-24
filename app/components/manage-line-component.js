@@ -6,8 +6,9 @@ angular.module("IVRY-App").component("manageLine", {
 	}
 });
 
-function manageLineComponent($scope, $element, $attrs, targetService, usersService) {
+function manageLineComponent($rootScope, $scope, $element, $attrs, targetService, usersService) {
 	var ctrl = this;
+	this.lookups=$rootScope.lookups;
 	this.editObj = {
 		recordCalls: false,
 		recordingPeriodFrom: new Date()

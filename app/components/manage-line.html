@@ -19,12 +19,8 @@
 		</div>
 		<div class="form-group col-md-6">
 			<label for="">Line Type</label>
-			<select required convert-to-number ng-model="$ctrl.editObj.lineTypeId" class="form-control">
+			<select required ng-options="x.id as x.description for x in $ctrl.lookups.lineTypeLus" ng-model="$ctrl.editObj.lineTypeId" class="form-control">
 				<option value="">Select from List</option>
-				<option value="1">IP</option>
-				<option value="2">URI</option>
-				<option value="3">MAC</option>
-				<option value="4">PBX</option>
 			</select>
 		</div>
 		<div class="form-group col-md-6">

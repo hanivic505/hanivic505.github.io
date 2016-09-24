@@ -2,8 +2,8 @@ var app;
 (function (app) {
 	var services;
 	(function (services) {
-		var serviceFn = (function ($rootScope, $http, store, API_BASE_URL) {
-			function serviceFn($rootScope, $http, store, API_BASE_URL) {
+		var serviceFn = (function ($log,$rootScope, $http, store, API_BASE_URL) {
+			function serviceFn($log,$rootScope, $http, store, API_BASE_URL) {
 				return {
 					conditions: [],
 					orders: ["sessionLogId", "DESC"],
@@ -138,6 +138,6 @@ var app;
 			}
 			return serviceFn;
 		})();
-		angular.module("IVRY-App").factory("targetService", ["$rootScope", "$http", "store", "API_BASE_URL", serviceFn]);
+		angular.module("IVRY-App").factory("targetService", ["$log","$rootScope", "$http", "store", "API_BASE_URL", serviceFn]);
 	})(services = app.services || (services = {}));
 })(app || (app = {}));

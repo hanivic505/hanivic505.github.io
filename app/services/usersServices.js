@@ -51,7 +51,7 @@ var app;
 							line:{
 								id:line.id
 							},
-							systemUsers:[1,2]
+							systemUsers:users
 						},{
 							headers:{
 								"X-Access-Token":store.get("token")
