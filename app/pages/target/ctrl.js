@@ -35,9 +35,12 @@ var app;
 				$scope.selectedLine = line;
 				usersService.getAssignedUsers(line).then(function (data) {
 					$log.log(data);
-
 					$scope.lineAssignedUsers = data;
 				})
+			});
+			$scope.$on("refresh_data", function (e, line) {
+				if (line != undefined)
+					$rootScope.$broadcast("lineNodeSelected", line);
 			});
 			$scope.openPopup = function (_obj, tmpltURL, cntrl, size = "") {
 				var modalInstance = $uibModal.open({
@@ -94,6 +97,31 @@ var app;
 					$log.info('Modal dismissed at: ' + new Date());
 				});
 			};
+			$scope.openRightsPopup = function (_obj, tmpltURL, cntrl, size = "") {
+				var modalInstance = $uibModal.open({
+					animation: $scope.animationsEnabled,
+					templateUrl: tmpltURL,
+					controller: cntrl,
+					size: size,
+					resolve: {
+						settings: function () {
+							var o = {
+								user: _obj,
+								linesData: linesData,
+								line: $scope.selectedLine
+							}
+							return o;
+						}
+
+					}
+				});
+
+				modalInstance.result.then(function (selectedItem) {
+					$scope.selected = selectedItem;
+				}, function () {
+					$log.info('Modal dismissed at: ' + new Date());
+				});
+			};
 		}
 
 		angular.module("IVRY-App").controller("TargetCtrl", ["$log", "$scope", "$rootScope", "$uibModal", "linesData", "targetService", "linesTreeService", "usersService", cntrlFn]);
@@ -109,11 +137,11 @@ var app;
 					assigned: assigned
 				}
 			};
-			$scope.filterNotAssigned=function(item){
-				var notExist=true;
-				for(i=0;i<$scope.modalObj.team.assigned.length;i++)
-					if($scope.modalObj.team.assigned[i].id==item.id)
-						notExist=false;
+			$scope.filterNotAssigned = function (item) {
+				var notExist = true;
+				for (i = 0; i < $scope.modalObj.team.assigned.length; i++)
+					if ($scope.modalObj.team.assigned[i].id == item.id)
+						notExist = false;
 				return notExist;
 			}
 			$log.log($scope.modalObj);
@@ -123,19 +151,8 @@ var app;
 				for (i = 0; i < $scope.modalObj.team.assigned.length; i++)
 					users.push($scope.modalObj.team.assigned[i].id);
 				usersService.assignUsers(obj, users).then(function (response) {
-					$rootScope.message = {
-						body: "User(s) Assigned Successfully to line " + obj.lineName,
-						type: 'success',
-						duration: 5000,
-					};
+					$rootScope.$broadcast("refresh_data", obj);
 					$uibModalInstance.close();
-				}, function (error) {
-					$rootScope.message = {
-						body: error.data.message,
-						type: 'danger',
-						duration: 5000,
-					};
-
 				});
 			};
 			$scope.moveItems = utilitiesServices.moveItems;
@@ -144,15 +161,23 @@ var app;
 				$uibModalInstance.dismiss('cancel');
 			};
 		}]);
-		angular.module("IVRY-App").controller("ACLCtrl", ["$scope", "$uibModalInstance", "utilitiesServices", "linesData", function ($scope, $uibModalInstance, utilitiesServices, linesData) {
+		angular.module("IVRY-App").controller("ACLCtrl", ["$rootScope", "$scope", "$uibModalInstance", "utilitiesServices", "settings", function ($rootScope, $scope, $uibModalInstance, utilitiesServices, settings) {
 			$scope.treeConfigs = {
 				lines: {},
-				treeObj: linesData,
+				treeObj: settings.linesData,
 				multiSelect: true,
-				selectedNode: null,
+				selectedNode: {
+					data: settings.line,
+					type: "line"
+				},
 				allowEdit: false,
-				allowFilter: true
+				allowFilter: true,
+				collapsed: false
 			};
+			console.info("ACLCTRL", $scope.treeConfigs);
+			$rootScope.$on("treeNodeSelected", function (e, line) {
+				line.data.checked = true;
+			});
 			$scope.ok = function () {
 				$uibModalInstance.close();
 			};
@@ -163,37 +188,46 @@ var app;
 			$scope.modalObj = {
 				rights: [
 					{
-						name: "Media Playback"
+						name: "Media Playback",
+						id: 1
 					},
 					{
-						name: "Media Export"
+						name: "Media Export",
+						id: 2
 					},
 					{
-						name: "Mark"
+						name: "Mark",
+						id: 3
 					},
 					{
-						name: "Tag"
+						name: "Tag",
+						id: 4
 					},
 					{
-						name: "Transcribe"
+						name: "Transcribe",
+						id: 5
 					},
 					{
-						name: "Comment"
+						name: "Comment",
+						id: 6
 					},
 					{
-						name: "lock"
+						name: "lock",
+						id: 7
 					},
 					{
-						name: "Delete"
+						name: "Delete",
+						id: 8
 					},
 					{
-						name: "Edit"
+						name: "Edit",
+						id: 9
 					},
 					{
-						name: "Create"
+						name: "Create",
+						id: 10
 					},
-
-			]
+				]
 			}
 		}]);
 	})(Target = app.Target || (Target = {}));

@@ -36,25 +36,50 @@ var app;
 							return [];
 						});
 					},
-					getAssignedUsers:function(line){
-						return $http.get(API_BASE_URL+"/line-user/line/"+line.id,{
-							headers:{
-								"X-Access-Token":store.get("token")
+					getAssignedUsers: function (line) {
+						return $http.get(API_BASE_URL + "/line-user/line/" + line.id, {
+							headers: {
+								"X-Access-Token": store.get("token")
 							}
-						}).then(function(response){
-							console.info("usersService::getAssignedUsers",response);
+						}).then(function (response) {
+							console.info("usersService::getAssignedUsers", response);
 							return response.data.data;
-						},function(error){});
+						}, function (error) {});
 					},
-					assignUsers:function(line,users){
-						return $http.put(API_BASE_URL+"/line/user",{
-							line:{
-								id:line.id
+					assignUsers: function (line, users) {
+						return $http.put(API_BASE_URL + "/line/user", {
+							line: {
+								id: line.id
 							},
-							systemUsers:users
-						},{
-							headers:{
-								"X-Access-Token":store.get("token")
+							systemUsers: users
+						}, {
+							headers: {
+								"X-Access-Token": store.get("token")
+							}
+						}).then(function (response) {
+							$rootScope.message = {
+								body: "User(s) Assigned Successfully to line " + line.lineName,
+								type: 'success',
+								duration: 5000,
+							};
+						}, function (error) {
+							$rootScope.message = {
+								body: error.data.message,
+								type: 'danger',
+								duration: 5000,
+							};
+
+						});;
+					},
+					assignRights: function (user, rights) {
+						return $http.put(API_BASE_URL + "/line/user", {
+							lineSystemUser: {
+								id: user.id
+							},
+							accessRights: rights
+						}, {
+							headers: {
+								"X-Access-Token": store.get("token")
 							}
 						});
 					},
@@ -62,6 +87,6 @@ var app;
 			}
 			return serviceFn;
 		})();
-		angular.module("IVRY-App").factory("usersService", ["$rootScope", "$http", "store", "API_BASE_URL",serviceFn]);
+		angular.module("IVRY-App").factory("usersService", ["$rootScope", "$http", "store", "API_BASE_URL", serviceFn]);
 	})(services = app.services || (services = {}), User = app.User || (User = {}));
 })(app || (app = {}));
