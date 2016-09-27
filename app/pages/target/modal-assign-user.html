@@ -11,19 +11,19 @@
 						<div class="row">
 							<div class="col-md-6">
 								<label for="">Assigned Team Analysts</label>
-								<select multiple class="form-control" ng-options="x.firstName+' '+x.lastName for x in modalObj.team.assigned" ng-model="dummy"></select>
+								<select multiple class="form-control" ng-options="x.firstName+' '+x.lastName for x in modalObj.team.assigned track by x.id" ng-model="dummy"></select>
 							</div>
 							<div class="col-md-1">
 								<div class="row">
 									<button type="button" class="btn btn-default btn-sm btn-block" ng-click="moveItems(modalObj.team.available,modalObj.team.available,modalObj.team.assigned)"><i class="fa fa-angle-double-left"></i></button>
 									<button type="button" class="btn btn-default btn-sm btn-block" ng-click="moveItems(modalObj.team.available,selectedMembers,modalObj.team.assigned)"><i class="fa fa-angle-left"></i></button>
 									<button type="button" class="btn btn-default btn-sm btn-block" ng-click="moveItems(modalObj.team.assigned,dummy,modalObj.team.available)"><i class="fa fa-angle-right"></i></button>
-									<button type="button" class="btn btn-default btn-sm btn-block" ng-click="moveItems(modalObj.team.assigned,obj.data.members,modalObj.team.available)"><i class="fa fa-angle-double-right"></i></button>
+									<button type="button" class="btn btn-default btn-sm btn-block" ng-click="moveItems(modalObj.team.assigned,modalObj.team.assigned,modalObj.team.available)"><i class="fa fa-angle-double-right"></i></button>
 								</div>
 							</div>
 							<div class="col-md-5">
 								<label for="">Available Team Analysts</label>
-								<select multiple class="form-control" ng-options="x.firstName+' '+x.lastName for x in modalObj.team.available" ng-model="selectedMembers"></select>
+								<select multiple class="form-control" ng-options="x.firstName+' '+x.lastName for x in modalObj.team.available | filter:filterNotAssigned" ng-model="selectedMembers"></select>
 							</div>
 						</div>
 					</fieldset>

@@ -40,9 +40,6 @@
 				<li ng-if="session.role==userRoles.sysAdmin">
 					<a href="departments"><i class="fa fa-users"></i> Departments</a>
 				</li>
-				<li ng-if="session.role==userRoles.depAdmin || session.role==userRoles.teamLead">
-					<a href="target"><i class="fa fa-crosshairs"></i> Target</a>
-				</li>
 				<li ng-if="session.role==userRoles.depAdmin">
 					<a href="teams"><i class="fa fa-users"></i> Teams</a>
 				</li>
@@ -50,8 +47,13 @@
 					<a href="users"><i class="fa fa-street-view"></i> Users</a>
 				</li>
 				<li ng-if="session.role==userRoles.depAdmin || session.role==userRoles.teamLead">
+					<a href="target"><i class="fa fa-crosshairs"></i> Target</a>
+				</li>
+<!--
+				<li ng-if="session.role==userRoles.depAdmin || session.role==userRoles.teamLead">
 					<a href="rights"><i class="fa fa-crosshairs"></i> Rights</a>
 				</li>
+-->
 				<li ng-if="session.role==userRoles.depAdmin || session.role==userRoles.teamLead || session.role==userRoles.analyst">
 					<a href="calls-log"><i class="fa fa-headphones"></i> Call Logs</a>
 				</li>

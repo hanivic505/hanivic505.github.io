@@ -14,9 +14,9 @@ function manageLineComponent($rootScope, $scope, $element, $attrs, targetService
 		recordingPeriodFrom: new Date()
 	};
 	$scope.popup1 = new app.DatePicker(false);
-	$scope.popup2 = new app.DatePicker(false, "dd/MM/yyyy", ctrl.editObj.recordingPeriodFrom, new Date());
+	$scope.popup2 = new app.DatePicker(false, "dd/MM/yyyy", ctrl.editObj.recordingPeriodFrom);
 
-
+ $scope.myTime = new Date();
 	$scope.$watch(function () {
 		return ctrl.data;
 	}, function (nVal) {

@@ -83,6 +83,15 @@ var app;
 							}
 						});
 					},
+					getUsersInDep: function () {
+						return $http.get(API_BASE_URL + "/user-list", {
+							headers: {
+								"X-Access-Token": store.get("token")
+							}
+						}).then(function (response) {
+							return response.data.data;
+						}, function (error) {});
+					},
 				};
 			}
 			return serviceFn;

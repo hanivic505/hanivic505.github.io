@@ -75,8 +75,8 @@ var app;
 							return _obj;
 						},
 						available: function () {
-							return usersService.get().then(function (response) {
-								return response.searchResults;
+							return usersService.getUsersInDep().then(function (response) {
+								return response;
 							});
 						},
 						assigned: function () {
@@ -139,9 +139,14 @@ var app;
 			};
 			$scope.filterNotAssigned = function (item) {
 				var notExist = true;
-				for (i = 0; i < $scope.modalObj.team.assigned.length; i++)
-					if ($scope.modalObj.team.assigned[i].id == item.id)
-						notExist = false;
+				for (i = 0; i < $scope.modalObj.team.assigned.length; i++) {
+					//					console.info("$scope.modalObj.team.assigned["+i+"].id",$scope.modalObj.team.assigned[i].id,"item",item)
+					if ($scope.modalObj.team.assigned[i].id == item.id) {
+						$scope.modalObj.team.available.splice($scope.modalObj.team.available.indexOf(item), 1)
+						$log.debug("filtered out::", $scope.modalObj.team.available, item);
+						//						notExist = false;
+					}
+				}
 				return notExist;
 			}
 			$log.log($scope.modalObj);
@@ -161,7 +166,7 @@ var app;
 				$uibModalInstance.dismiss('cancel');
 			};
 		}]);
-		angular.module("IVRY-App").controller("ACLCtrl", ["$rootScope", "$scope", "$uibModalInstance", "utilitiesServices", "settings", function ($rootScope, $scope, $uibModalInstance, utilitiesServices, settings) {
+		angular.module("IVRY-App").controller("ACLCtrl", ["$rootScope", "$scope", "$uibModalInstance", "utilitiesServices", "settings", "$log", "usersService", function ($rootScope, $scope, $uibModalInstance, utilitiesServices, settings, $log, usersService) {
 			$scope.treeConfigs = {
 				lines: {},
 				treeObj: settings.linesData,
@@ -174,60 +179,34 @@ var app;
 				allowFilter: true,
 				collapsed: false
 			};
-			console.info("ACLCTRL", $scope.treeConfigs);
+			$log.debug("ACLCTRL", $scope.treeConfigs);
 			$rootScope.$on("treeNodeSelected", function (e, line) {
 				line.data.checked = true;
 			});
+			this.rights = [];
+			this.lines = [];
+			var _this = this;
+			$scope.rightsOn = {};
 			$scope.ok = function () {
+				angular.forEach($scope.rightsOn, function (val, key) {
+					$log.debug("rightsOn", key, val);
+					if (val)
+						_this.rights.push(key);
+				});
+				angular.forEach($scope.treeConfigs.lines, function (val, key) {
+					$log.debug("lines", key, val);
+					if (val)
+						_this.lines.push(key);
+				});
+				$log.debug($scope.treeConfigs, $scope.rightsOn, _this.rights, _this.lines);
+				//				usersService.assignRights()
 				$uibModalInstance.close();
 			};
-
 			$scope.cancel = function () {
 				$uibModalInstance.dismiss('cancel');
 			};
 			$scope.modalObj = {
-				rights: [
-					{
-						name: "Media Playback",
-						id: 1
-					},
-					{
-						name: "Media Export",
-						id: 2
-					},
-					{
-						name: "Mark",
-						id: 3
-					},
-					{
-						name: "Tag",
-						id: 4
-					},
-					{
-						name: "Transcribe",
-						id: 5
-					},
-					{
-						name: "Comment",
-						id: 6
-					},
-					{
-						name: "lock",
-						id: 7
-					},
-					{
-						name: "Delete",
-						id: 8
-					},
-					{
-						name: "Edit",
-						id: 9
-					},
-					{
-						name: "Create",
-						id: 10
-					},
-				]
+				rights: $rootScope.lookups.accessRightLus
 			}
 		}]);
 	})(Target = app.Target || (Target = {}));
