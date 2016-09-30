@@ -4,50 +4,39 @@
 <div class="modal-body">
 	<div class="row">
 		<div class="col-md-6">
-			<label>First Name:</label>
-			<input type="text" ng-model="obj.data.firstName" class="form-control">
+			<label>Deprtment Name:</label>
+			<input type="text" ng-model="obj.data.departmentName" class="form-control">
 		</div>
 		<div class="col-md-6">
-			<label>Last Name:</label>
-			<input type="text" ng-model="obj.data.lastName" class="form-control">
+			<label>Maximum Number of Recording Lines:</label>
+			<input type="text" ng-model="obj.data.maxLines" class="form-control">
 		</div>
-		<div class="col-md-6">
-			<label>Mobile No.:</label>
-			<input type="text" ng-model="obj.data.mobileNo" class="form-control">
+		<div class="col-md-12">
+			<label>Comment:</label>
+			<textarea ng-model="obj.data.comment" rows="3" class="form-control"></textarea>
 		</div>
-		<div class="col-md-6">
-			<label>Email:</label>
-			<input type="email" ng-model="obj.data.email" class="form-control">
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-6">
-			<label>Login Name:</label>
-			<input type="text" ng-model="obj.data.loginName" class="form-control">
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-6">
-			<label>Password:</label>
-			<input type="password" ng-model="obj.data.password" class="form-control">
-		</div>
-		<div class="col-md-6">
-			<label>Confirm Password:</label>
-			<input type="password" ng-model="confirmPass" class="form-control">
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-4">
-			<label>Department:</label>
-			<select ng-model="obj.data.departmentId" class="form-control"></select>
-		</div>
-		<div class="col-md-4">
-			<label>Team:</label>
-			<select ng-model="obj.data.teamId" class="form-control"></select>
-		</div>
-		<div class="col-md-4">
-			<label>Role:</label>
-			<select ng-model="obj.data.roleId" class="form-control"></select>
+		<div class="col-md-12">
+			<fieldset>
+				<legend>Department Admins</legend>
+				<div class="row">
+					<div class="col-md-6">
+						<label for="">Assigned Department Admins</label>
+						<select multiple class="form-control" ng-options="x.firstName+ ' '+x.lastName for x in obj.data.teamLeads" ng-model="dummy"></select>
+					</div>
+					<div class="col-md-1">
+						<div class="row">
+							<button class="btn btn-default btn-sm btn-block" ng-click="moveItems(depTeamLeads,depTeamLeads,obj.data.teamLeads)"><i class="fa fa-angle-double-left"></i></button>
+							<button class="btn btn-default btn-sm btn-block" ng-click="moveItems(depTeamLeads,selectedDepTeamLeads,obj.data.teamLeads)"><i class="fa fa-angle-left"></i></button>
+							<button class="btn btn-default btn-sm btn-block" ng-click="moveItems(obj.data.teamLeads,dummy,depTeamLeads)"><i class="fa fa-angle-right"></i></button>
+							<button class="btn btn-default btn-sm btn-block" ng-click="moveItems(obj.data.teamLeads,obj.data.teamLeads,depTeamLeads)"><i class="fa fa-angle-double-right"></i></button>
+						</div>
+					</div>
+					<div class="col-md-5">
+						<label for="">Available Department Admins</label>
+						<select multiple class="form-control" ng-options="x.firstName+ ' '+x.lastName for x in depTeamLeads" ng-model="selectedDepTeamLeads"></select>
+					</div>
+				</div>
+			</fieldset>
 		</div>
 	</div>
 </div>
