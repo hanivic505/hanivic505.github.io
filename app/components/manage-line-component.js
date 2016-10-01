@@ -8,15 +8,12 @@ angular.module("IVRY-App").component("manageLine", {
 
 function manageLineComponent($rootScope, $scope, $element, $attrs, targetService, usersService) {
 	var ctrl = this;
-	this.lookups=$rootScope.lookups;
-	this.editObj = {
-		recordCalls: false,
-		recordingPeriodFrom: new Date()
-	};
+	this.lookups = $rootScope.lookups;
+	this.editObj = {};
 	$scope.popup1 = new app.DatePicker(false);
 	$scope.popup2 = new app.DatePicker(false, "dd/MM/yyyy", ctrl.editObj.recordingPeriodFrom);
 
- $scope.myTime = new Date();
+	$scope.myTime = new Date();
 	$scope.$watch(function () {
 		return ctrl.data;
 	}, function (nVal) {
@@ -25,9 +22,17 @@ function manageLineComponent($rootScope, $scope, $element, $attrs, targetService
 	});
 	this.load = function () {
 		this.editObj = angular.copy(this.data);
+		this.editObj.rercordingPeriodFrom = new Date(this.editObj.rercordingPeriodFrom);
+		this.editObj.rercordingPeriodTo = new Date(this.editObj.rercordingPeriodTo);
+		this.editObj.rercordingTimeFrom = new Date(this.editObj.rercordingTimeFrom);
+		this.editObj.rercordingTimeTo = new Date(this.editObj.rercordingTimeTo);
 	};
 	this.cancel = function () {
 		this.editObj = angular.copy(this.data);
+		this.editObj.rercordingPeriodFrom = new Date(this.editObj.rercordingPeriodFrom);
+		this.editObj.rercordingPeriodTo = new Date(this.editObj.rercordingPeriodTo);
+		this.editObj.rercordingTimeFrom = new Date(this.editObj.rercordingTimeFrom);
+		this.editObj.rercordingTimeTo = new Date(this.editObj.rercordingTimeTo);
 	};
 	this.getStatusClass = function (mode) {
 		//		commented until we agree on the status

@@ -39,6 +39,7 @@ var app;
 				})
 			});
 			$scope.$on("refresh_data", function (e, line) {
+				$log.debug("refresh_data :: targetCtrl", line);
 				if (line != undefined)
 					$rootScope.$broadcast("lineNodeSelected", line);
 			});
@@ -102,12 +103,14 @@ var app;
 					animation: $scope.animationsEnabled,
 					templateUrl: tmpltURL,
 					controller: cntrl,
+					controllerAs: "vmRight",
 					size: size,
 					resolve: {
 						settings: function () {
 							var o = {
 								user: _obj,
-								linesData: linesData,
+								//								linesData: linesData,
+								//								rights:
 								line: $scope.selectedLine
 							}
 							return o;
@@ -167,45 +170,49 @@ var app;
 			};
 		}]);
 		angular.module("IVRY-App").controller("ACLCtrl", ["$rootScope", "$scope", "$uibModalInstance", "utilitiesServices", "settings", "$log", "usersService", function ($rootScope, $scope, $uibModalInstance, utilitiesServices, settings, $log, usersService) {
-			$scope.treeConfigs = {
-				lines: {},
-				treeObj: settings.linesData,
-				multiSelect: true,
-				selectedNode: {
-					data: settings.line,
-					type: "line"
-				},
-				allowEdit: false,
-				allowFilter: true,
-				collapsed: false
-			};
-			$log.debug("ACLCTRL", $scope.treeConfigs);
-			$rootScope.$on("treeNodeSelected", function (e, line) {
-				line.data.checked = true;
-			});
+			//			$scope.treeConfigs = {
+			//				lines: {},
+			//				treeObj: settings.linesData,
+			//				multiSelect: true,
+			//				selectedNode: {
+			//					data: settings.line,
+			//					type: "line"
+			//				},
+			//				allowEdit: false,
+			//				allowFilter: true,
+			//				collapsed: false
+			//			};
+			//			$log.debug("ACLCTRL", $scope.treeConfigs);
+			//			$rootScope.$on("treeNodeSelected", function (e, line) {
+			//				line.data.checked = true;
+			//			});
+			$log.debug(settings);
+
 			this.rights = [];
-			this.lines = [];
 			var _this = this;
 			$scope.rightsOn = {};
+			for (var j = 0; j < settings.user.accessRights.length; j++) {
+				this.rights.push(settings.user.accessRights[j].id);
+				$scope.rightsOn[settings.user.accessRights[j].id] = true;
+			}
 			$scope.ok = function () {
+				_this.rights = [];
 				angular.forEach($scope.rightsOn, function (val, key) {
 					$log.debug("rightsOn", key, val);
 					if (val)
-						_this.rights.push(key);
+						_this.rights.push(parseInt(key));
 				});
-				angular.forEach($scope.treeConfigs.lines, function (val, key) {
-					$log.debug("lines", key, val);
-					if (val)
-						_this.lines.push(key);
-				});
-				$log.debug($scope.treeConfigs, $scope.rightsOn, _this.rights, _this.lines);
-				//				usersService.assignRights()
-				$uibModalInstance.close();
+				$log.debug($scope.rightsOn, _this.rights);
+				usersService.assignRights(settings.user.id, _this.rights).then(function (response) {
+					$rootScope.$broadcast("refresh_data", settings.line);
+					$uibModalInstance.close();
+				}, function (error) {});
 			};
 			$scope.cancel = function () {
 				$uibModalInstance.dismiss('cancel');
 			};
 			$scope.modalObj = {
+				user: settings.user.user,
 				rights: $rootScope.lookups.accessRightLus
 			}
 		}]);

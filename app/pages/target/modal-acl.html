@@ -5,12 +5,17 @@
 	<form ng-submit="ok()">
 		<div class="modal-body">
 			<div class="row">
+<!--
 				<div class="col-xs-5 mh-350 vertical-scroll brdr-right">
 					<tree tree-config="treeConfigs"></tree>
 				</div>
-				<div class="col-xs-7">
+-->
+				<div class="col-xs-12">
 					<h5>User Assigned Access Rights<hr/></h5>
 					<div class="row">
+					<div class="col-md-12">
+						<a href="" class="btn-btn-link">Select All</a>
+					</div>
 						<div class="col-md-4" ng-repeat="right in modalObj.rights">
 							<label class="text-normal">
 								<input type="checkbox" ng-model="rightsOn[right.id]" /> {{right.description}}

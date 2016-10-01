@@ -21,6 +21,7 @@ var app;
 					this.popup.opened = true;
 				},
 				updateDatePicker: function (target, val) {
+					console.log("datepicker :: updateDatePicker",target,val);
 					target.dateOptions.minDate = val;
 				}
 			}

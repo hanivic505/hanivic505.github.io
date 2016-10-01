@@ -71,10 +71,10 @@ var app;
 
 						});;
 					},
-					assignRights: function (user, rights) {
-						return $http.put(API_BASE_URL + "/line/user", {
+					assignRights: function (id, rights) {
+						return $http.put(API_BASE_URL + "/line-user/access-right", {
 							lineSystemUser: {
-								id: user.id
+								id: id
 							},
 							accessRights: rights
 						}, {
