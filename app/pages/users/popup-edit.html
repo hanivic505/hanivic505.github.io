@@ -1,3 +1,4 @@
+<form ng-submit="ok()">
 <div class="modal-header">
 	<h3 class="modal-title">{{obj.title || 'New User'}}</h3>
 </div>
@@ -5,31 +6,31 @@
 	<div class="row">
 		<div class="col-md-6">
 			<label>First Name:</label>
-			<input type="text" ng-model="obj.data.firstName" class="form-control">
+			<input type="text" ng-model="obj.firstName" class="form-control">
 		</div>
 		<div class="col-md-6">
 			<label>Last Name:</label>
-			<input type="text" ng-model="obj.data.lastName" class="form-control">
+			<input type="text" ng-model="obj.lastName" class="form-control">
 		</div>
 		<div class="col-md-6">
 			<label>Mobile No.:</label>
-			<input type="text" ng-model="obj.data.mobileNo" class="form-control">
+			<input type="text" ng-model="obj.mobileNumber" class="form-control">
 		</div>
 		<div class="col-md-6">
 			<label>Email:</label>
-			<input type="email" ng-model="obj.data.email" class="form-control">
+			<input type="email" ng-model="obj.email" class="form-control">
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-md-6">
 			<label>Login Name:</label>
-			<input type="text" ng-model="obj.data.loginName" class="form-control">
+			<input type="text" ng-model="obj.userName" class="form-control">
 		</div>
 	</div>
 	<div class="row">
 		<div class="col-md-6">
 			<label>Password:</label>
-			<input type="password" ng-model="obj.data.password" class="form-control">
+			<input type="password" ng-model="obj.password" class="form-control">
 		</div>
 		<div class="col-md-6">
 			<label>Confirm Password:</label>
@@ -39,19 +40,20 @@
 	<div class="row">
 		<div class="col-md-4">
 			<label>Department:</label>
-			<select ng-model="obj.data.departmentId" class="form-control"></select>
+			<select convert-to-number ng-model="obj.departmentId" class="form-control"></select>
 		</div>
 		<div class="col-md-4">
 			<label>Team:</label>
-			<select ng-model="obj.data.teamId" class="form-control"></select>
+			<select convert-to-number ng-model="obj.teamId" class="form-control"></select>
 		</div>
 		<div class="col-md-4">
 			<label>Role:</label>
-			<select ng-model="obj.data.roleId" class="form-control"></select>
+			<select convert-to-number ng-model="obj.roleId" class="form-control"></select>
 		</div>
 	</div>
 </div>
 <div class="modal-footer">
 	<button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
-	<button class="btn btn-primary" type="button" ng-click="ok()">Save</button>
+	<button class="btn btn-primary" type="submit">Save</button>
 </div>
+</form>

@@ -5,30 +5,13 @@ var app;
 	var User;
 	(function (Team, User) {
 		var cntrlFn = (function () {
-			function cntrlFn($scope, $rootScope, $uibModal, dbService) {
+			function cntrlFn($scope, $rootScope, $log, $uibModal, dbService, teamService) {
 				var _this = this;
-//				$rootScope.user = "DepAdmin";
+				//				$rootScope.user = "DepAdmin";
 				$scope.columns = {
-					childs: [
-						{
-							title: "Team Name",
-							prop: "title",
-							isOn: true
-						},
-						{
-							title: "Department Name",
-							prop: "department",
-							isOn: true
-						},
-						{
-							title: "Members Count",
-							prop: "membersCount",
-							isOn: true,
-							type: "func",
-							optOutFilter: true
-						}
-					]
+					childs: []
 				};
+				$scope.columns.childs = $rootScope.teamsColumns;
 				$scope.currentPage = 1;
 				$scope.numPerPage = 10;
 				$scope.setPage = function (pageNo) {
@@ -52,12 +35,12 @@ var app;
 				$scope.fltrObj = {};
 				this.editObj = {};
 				this.filteredList = [];
-				var i;
-				for (i = 0; i < 23; i++)
-					this.filteredList.push(new Team("Team " + i, "Department Name", "no CommenT"));
-
+				teamService.get().then(function (response) {
+					$log.debug("Teams List", response);
+					_this.filteredList = response.searchResults;
+				});
 				$scope.addNew = function () {
-					$scope.openPopup(new Team('', '', ''), '/app/pages/teams/popup-edit.html', 'TeamEditCtrl', 'lg')
+					$scope.openPopup(null, '/app/pages/teams/popup-edit.html', 'TeamEditCtrl', 'lg')
 				};
 				$scope.delete = function (obj) {
 					dbService.delete(_this.filteredList, obj);
@@ -82,25 +65,42 @@ var app;
 					modalInstance.result.then(function (selectedItem) {
 						$scope.selected = selectedItem;
 					}, function () {
-						console.info('Modal dismissed at: ' + new Date());
+						$log.info('Modal dismissed at: ' + new Date());
 					});
 				};
 			}
 			return cntrlFn;
 		})();
 
-		angular.module("IVRY-App").controller("TeamsCtrl", ["$scope", "$rootScope", "$uibModal", "dbService", cntrlFn]);
+		angular.module("IVRY-App").controller("TeamsCtrl", ["$scope", "$rootScope", "$log", "$uibModal", "dbService", "teamService", cntrlFn]);
 
-		angular.module("IVRY-App").controller("TeamEditCtrl", ["$scope", "$uibModalInstance", "dbService", "utilitiesServices", "obj", function ($scope, $uibModalInstance, dbService, utilitiesServices, obj) {
-			$scope.obj = obj;
-			this.mode = obj == null ? 1 /*Add Mode*/ : 2 /*Update Mode*/ ;
+		angular.module("IVRY-App").controller("TeamEditCtrl", ["$scope", "$rootScope", "$log", "$uibModalInstance", "dbService", "utilitiesServices", "obj", "teamService", function ($scope, $rootScope, $log, $uibModalInstance, dbService, utilitiesServices, obj, teamService) {
+			$scope.obj = obj.data;
+			this.mode = $scope.obj == null ? 1 /*Add Mode*/ : 2 /*Update Mode*/ ;
 			var _this = this;
-			console.info("mode", _this.mode);
+			$log.info("mode", _this.mode);
 			$scope.ok = function () {
-				//				if (_this.mode == 1) {
-				dbService.add(obj.repo, obj.data);
-				//				}
-				$uibModalInstance.close($scope.obj);
+				if (_this.mode == 1) {
+					teamService.add($scope.obj).then(function () {
+						$uibModalInstance.close($scope.obj);
+					}, function (error) {
+						$rootScope.message = {
+							body: error.data.data.message,
+							type: 'danger',
+							duration: 5000,
+						};
+					});
+				} else {
+					teamService.update($scope.obj).then(function () {
+						$uibModalInstance.close($scope.obj);
+					}, function (error) {
+						$rootScope.message = {
+							body: error.data.data.message,
+							type: 'danger',
+							duration: 5000,
+						};
+					});
+				}
 			};
 
 			$scope.cancel = function () {
@@ -113,11 +113,11 @@ var app;
 
 			$scope.moveItems = utilitiesServices.moveItems;
 		}]);
-		angular.module("IVRY-App").controller("TeamMembersCtrl", ["$scope", "$uibModalInstance", "dbService", "utilitiesServices", "obj", function ($scope, $uibModalInstance, dbService, utilitiesServices, obj) {
+		angular.module("IVRY-App").controller("TeamMembersCtrl", ["$scope", "$log", "$uibModalInstance", "dbService", "utilitiesServices", "obj", function ($scope, $log, $uibModalInstance, dbService, utilitiesServices, obj) {
 			$scope.obj = obj;
 			this.mode = obj == null ? 1 /*Add Mode*/ : 2 /*Update Mode*/ ;
 			var _this = this;
-			console.info("mode", _this.mode);
+			$log.info("mode", _this.mode);
 			$scope.ok = function () {
 				//				if (_this.mode == 1) {
 				//					dbService.add(obj.repo,obj.data);

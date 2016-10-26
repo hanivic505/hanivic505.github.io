@@ -1,6 +1,6 @@
 <div class="row">
 	<div class="container-fluid">
-		<h3>Manage Line <small>{{$ctrl.data.title}} <div class="pull-right"><label for="" class="label label-default"><span class="fa-stack fa-2x"><i class="fa fa-circle fa-stack-2x" ng-class="$ctrl.getStatusClass(1)"></i><i class="fa fa-microphone fa-stack-1x fa-inverse"></i></span> Recording Status <label for="" class="label" ng-class="$ctrl.getStatusClass(2)" ng-bind="$ctrl.data.status.text">OnLine</label></label></div></small></h3>
+		<h3>Manage Line <small>{{$ctrl.data.title}} <div class="pull-right"><label for="" class="label label-default"><a href="" class="btn btn-link no-padding"><span class="fa-stack fa-2x"><i class="fa fa-circle fa-stack-2x" ng-class="$ctrl.getStatusClass(1)"></i><i class="fa fa-microphone fa-stack-1x fa-inverse"></i></span></a> Recording Status <label for="" class="label" ng-class="$ctrl.getStatusClass(2)" ng-bind="$ctrl.data.status.text">OnLine</label></label></div></small></h3>
 	</div>
 </div>
 <form ng-submit="$ctrl.save($ctrl.editObj)"><!--pre>{{$ctrl.editObj|json}}</pre-->
@@ -50,6 +50,7 @@
 				</div>
 			</div>
 		</div>
+<!--
 		<div class="form-group col-md-12">
 			<label for="">Recording Time</label>
 			<div class="row">
@@ -67,6 +68,7 @@
 				</div>
 			</div>
 		</div>
+-->
 		<div class="form-group col-md-12">
 			<label for="">Comment</label>
 			<textarea ng-model="$ctrl.editObj.comment" placeholder="Line Comment" class="form-control"></textarea>

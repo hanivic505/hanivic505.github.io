@@ -2,8 +2,8 @@ var app;
 (function (app) {
 	var services;
 	(function (services) {
-		var serviceFn = (function ($log,$rootScope, $http, store, API_BASE_URL) {
-			function serviceFn($log,$rootScope, $http, store, API_BASE_URL) {
+		var serviceFn = (function ($log, $rootScope, $http, store, API_BASE_URL) {
+			function serviceFn($log, $rootScope, $http, store, API_BASE_URL) {
 				return {
 					conditions: [],
 					orders: ["sessionLogId", "DESC"],
@@ -12,17 +12,17 @@ var app;
 					get: function (mode, obj) {
 						var url = "";
 						switch (mode) {
-						case 1:
-							url = "/target-case";
-							break;
-						case 2:
-							url = "/identity";
-							break;
-						default:
-							url = "/line";
-							break;
+							case 1:
+								url = "/target-case";
+								break;
+							case 2:
+								url = "/identity";
+								break;
+							default:
+								url = "/line";
+								break;
 						}
-						return $http.get(API_BASE_URL + url+ obj.id, {
+						return $http.get(API_BASE_URL + url + obj.id, {
 							headers: {
 								"X-Access-Token": store.get("token")
 							}
@@ -40,15 +40,15 @@ var app;
 						obj.departmentId = null;
 						var url = "";
 						switch (mode) {
-						case 1:
-							url = "/target-case";
-							break;
-						case 2:
-							url = "/identity";
-							break;
-						default:
-							url = "/line";
-							break;
+							case 1:
+								url = "/target-case";
+								break;
+							case 2:
+								url = "/identity";
+								break;
+							default:
+								url = "/line";
+								break;
 						}
 						return $http.post(API_BASE_URL + url, obj, {
 							headers: {
@@ -72,15 +72,17 @@ var app;
 					update: function (mode, obj) {
 						var url = "";
 						switch (mode) {
-						case 1:
-							url = "/target-case";
-							break;
-						case 2:
-							url = "/identity";
-							break;
-						default:
-							url = "/line";
-							break;
+							case 1:
+								url = "/target-case";
+								break;
+							case 2:
+								url = "/identity";
+								break;
+							default:
+								url = "/line";
+								delete(obj.rercordingTimeFrom);
+								delete(obj.rercordingTimeTo);
+								break;
 						}
 						return $http.put(API_BASE_URL + url, obj, {
 							headers: {
@@ -104,15 +106,15 @@ var app;
 					delete: function (mode, obj) {
 						var url = "";
 						switch (mode) {
-						case 1:
-							url = "/target-case/";
-							break;
-						case 2:
-							url = "/identity/";
-							break;
-						default:
-							url = "/line/";
-							break;
+							case 1:
+								url = "/target-case/";
+								break;
+							case 2:
+								url = "/identity/";
+								break;
+							default:
+								url = "/line/";
+								break;
 						}
 						if (confirm("Are you sure, you want to delete this record?"))
 							return $http.delete(API_BASE_URL + url + obj.id, {
@@ -138,6 +140,6 @@ var app;
 			}
 			return serviceFn;
 		})();
-		angular.module("IVRY-App").factory("targetService", ["$log","$rootScope", "$http", "store", "API_BASE_URL", serviceFn]);
+		angular.module("IVRY-App").factory("targetService", ["$log", "$rootScope", "$http", "store", "API_BASE_URL", serviceFn]);
 	})(services = app.services || (services = {}));
 })(app || (app = {}));

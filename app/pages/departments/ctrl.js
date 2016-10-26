@@ -4,13 +4,13 @@ var app;
 	var Department;
 	(function (Department) {
 		var cntrlFn = (function () {
-			function cntrlFn($scope, $rootScope, $uibModal, dbService) {
+			function cntrlFn($scope, $rootScope, $uibModal, $log, dbService, departmentsService) {
 				var _this = this;
 				$scope.columns = {
 					childs: [
 						{
 							title: "Department Name",
-							prop: "title",
+							prop: "departmentName",
 							isOn: true
 						},
 						{
@@ -22,13 +22,11 @@ var app;
 							title: "Teams Count",
 							prop: "teamsCount",
 							isOn: true,
-							type: "func"
 						},
 						{
 							title: "Assigned Lines",
 							prop: "assignedLines",
 							isOn: true,
-							type: "func"
 						},
 						{
 							title: "Comment",
@@ -60,15 +58,35 @@ var app;
 				$scope.fltrObj = {};
 				this.editObj = {};
 				this.filteredList = [];
-				var i;
-				for (i = 0; i < 23; i++)
-					this.filteredList.push(new Department("Department " + i, "comment no " + i, 7));
+
+
+				this.initData = function () {
+					departmentsService.get().then(function (response) {
+						$log.debug("departmentsService", response);
+						_this.filteredList = response.searchResults;
+					});
+				};
+				this.initData();
+				$rootScope.$on("refresh_data", function (e) {
+					$log.debug("refresh_data :: depCtrl");
+					_this.initData();
+				});
+				//				var i;
+				//				for (i = 0; i < 23; i++)
+				//					this.filteredList.push(new Department("Department " + i, "comment no " + i, 7));
 
 				$scope.addNew = function () {
-					$scope.openPopup(new Department('', '', 0), '/app/pages/departments/popup-edit.html', 'DepartmentEditCtrl', 'lg')
+					$scope.openPopup(null, '/app/pages/departments/popup-edit.html', 'DepartmentEditCtrl', 'lg')
+				};
+				$scope.edit = function (obj) {
+					departmentsService.getDep(obj.id).then(function (response) {
+						console.log(response);
+						$scope.openPopup(response, '/app/pages/departments/popup-edit.html', 'DepartmentEditCtrl', 'lg');
+
+					});
 				};
 				$scope.delete = function (obj) {
-					dbService.delete(_this.filteredList, obj);
+					departmentsService.delete(obj);
 				};
 				$scope.openPopup = function (_obj, tmpltURL, cntrl, size = "") {
 					var modalInstance = $uibModal.open({
@@ -79,8 +97,7 @@ var app;
 						resolve: {
 							obj: function () {
 								return {
-									data: _obj,
-									repo: _this.filteredList
+									data: _obj
 								};
 							},
 
@@ -97,17 +114,42 @@ var app;
 			return cntrlFn;
 		})();
 
-		angular.module("IVRY-App").controller("DepartmentsCtrl", ["$scope", "$rootScope", "$uibModal", "dbService", cntrlFn]);
-		angular.module("IVRY-App").controller("DepartmentEditCtrl", ["$scope", "$uibModalInstance", "dbService", "utilitiesServices", "obj", function ($scope, $uibModalInstance, dbService, utilitiesServices, obj) {
+		angular.module("IVRY-App").controller("DepartmentsCtrl", ["$scope", "$rootScope", "$uibModal", "$log", "dbService", "departmentsService", cntrlFn]);
+		angular.module("IVRY-App").controller("DepartmentEditCtrl", ["$scope", "$rootScope", "$uibModalInstance", "dbService", "utilitiesServices", "departmentsService", "obj", function ($scope, $rootScope, $uibModalInstance, dbService, utilitiesServices, departmentsService, obj) {
 			$scope.obj = obj.data;
-			this.mode = obj == null ? 1 /*Add Mode*/ : 2 /*Update Mode*/ ;
+			this.mode = $scope.obj == null ? 1 /*Add Mode*/ : 2 /*Update Mode*/ ;
 			var _this = this;
-			console.info("mode", _this.mode);
+			console.info("mode", _this.mode, obj);
 			$scope.ok = function () {
-				//				if (_this.mode == 1) {
-				dbService.add(obj.repo, obj.data);
-				//				}
-				$uibModalInstance.close($scope.obj);
+				if (_this.mode == 1) {
+					departmentsService.add($scope.obj).then(
+						function (response) {
+							$rootScope.$broadcast("refresh_data");
+							$uibModalInstance.close($scope.obj);
+						},
+						function (error) {
+							$rootScope.message = {
+								body: error.data.data.message,
+								type: 'danger',
+								duration: 5000,
+							};
+						}
+					);
+				} else {
+					departmentsService.update($scope.obj).then(
+						function (response) {
+							$rootScope.$broadcast("refresh_data");
+							$uibModalInstance.close($scope.obj);
+						},
+						function (error) {
+							$rootScope.message = {
+								body: error.data.data.message,
+								type: 'danger',
+								duration: 5000,
+							};
+						}
+					);
+				}
 			};
 
 			$scope.cancel = function () {
@@ -120,5 +162,5 @@ var app;
 		}]);
 
 
-	})(Department = app.Department || (User = {}));
+	})(Department = app.Department || (Department = {}));
 })(app || (app = {}));

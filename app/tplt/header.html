@@ -40,7 +40,7 @@
 				<li ng-if="session.role==userRoles.sysAdmin">
 					<a href="departments"><i class="fa fa-users"></i> Departments</a>
 				</li>
-				<li ng-if="session.role==userRoles.depAdmin">
+				<li ng-if="session.role==userRoles.sysAdmin || session.role==userRoles.depAdmin">
 					<a href="teams"><i class="fa fa-users"></i> Teams</a>
 				</li>
 				<li ng-if="session.role==userRoles.sysAdmin || session.role==userRoles.depAdmin || session.role==userRoles.teamLead">

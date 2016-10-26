@@ -4,9 +4,9 @@ var app;
 	var User;
 	(function (User) {
 		var cntrlFn = (function () {
-			function cntrlFn($scope, $rootScope, $uibModal, dbService) {
+			function cntrlFn($scope, $rootScope, $log, $uibModal, dbService, usersService) {
 				var _this = this;
-//				$rootScope.user = "DepAdmin";
+				//				$rootScope.user = "DepAdmin";
 				$scope.columns = {
 					childs: [
 						{
@@ -21,22 +21,22 @@ var app;
 						},
 						{
 							title: "Login Name",
-							prop: "loginName",
+							prop: "userName",
 							isOn: true,
 						},
 						{
 							title: "Department",
-							prop: "department",
+							prop: "departmentName",
 							isOn: true,
 						},
 						{
 							title: "Team",
-							prop: "team",
+							prop: "teamName",
 							isOn: true,
 						},
 						{
 							title: "Role",
-							prop: "role",
+							prop: "accessRoleDesc",
 							isOn: true,
 						}
 					]
@@ -64,12 +64,17 @@ var app;
 				$scope.fltrObj = {};
 				this.editObj = {};
 				this.filteredList = [];
-				var i;
-				for (i = 0; i < 23; i++)
-					this.filteredList.push(new User(i + 1, "User " + i, "LName" + i, "01010101010", "user@email.com", "loginName" + i, "P@ssw0rd", "Analyst", "Department name", "Team Name"));
+
+				usersService.get().then(function (response) {
+					$log.debug("Teams List", response);
+					_this.filteredList = response.searchResults;
+				});
+				//				var i;
+				//				for (i = 0; i < 23; i++)
+				//					this.filteredList.push(new User(i + 1, "User " + i, "LName" + i, "01010101010", "user@email.com", "loginName" + i, "P@ssw0rd", "Analyst", "Department name", "Team Name"));
 
 				$scope.addNew = function () {
-					$scope.openPopup(new User(0, '', '', '', '', '', '', '', '', ''), '/app/pages/users/popup-edit.html', 'UserEditCtrl', 'lg')
+					$scope.openPopup(null, '/app/pages/users/popup-edit.html', 'UserEditCtrl', 'lg')
 				};
 				$scope.delete = function (obj) {
 					dbService.delete(_this.filteredList, obj);
@@ -101,17 +106,35 @@ var app;
 			return cntrlFn;
 		})();
 
-		angular.module("IVRY-App").controller("UsersCtrl", ["$scope", "$rootScope", "$uibModal", "dbService", cntrlFn]);
-		angular.module("IVRY-App").controller("UserEditCtrl", ["$scope", "$uibModalInstance", "dbService", "utilitiesServices", "obj", function ($scope, $uibModalInstance, dbService, utilitiesServices, obj) {
-			$scope.obj = obj;
-			this.mode = obj == null ? 1 /*Add Mode*/ : 2 /*Update Mode*/ ;
+		angular.module("IVRY-App").controller("UsersCtrl", ["$scope", "$rootScope", "$log", "$uibModal", "dbService", "usersService", cntrlFn]);
+		angular.module("IVRY-App").controller("UserEditCtrl", ["$scope", "$uibModalInstance", "dbService", "utilitiesServices", "obj", "usersService", function ($scope, $uibModalInstance, dbService, utilitiesServices, obj, usersService) {
+			$scope.obj = obj.data;
+			this.mode = $scope.obj == null ? 1 /*Add Mode*/ : 2 /*Update Mode*/ ;
 			var _this = this;
 			console.info("mode", _this.mode);
 			$scope.ok = function () {
-				//				if (_this.mode == 1) {
-				dbService.add(obj.repo, obj.data);
-				//				}
-				$uibModalInstance.close($scope.obj);
+				if (_this.mode == 1) {
+					usersService.add($scope.obj).then(function () {
+						$uibModalInstance.close($scope.obj);
+					}, function (error) {
+						$rootScope.message = {
+							body: error.data.data.message,
+							type: 'danger',
+							duration: 5000,
+						};
+					});
+				} else {
+					usersService.update($scope.obj).then(function () {
+						$uibModalInstance.close($scope.obj);
+					}, function (error) {
+						$rootScope.message = {
+							body: error.data.data.message,
+							type: 'danger',
+							duration: 5000,
+						};
+					});
+
+				}
 			};
 
 			$scope.cancel = function () {

@@ -68,7 +68,7 @@ var app;
 					templateUrl: "/app/pages/teams/view.html",
 					data: {
 						title: "Teams",
-						authorizedRoles: [USER_ROLES.depAdmin]
+						authorizedRoles: [USER_ROLES.sysAdmin,USER_ROLES.depAdmin]
 					}
 				})
 				.state("users", {
@@ -76,7 +76,7 @@ var app;
 					templateUrl: "/app/pages/users/view.html",
 					data: {
 						title: "Users",
-						authorizedRoles: [USER_ROLES.depAdmin]
+						authorizedRoles: [USER_ROLES.sysAdmin,USER_ROLES.depAdmin]
 					}
 				})
 				.state("audit", {
@@ -84,7 +84,7 @@ var app;
 					templateUrl: "/app/pages/audit/view.html",
 					data: {
 						title: "Audit",
-						authorizedRoles: [USER_ROLES.depAdmin]
+						authorizedRoles: [USER_ROLES.sysAdmin,USER_ROLES.depAdmin]
 					}
 				})
 				.state("rights", {
@@ -155,6 +155,10 @@ var app;
 				type: "warning",
 				duration: 3000
 			}
+		});
+		$rootScope.$on("redirect_login",function(){
+			AuthService.logout();
+			$state.go("login");
 		});
 	};
 	initApp.$inject = ["$rootScope", "$state", "AUTH_EVENTS", "AuthService"];

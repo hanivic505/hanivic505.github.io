@@ -1,8 +1,8 @@
 var app;
 (function (app) {
 	var mainApp = angular.module("IVRY-App");
-	mainApp.factory('myHttpInterceptor', ['$q', '$rootScope', '$injector',
-    	function ($q, $rootScope, $injector) {
+	mainApp.factory('myHttpInterceptor', ['$q', '$rootScope', '$injector', "$log",// "AuthService",
+    	function ($q, $rootScope, $injector, $log/*, AuthService*/) {
 			$rootScope.showSpinner = false;
 			$rootScope.http = null;
 			return {
@@ -15,9 +15,7 @@ var app;
 					if ($rootScope.http.pendingRequests.length < 1) {
 						$rootScope.showSpinner = false;
 					}
-					//					if (canRecover(rejection)) {
-					////						return responseOrNewPromise
-					//					}
+					$log.error("Request ERROR : ", rejection);
 					return $q.reject(rejection);
 				},
 				'response': function (response) {
@@ -32,9 +30,11 @@ var app;
 					if ($rootScope.http.pendingRequests.length < 1) {
 						$rootScope.showSpinner = false;
 					}
-					//					if (canRecover(rejection)) {
-					////						return responseOrNewPromise
-					//					}
+					if (rejection.status > 399 && rejection.status < 500) {
+//						AuthService.logout();
+						$rootScope.$broadcast("redirect_login");
+					}
+					$log.error("Response ERROR : ", rejection);
 					return $q.reject(rejection);
 				}
 			}
@@ -62,6 +62,7 @@ var app;
 					}).success(function (response) {
 						$rootScope.lookups = response.data;
 						$rootScope.callsLogColumns = utilitiesServices.columnsAdapterIn($rootScope.lookups.reportLus[0].reportColumnLus);
+						$rootScope.teamsColumns = utilitiesServices.columnsAdapterIn($rootScope.lookups.reportLus[2].reportColumnLus);
 						console.log("lookups", response.data, $rootScope.callsLogColumns);
 						Session.create(res.data.user);
 					});
