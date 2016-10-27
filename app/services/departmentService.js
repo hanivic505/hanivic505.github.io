@@ -10,10 +10,11 @@ var app;
 					orders: [],
 					pageSize: 10,
 					currentPage: 1,
-					get: function (pgNum, condition) {
+					get: function (pgNum, condition, pSize) {
 						console.info("departmentService.get:before", this.currentPage, this.conditions, this.orders);
 						this.conditions = condition == undefined ? this.conditions : condition;
 						//this.orders = order;
+						this.pageSize = pSize != undefined ? pSize : this.pageSize;
 						this.currentPage = pgNum == undefined ? this.currentPage : pgNum;
 						console.info("departmentService.get:after", this.currentPage, this.conditions, this.orders);
 						return $http.post(API_BASE_URL + "/department-list/search", {

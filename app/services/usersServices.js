@@ -149,7 +149,7 @@ var app;
 					},
 					delete: function (obj) {
 						if (confirm("Are you sure, you want to delete this record?"))
-							return $http.delete(API_BASE_URL + "/user/" + obj.id, {
+							return $http.delete(API_BASE_URL + "/system-user/" + obj.id, {
 								headers: {
 									"X-Access-Token": store.get("token")
 								}

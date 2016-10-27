@@ -4,7 +4,7 @@ var app;
 	var User;
 	(function (User) {
 		var cntrlFn = (function () {
-			function cntrlFn($scope, $rootScope, $log, $uibModal, dbService, usersService) {
+			function cntrlFn($scope, $rootScope, $log, $uibModal, dbService, usersService, departmentsService) {
 				var _this = this;
 				//				$rootScope.user = "DepAdmin";
 				$scope.columns = {
@@ -77,7 +77,7 @@ var app;
 					$scope.openPopup(null, '/app/pages/users/popup-edit.html', 'UserEditCtrl', 'lg')
 				};
 				$scope.delete = function (obj) {
-					dbService.delete(_this.filteredList, obj);
+					usersService.delete(obj);
 				};
 				$scope.openPopup = function (_obj, tmpltURL, cntrl, size = "") {
 					var modalInstance = $uibModal.open({
@@ -91,6 +91,11 @@ var app;
 									data: _obj,
 									repo: _this.filteredList
 								};
+							},
+							depLookup: function () {
+								return departmentsService.get(1, null, 1000).then(function (response) {
+									return response.searchResults;
+								});
 							},
 
 						}
@@ -106,11 +111,12 @@ var app;
 			return cntrlFn;
 		})();
 
-		angular.module("IVRY-App").controller("UsersCtrl", ["$scope", "$rootScope", "$log", "$uibModal", "dbService", "usersService", cntrlFn]);
-		angular.module("IVRY-App").controller("UserEditCtrl", ["$scope", "$uibModalInstance", "dbService", "utilitiesServices", "obj", "usersService", function ($scope, $uibModalInstance, dbService, utilitiesServices, obj, usersService) {
+		angular.module("IVRY-App").controller("UsersCtrl", ["$scope", "$rootScope", "$log", "$uibModal", "dbService", "usersService", "departmentsService", cntrlFn]);
+		angular.module("IVRY-App").controller("UserEditCtrl", ["$scope", "$uibModalInstance", "dbService", "utilitiesServices", "obj", "depLookup", "usersService", function ($scope, $uibModalInstance, dbService, utilitiesServices, obj, depLookup, usersService) {
 			$scope.obj = obj.data;
 			this.mode = $scope.obj == null ? 1 /*Add Mode*/ : 2 /*Update Mode*/ ;
 			var _this = this;
+			$scope.depLookup = depLookup;
 			console.info("mode", _this.mode);
 			$scope.ok = function () {
 				if (_this.mode == 1) {

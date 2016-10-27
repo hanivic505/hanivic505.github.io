@@ -10,7 +10,9 @@
 			</div>
 			<div class="col-md-6">
 				<label>Department:</label>
-				<input convert-to-number type="text" ng-model="obj.departmentId" class="form-control">
+				<select ng-options="x.id as x.departmentName for x in depLookup" convert-to-number ng-model="obj.departmentId" class="form-control">
+					<option value="">Select from list</option>
+				</select>
 			</div>
 			<div class="col-md-12">
 				<label>Comment:</label>
