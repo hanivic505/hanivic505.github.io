@@ -4,7 +4,7 @@ var app;
 	var User;
 	(function (User) {
 		var cntrlFn = (function () {
-			function cntrlFn($scope, $rootScope, $log, $uibModal, dbService, usersService, departmentsService) {
+			function cntrlFn($scope, $rootScope, $log, $uibModal, ctrlData, dbService, usersService, departmentsService) {
 				var _this = this;
 				//				$rootScope.user = "DepAdmin";
 				$scope.columns = {
@@ -47,27 +47,39 @@ var app;
 					$scope.currentPage = pageNo;
 				};
 
-				$scope.pageChanged = function () {
-					$log.log('Page changed to: ' + $scope.currentPage);
-				};
-				$scope.maxSize = 5;
-				$scope.bigTotalItems = 175;
-				$scope.bigCurrentPage = 1;
 				$scope.paginate = function (value) {
 					var begin, end, index;
 					begin = ($scope.currentPage - 1) * $scope.numPerPage;
 					end = begin + $scope.numPerPage;
-					index = _this.filteredList.indexOf(value);
+					index = _this.users.searchResults.indexOf(value);
 					return (begin <= index && index < end);
 				};
+				$scope.$watch("currentPage", function (nVal, oVal) {
+					$log.debug("currentPage", nVal, oVal);
+					if (nVal != oVal) {
+						usersService.get(nVal)
+							.then(function (data) {
+								$log.debug(data);
+								_this.users = data;
+							});
+					}
+				});
 				$scope.isFilterOn = false;
 				$scope.fltrObj = {};
 				this.editObj = {};
 				this.filteredList = [];
 
-				usersService.get().then(function (response) {
-					$log.debug("Teams List", response);
-					_this.filteredList = response.searchResults;
+				this.initData = function () {
+					usersService.get().then(function (response) {
+						$log.debug("Users List", response);
+						_this.users = response;
+					});
+				}
+				this.users = ctrlData;
+				//this.filteredList = ctrlData.searchResults;
+				$rootScope.$on("refresh_data", function (e) {
+					$log.debug("refresh_data :: usersCtrl");
+					_this.initData();
 				});
 				//				var i;
 				//				for (i = 0; i < 23; i++)
@@ -88,8 +100,7 @@ var app;
 						resolve: {
 							obj: function () {
 								return {
-									data: _obj,
-									repo: _this.filteredList
+									data: _obj
 								};
 							},
 							depLookup: function () {
@@ -111,13 +122,13 @@ var app;
 			return cntrlFn;
 		})();
 
-		angular.module("IVRY-App").controller("UsersCtrl", ["$scope", "$rootScope", "$log", "$uibModal", "dbService", "usersService", "departmentsService", cntrlFn]);
+		angular.module("IVRY-App").controller("UsersCtrl", ["$scope", "$rootScope", "$log", "$uibModal", "ctrlData", "dbService", "usersService", "departmentsService", cntrlFn]);
 		angular.module("IVRY-App").controller("UserEditCtrl", ["$scope", "$uibModalInstance", "dbService", "utilitiesServices", "obj", "depLookup", "usersService", function ($scope, $uibModalInstance, dbService, utilitiesServices, obj, depLookup, usersService) {
 			$scope.obj = obj.data;
 			this.mode = $scope.obj == null ? 1 /*Add Mode*/ : 2 /*Update Mode*/ ;
 			var _this = this;
 			$scope.depLookup = depLookup;
-			console.info("mode", _this.mode);
+			console.info("mode", _this.mode, $scope.obj);
 			$scope.ok = function () {
 				if (_this.mode == 1) {
 					usersService.add($scope.obj).then(function () {

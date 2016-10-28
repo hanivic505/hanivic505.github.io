@@ -66,17 +66,35 @@ var app;
 				.state("teams", {
 					url: "/teams",
 					templateUrl: "/app/pages/teams/view.html",
+					controller: "TeamsCtrl as vm",
 					data: {
 						title: "Teams",
-						authorizedRoles: [USER_ROLES.sysAdmin,USER_ROLES.depAdmin]
+						authorizedRoles: [USER_ROLES.sysAdmin, USER_ROLES.depAdmin]
+					},
+					resolve: {
+						ctrlData: function (teamService) {
+							return teamService.get().then(function (data) {
+								console.info("resolve", data);
+								return data;
+							});
+						}
 					}
 				})
 				.state("users", {
 					url: "/users",
 					templateUrl: "/app/pages/users/view.html",
+					controller: "UsersCtrl as vm",
 					data: {
 						title: "Users",
-						authorizedRoles: [USER_ROLES.sysAdmin,USER_ROLES.depAdmin]
+						authorizedRoles: [USER_ROLES.sysAdmin, USER_ROLES.depAdmin, USER_ROLES.teamLead]
+					},
+					resolve: {
+						ctrlData: function (usersService) {
+							return usersService.get().then(function (data) {
+								console.info("resolve", data);
+								return data;
+							});
+						}
 					}
 				})
 				.state("audit", {
@@ -84,7 +102,7 @@ var app;
 					templateUrl: "/app/pages/audit/view.html",
 					data: {
 						title: "Audit",
-						authorizedRoles: [USER_ROLES.sysAdmin,USER_ROLES.depAdmin]
+						authorizedRoles: [USER_ROLES.sysAdmin, USER_ROLES.depAdmin, USER_ROLES.teamLead]
 					}
 				})
 				.state("rights", {
@@ -98,9 +116,18 @@ var app;
 				.state("departments", {
 					url: "/departments",
 					templateUrl: "/app/pages/departments/view.html",
+					controller: "DepartmentsCtrl as vm",
 					data: {
 						title: "Departments",
 						authorizedRoles: [USER_ROLES.sysAdmin]
+					},
+					resolve: {
+						ctrlData: function (departmentsService) {
+							return departmentsService.get().then(function (data) {
+								console.info("resolve", data);
+								return data;
+							});
+						}
 					}
 				});
 			this.$urlRouterProvider.otherwise('/login');
@@ -114,7 +141,7 @@ var app;
 	var mainApp = angular.module("IVRY-App", ['ui.router', 'ui.bootstrap', 'ngFileUpload', 'ngSanitize', 'angular-storage', 'uiSwitch', 'as.sortable']);
 	mainApp.config(Config);
 
-	var initApp = function ($rootScope, $state, AUTH_EVENTS, AuthService) {
+	var initApp = function ($rootScope, $log, $state, AUTH_EVENTS, AuthService) {
 		$rootScope.$state = $state;
 		$rootScope.showSpinner = false;
 		$rootScope.AuthService = AuthService;
@@ -156,31 +183,61 @@ var app;
 				duration: 3000
 			}
 		});
-		$rootScope.$on("redirect_login",function(){
+		$rootScope.$on("redirect_login", function () {
 			AuthService.logout();
 			$state.go("login");
 		});
 	};
-	initApp.$inject = ["$rootScope", "$state", "AUTH_EVENTS", "AuthService"];
+	initApp.$inject = ["$rootScope", "$log", "$state", "AUTH_EVENTS", "AuthService"];
 	mainApp.run(initApp);
 
 	mainApp.controller("MainMenuCtrl", ["$scope", "$rootScope", function ($scope, $rootScope) {
 
 	}]);
-	mainApp.directive('convertToNumber', function () {
-		return {
-			require: 'ngModel',
-			link: function (scope, element, attrs, ngModel) {
-				ngModel.$parsers.push(function (val) {
-					return val != null ? parseInt(val, 10) : null;
-				});
-				ngModel.$formatters.push(function (val) {
-					return val != null ? '' + val : null;
-				});
-			}
-		};
-	});
+	//	mainApp.directive('convertToNumber', function () {
+	//		return {
+	//			require: 'ngModel',
+	//			link: function (scope, element, attrs, ngModel) {
+	//				ngModel.$parsers.push(function (val) {
+	//					return val != null ? parseInt(val, 10) : null;
+	//				});
+	//				ngModel.$formatters.push(function (val) {
+	//					return val != null ? '' + val : null;
+	//				});
+	//			}
+	//		};
+	//	});
 	//
+	mainApp.directive('passwordVerify', passwordVerify);
+
+	function passwordVerify() {
+		return {
+			restrict: 'A', // only activate on element attribute
+			require: '?ngModel', // get a hold of NgModelController
+			link: function (scope, elem, attrs, ngModel) {
+				if (!ngModel) return; // do nothing if no ng-model
+
+				// watch own value and re-validate on change
+				scope.$watch(attrs.ngModel, function () {
+					validate();
+				});
+
+				// observe the other value and re-validate on change
+				attrs.$observe('passwordVerify', function (val) {
+					validate();
+				});
+
+				var validate = function () {
+					// values
+					var val1 = ngModel.$viewValue;
+					var val2 = attrs.passwordVerify;
+
+					// set validity
+					ngModel.$setValidity('passwordVerify', val1 === val2);
+				};
+			}
+		}
+	}
 	mainApp.constant('AUTH_EVENTS', {
 		loginSuccess: 'auth-login-success',
 		loginFailed: 'auth-login-failed',

@@ -1,4 +1,4 @@
-<div ng-controller="TeamsCtrl as vm">
+<div>
 	<h1 class="page-header">
 		<i class="fa fa-users"></i> Teams
 	</h1>
@@ -26,7 +26,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-click="vm.editObj=x;" ng-repeat="x in vm.filteredList | filter:paginate |filter:fltrObj " ng-class="{'active':vm.editObj==x}">
+						<tr ng-click="vm.editObj=x;" ng-repeat="x in vm.filteredList.searchResults |filter:fltrObj " ng-class="{'active':vm.editObj==x}">
 							<td ng-repeat="col in columns.childs  | filter:{isOn:true}">
 								<span class="btn btn-link" ng-bind="x[col.prop]" ng-if="col.type==undefined"></span>
 								<span class="btn btn-link" ng-bind="x[col.prop]()" ng-if="col.type=='func'"></span>
@@ -43,8 +43,8 @@
 					<tfoot>
 						<tr>
 							<td colspan="20">
-								<span class="btn btn-link pull-left">Records Count {{vm.filteredList.length}}</span>
-								<ul uib-pagination boundary-links="true" total-items="vm.filteredList.length" ng-model="currentPage" class="pagination-sm" max-size="6" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
+								<span class="btn btn-link pull-left">Records Count {{vm.filteredList.totalNoOfResults}}</span>
+								<ul uib-pagination boundary-links="true" total-items="vm.filteredList.totalNoOfResults" ng-model="currentPage" class="pagination-sm" max-size="6" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></ul>
 							</td>
 						</tr>
 					</tfoot>

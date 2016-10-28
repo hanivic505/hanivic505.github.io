@@ -21,8 +21,8 @@
 				<input type="email" ng-model="obj.email" class="form-control">
 			</div>
 			<div class="col-md-6">
-				<label>Role:</label>
-				<select convert-to-number ng-model="obj.roleId" class="form-control">
+				<label>Role:</label>{{obj.accessRoleId}}
+				<select convert-to-number ng-options="x.id as x.description for x in lookups.systemAccessRoleLus" ng-model="obj.accessRoleId" class="form-control">
 					<option value="">Select from list</option>
 				</select>
 			</div>
@@ -38,11 +38,24 @@
 			<div class="row">
 				<div class="col-md-6">
 					<label>Password:</label>
-					<input type="password" ng-model="obj.password" class="form-control">
+					<input type="password" ng-model="obj.password" class="form-control" password-verify="{{confirmPass}}">
+					<div class="help-block" ng-messages="obj.password.$error" ng-if="obj.password.$dirty">
+						<p ng-message="required">This field is required</p>
+						<p ng-message="minlength">This field is too short</p>
+						<p ng-message="maxlength">This field is too long</p>
+						<p ng-message="required">This field is required</p>
+						<p ng-message="passwordVerify">No match!</p>
+					</div>
 				</div>
 				<div class="col-md-6">
 					<label>Confirm Password:</label>
-					<input type="password" ng-model="confirmPass" class="form-control">
+					<input type="password" ng-model="confirmPass" class="form-control" required password-verify="{{obj.password}}">
+					<div class="help-block" ng-messages="confirmPass.$error" ng-if="confirmPass.$dirty">
+						<p ng-message="required">This field is required</p>
+						<p ng-message="minlength">This field is too short</p>
+						<p ng-message="maxlength">This field is too long</p>
+						<p ng-message="passwordVerify">No match!</p>
+					</div>
 				</div>
 			</div>
 		</fieldset>

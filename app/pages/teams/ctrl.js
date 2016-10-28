@@ -5,7 +5,7 @@ var app;
 	var User;
 	(function (Team, User) {
 		var cntrlFn = (function () {
-			function cntrlFn($scope, $rootScope, $log, $uibModal, dbService, teamService, departmentsService, usersService) {
+			function cntrlFn($scope, $rootScope, $log, $uibModal, ctrlData, dbService, teamService, departmentsService, usersService) {
 				var _this = this;
 				//				$rootScope.user = "DepAdmin";
 				$scope.columns = {
@@ -28,16 +28,25 @@ var app;
 					var begin, end, index;
 					begin = ($scope.currentPage - 1) * $scope.numPerPage;
 					end = begin + $scope.numPerPage;
-					index = _this.filteredList.indexOf(value);
+					index = _this.filteredList.searchResults.indexOf(value);
 					return (begin <= index && index < end);
 				};
 				$scope.isFilterOn = false;
 				$scope.fltrObj = {};
 				this.editObj = {};
 				this.filteredList = [];
-				teamService.get().then(function (response) {
-					$log.debug("Teams List", response);
-					_this.filteredList = response.searchResults;
+
+				this.initData = function () {
+					teamService.get().then(function (response) {
+						$log.debug("Teams List", response);
+						_this.filteredList = response;
+					});
+				}
+				this.filteredList = ctrlData;
+				//this.filteredList = ctrlData.searchResults;
+				$rootScope.$on("refresh_data", function (e) {
+					$log.debug("refresh_data :: usersCtrl");
+					_this.initData();
 				});
 				$scope.addNew = function () {
 					$scope.openPopup(null, '/app/pages/teams/popup-edit.html', 'TeamEditCtrl', 'lg')
@@ -55,7 +64,6 @@ var app;
 							obj: function () {
 								return {
 									data: _obj,
-									repo: _this.filteredList,
 
 								};
 							},
@@ -83,7 +91,7 @@ var app;
 			return cntrlFn;
 		})();
 
-		angular.module("IVRY-App").controller("TeamsCtrl", ["$scope", "$rootScope", "$log", "$uibModal", "dbService", "teamService", "departmentsService", "usersService", cntrlFn]);
+		angular.module("IVRY-App").controller("TeamsCtrl", ["$scope", "$rootScope", "$log", "$uibModal", "ctrlData", "dbService", "teamService", "departmentsService", "usersService", cntrlFn]);
 
 		angular.module("IVRY-App").controller("TeamEditCtrl", ["$scope", "$rootScope", "$log", "$uibModalInstance", "dbService", "utilitiesServices", "obj", "teamService", "depLookup", function ($scope, $rootScope, $log, $uibModalInstance, dbService, utilitiesServices, obj, teamService, depLookup) {
 			$scope.obj = obj.data;

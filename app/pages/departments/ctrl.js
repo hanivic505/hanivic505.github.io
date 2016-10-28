@@ -4,7 +4,7 @@ var app;
 	var Department;
 	(function (Department) {
 		var cntrlFn = (function () {
-			function cntrlFn($scope, $rootScope, $uibModal, $log, dbService, departmentsService) {
+			function cntrlFn($scope, $rootScope, $uibModal, ctrlData, $log, dbService, departmentsService) {
 				var _this = this;
 				$scope.columns = {
 					childs: [
@@ -51,7 +51,7 @@ var app;
 					var begin, end, index;
 					begin = ($scope.currentPage - 1) * $scope.numPerPage;
 					end = begin + $scope.numPerPage;
-					index = _this.filteredList.indexOf(value);
+					index = _this.filteredList.searchResults.indexOf(value);
 					return (begin <= index && index < end);
 				};
 				$scope.isFilterOn = false;
@@ -63,10 +63,10 @@ var app;
 				this.initData = function () {
 					departmentsService.get().then(function (response) {
 						$log.debug("departmentsService", response);
-						_this.filteredList = response.searchResults;
+						_this.filteredList = response;
 					});
 				};
-				this.initData();
+				this.filteredList = ctrlData;
 				$rootScope.$on("refresh_data", function (e) {
 					$log.debug("refresh_data :: depCtrl");
 					_this.initData();
@@ -114,7 +114,7 @@ var app;
 			return cntrlFn;
 		})();
 
-		angular.module("IVRY-App").controller("DepartmentsCtrl", ["$scope", "$rootScope", "$uibModal", "$log", "dbService", "departmentsService", cntrlFn]);
+		angular.module("IVRY-App").controller("DepartmentsCtrl", ["$scope", "$rootScope", "$uibModal", "ctrlData", "$log", "dbService", "departmentsService", cntrlFn]);
 		angular.module("IVRY-App").controller("DepartmentEditCtrl", ["$scope", "$rootScope", "$uibModalInstance", "dbService", "utilitiesServices", "departmentsService", "obj", function ($scope, $rootScope, $uibModalInstance, dbService, utilitiesServices, departmentsService, obj) {
 			$scope.obj = obj.data;
 			this.mode = $scope.obj == null ? 1 /*Add Mode*/ : 2 /*Update Mode*/ ;
