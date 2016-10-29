@@ -73,7 +73,7 @@ var app;
 					},
 					resolve: {
 						ctrlData: function (teamService) {
-							return teamService.get().then(function (data) {
+							return teamService.get(1).then(function (data) {
 								console.info("resolve", data);
 								return data;
 							});
@@ -90,7 +90,7 @@ var app;
 					},
 					resolve: {
 						ctrlData: function (usersService) {
-							return usersService.get().then(function (data) {
+							return usersService.get(1).then(function (data) {
 								console.info("resolve", data);
 								return data;
 							});
@@ -123,7 +123,7 @@ var app;
 					},
 					resolve: {
 						ctrlData: function (departmentsService) {
-							return departmentsService.get().then(function (data) {
+							return departmentsService.get(1).then(function (data) {
 								console.info("resolve", data);
 								return data;
 							});
