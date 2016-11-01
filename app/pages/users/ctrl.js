@@ -99,6 +99,7 @@ var app;
 						size: size,
 						resolve: {
 							obj: function () {
+								if(_obj!=null)
 								return usersService.getUser(_obj.id).then(function(response){
 									return response;
 								});

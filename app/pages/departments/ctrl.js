@@ -45,8 +45,6 @@ var app;
 					$log.log('Page changed to: ' + $scope.currentPage);
 				};
 				$scope.maxSize = 5;
-				$scope.bigTotalItems = 175;
-				$scope.bigCurrentPage = 1;
 				$scope.paginate = function (value) {
 					var begin, end, index;
 					begin = ($scope.currentPage - 1) * $scope.numPerPage;
@@ -54,6 +52,18 @@ var app;
 					index = _this.filteredList.searchResults.indexOf(value);
 					return (begin <= index && index < end);
 				};
+
+				$scope.$watch("currentPage", function (nVal, oVal) {
+					$log.debug("currentPage", nVal, oVal);
+					if (nVal != oVal) {
+						$scope.selectedItems = [];
+						$scope.checkAll = false;
+						departmentsService.get(nVal)
+							.then(function (data) {
+								_this.filteredList = data;
+							});
+					}
+				});
 				$scope.isFilterOn = false;
 				$scope.fltrObj = {};
 				this.editObj = {};

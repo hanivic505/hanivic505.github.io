@@ -31,6 +31,18 @@ var app;
 					index = _this.filteredList.searchResults.indexOf(value);
 					return (begin <= index && index < end);
 				};
+
+				$scope.$watch("currentPage", function (nVal, oVal) {
+					$log.debug("currentPage", nVal, oVal);
+					if (nVal != oVal) {
+						$scope.selectedItems = [];
+						$scope.checkAll = false;
+						teamService.get(nVal)
+							.then(function (data) {
+								_this.filteredList = data;
+							});
+					}
+				});
 				$scope.isFilterOn = false;
 				$scope.fltrObj = {};
 				this.editObj = {};
@@ -272,7 +284,7 @@ var app;
 
 			$scope.moveItems = utilitiesServices.moveItems;
 		}]);
-		angular.module("IVRY-App").controller("TeamMembersCtrl", ["$scope", "$log", "$uibModalInstance", "dbService", "utilitiesServices", "obj", function ($scope, $log, $uibModalInstance, dbService, utilitiesServices, obj) {
+		angular.module("IVRY-App").controller("TeamMembersCtrl", ["$scope", "$log", "$uibModalInstance", "dbService", "utilitiesServices", "obj", "teamLeadsFree", "teamLeadsAssigned", "analystFree", "analystAssigned", function ($scope, $log, $uibModalInstance, dbService, utilitiesServices, obj, teamLeadsFree, teamLeadsAssigned, analystFree, analystAssigned) {
 			if (obj.systemUsers == undefined)
 				obj.systemUsers = [];
 
@@ -290,9 +302,10 @@ var app;
 			$scope.cancel = function () {
 				$uibModalInstance.dismiss('cancel');
 			};
-			$scope.selectedDepTeamLeads = [];
-			$scope.depTeamLeads = [];
-			$scope.depAnalysts = [];
+			$scope.selectedDepTeamLeads = teamLeadsAssigned;
+			$scope.selectedAnalyst = analystAssigned;
+			$scope.depTeamLeads = teamLeadsFree;
+			$scope.depAnalysts = analystFree;
 
 			//			for (var i = 6; i < 15; i++) {
 			//

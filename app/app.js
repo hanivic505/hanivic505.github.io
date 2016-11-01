@@ -123,7 +123,7 @@ var app;
 					},
 					resolve: {
 						ctrlData: function (departmentsService) {
-							return departmentsService.get(1).then(function (data) {
+							return departmentsService.get(1,[],10).then(function (data) {
 								console.info("resolve", data);
 								return data;
 							});
