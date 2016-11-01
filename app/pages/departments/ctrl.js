@@ -161,12 +161,16 @@ var app;
 			$scope.obj = {};
 			$scope.obj.department = obj;
 			$log.debug("obj", obj)
+
+			if ($scope.obj.systemUsers == undefined)
+				$scope.obj.systemUsers = [];
+
 			if ($scope.systemUsers == undefined)
 				$scope.systemUsers = [];
 
-			$scope.systemUsers = adminsAssigned;
+			$scope.systemUsers = adminsAssigned == undefined ? [] : adminsAssigned;
 
-			this.mode = $scope.obj == null ? 1 /*Add Mode*/ : 2 /*Update Mode*/ ;
+			this.mode = $scope.obj.department == undefined ? 1 /*Add Mode*/ : 2 /*Update Mode*/ ;
 			var _this = this;
 			console.info("mode", _this.mode, obj);
 			$scope.ok = function () {
@@ -175,9 +179,22 @@ var app;
 				for (var i = 0; i < sysUsers.length; i++) {
 					$scope.obj.systemUsers.push(sysUsers[i].id);
 				}
-				$log.debug("Department Object", $scope.obj);
+				var editObj = {
+					department: {},
+					systemUsers: []
+				};
+				if ($scope.obj.department.id != undefined)
+					editObj.department.id = $scope.obj.department.id;
+				editObj.department.departmentName = $scope.obj.department.departmentName;
+				editObj.department.maxNoOfRecLines = parseInt($scope.obj.department.maxNoOfRecLines);
+				editObj.department.maxNoOfUsers = parseInt($scope.obj.department.maxNoOfUsers);
+				editObj.department.comment = $scope.obj.department.comment;
+
+				editObj.systemUsers = $scope.obj.systemUsers;
+
+				$log.debug("Department Object", editObj);
 				if (_this.mode == 1) {
-					departmentsService.addWithUsers($scope.obj).then(
+					departmentsService.addWithUsers(editObj).then(
 						function (response) {
 							$rootScope.$broadcast("refresh_data");
 							$uibModalInstance.close($scope.obj);
@@ -191,7 +208,7 @@ var app;
 						}
 					);
 				} else {
-					departmentsService.updateWithUsers($scope.obj).then(
+					departmentsService.updateWithUsers(editObj).then(
 						function (response) {
 							$rootScope.$broadcast("refresh_data");
 							$uibModalInstance.close($scope.obj);

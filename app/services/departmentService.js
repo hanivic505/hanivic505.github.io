@@ -73,7 +73,7 @@ var app;
 						});
 					},
 					update: function (obj) {
-						return $http.put(API_BASE_URL + "/department/user", obj, {
+						return $http.put(API_BASE_URL + "/department", obj, {
 							headers: {
 								"X-Access-Token": store.get("token")
 							}
@@ -113,7 +113,7 @@ var app;
 						});
 					},
 					updateWithUsers: function (obj) {
-						return $http.put(API_BASE_URL + "/department", obj, {
+						return $http.put(API_BASE_URL + "/department/user", obj, {
 							headers: {
 								"X-Access-Token": store.get("token")
 							}

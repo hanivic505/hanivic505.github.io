@@ -228,9 +228,9 @@ var app;
 			if ($scope.systemUsers == undefined)
 				$scope.systemUsers = [];
 
-			$scope.systemUsers = teamLeadsAssigned;
+			$scope.systemUsers = teamLeadsAssigned == undefined ? [] : teamLeadsAssigned;
 
-			this.mode = $scope.obj == null ? 1 /*Add Mode*/ : 2 /*Update Mode*/ ;
+			this.mode = $scope.obj.team == undefined ? 1 /*Add Mode*/ : 2 /*Update Mode*/ ;
 			var _this = this;
 			$scope.depLookup = depLookup;
 			$log.info("mode", _this.mode, "obj", $scope.obj, "depLookup", $scope.depLookup, "teamLeadsFree", teamLeadsFree, "teamLeadsAssigned", teamLeadsAssigned);
