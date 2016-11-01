@@ -4,7 +4,7 @@ var app;
 	var Department;
 	(function (Department) {
 		var cntrlFn = (function () {
-			function cntrlFn($scope, $rootScope, $uibModal, ctrlData, $log, dbService, departmentsService) {
+			function cntrlFn($scope, $rootScope, $uibModal, ctrlData, $log, dbService, departmentsService, usersService) {
 				var _this = this;
 				$scope.columns = {
 					childs: [
@@ -96,9 +96,51 @@ var app;
 						size: size,
 						resolve: {
 							obj: function () {
-								return {
-									data: _obj
-								};
+								if (_obj != null)
+									return departmentsService.getDep(_obj.id).then(function (response) {
+										$log.debug("Resolve Department", response);
+										return response;
+									});
+							},
+							adminsFree: function () {
+								var condition = [
+									{
+										"column": "ACCESS_ROLE_CODE",
+										"operatorCode": "EQUAL",
+										"value": "ADMIN"
+ 										},
+									{
+										column: "DEPARTMENT_ID",
+										operatorCode: "EQUAL",
+										value: null
+										}
+									];
+								$log.debug("condition", condition);
+								return usersService.get(1, condition, 7000, true).then(function (res) {
+									$log.debug("Free Admins", res);
+									return res.searchResults;
+								});
+							},
+							adminsAssigned: function () {
+								if (_obj != null) {
+									var assignedCondition = [
+										{
+											column: "ACCESS_ROLE_CODE",
+											operatorCode: "EQUAL",
+											value: "ADMIN"
+										},
+										{
+											column: "TEAM_ID",
+											operatorCode: "EQUAL",
+											value: _obj.id
+										}
+									];
+									$log.debug("assignedCondition", assignedCondition, _obj);
+									return usersService.get(1, assignedCondition, 7000, true).then(function (res) {
+										$log.debug("Assigned Admins", res);
+										return res.searchResults;
+									});
+								}
 							},
 
 						}
@@ -114,15 +156,28 @@ var app;
 			return cntrlFn;
 		})();
 
-		angular.module("IVRY-App").controller("DepartmentsCtrl", ["$scope", "$rootScope", "$uibModal", "ctrlData", "$log", "dbService", "departmentsService", cntrlFn]);
-		angular.module("IVRY-App").controller("DepartmentEditCtrl", ["$scope", "$rootScope", "$uibModalInstance", "dbService", "utilitiesServices", "departmentsService", "obj", function ($scope, $rootScope, $uibModalInstance, dbService, utilitiesServices, departmentsService, obj) {
-			$scope.obj = obj.data;
+		angular.module("IVRY-App").controller("DepartmentsCtrl", ["$scope", "$rootScope", "$uibModal", "ctrlData", "$log", "dbService", "departmentsService", "usersService", cntrlFn]);
+		angular.module("IVRY-App").controller("DepartmentEditCtrl", ["$scope", "$rootScope", "$log", "$uibModalInstance", "dbService", "utilitiesServices", "departmentsService", "obj", "adminsFree", "adminsAssigned", function ($scope, $rootScope, $log, $uibModalInstance, dbService, utilitiesServices, departmentsService, obj, adminsFree, adminsAssigned) {
+			$scope.obj = {};
+			$scope.obj.department = obj;
+			$log.debug("obj", obj)
+			if ($scope.systemUsers == undefined)
+				$scope.systemUsers = [];
+
+			$scope.systemUsers = adminsAssigned;
+
 			this.mode = $scope.obj == null ? 1 /*Add Mode*/ : 2 /*Update Mode*/ ;
 			var _this = this;
 			console.info("mode", _this.mode, obj);
 			$scope.ok = function () {
+				var sysUsers = $scope.systemUsers == undefined ? [] : $scope.systemUsers;
+				$scope.obj.systemUsers = [];
+				for (var i = 0; i < sysUsers.length; i++) {
+					$scope.obj.systemUsers.push(sysUsers[i].id);
+				}
+				$log.debug("Department Object", $scope.obj);
 				if (_this.mode == 1) {
-					departmentsService.add($scope.obj).then(
+					departmentsService.addWithUsers($scope.obj).then(
 						function (response) {
 							$rootScope.$broadcast("refresh_data");
 							$uibModalInstance.close($scope.obj);
@@ -136,7 +191,7 @@ var app;
 						}
 					);
 				} else {
-					departmentsService.update($scope.obj).then(
+					departmentsService.updateWithUsers($scope.obj).then(
 						function (response) {
 							$rootScope.$broadcast("refresh_data");
 							$uibModalInstance.close($scope.obj);
@@ -155,8 +210,8 @@ var app;
 			$scope.cancel = function () {
 				$uibModalInstance.dismiss('cancel');
 			};
-			$scope.selectedDepTeamLeads = [];
-			$scope.depTeamLeads = [];
+			$scope.selectedDepAdmins = adminsAssigned;
+			$scope.depAdmins = adminsFree;
 
 			$scope.moveItems = utilitiesServices.moveItems;
 		}]);

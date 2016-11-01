@@ -99,16 +99,15 @@ var app;
 						size: size,
 						resolve: {
 							obj: function () {
-								return {
-									data: _obj
-								};
+								return usersService.getUser(_obj.id).then(function(response){
+									return response;
+								});
 							},
 							depLookup: function () {
 								return departmentsService.get(1, null, 1000).then(function (response) {
 									return response.searchResults;
 								});
 							},
-
 						}
 					});
 
@@ -124,7 +123,7 @@ var app;
 
 		angular.module("IVRY-App").controller("UsersCtrl", ["$scope", "$rootScope", "$log", "$uibModal", "ctrlData", "dbService", "usersService", "departmentsService", cntrlFn]);
 		angular.module("IVRY-App").controller("UserEditCtrl", ["$scope", "$uibModalInstance", "dbService", "utilitiesServices", "obj", "depLookup", "usersService", function ($scope, $uibModalInstance, dbService, utilitiesServices, obj, depLookup, usersService) {
-			$scope.obj = obj.data;
+			$scope.obj = obj;
 			this.mode = $scope.obj == null ? 1 /*Add Mode*/ : 2 /*Update Mode*/ ;
 			var _this = this;
 			$scope.depLookup = depLookup;
@@ -157,10 +156,6 @@ var app;
 			$scope.cancel = function () {
 				$uibModalInstance.dismiss('cancel');
 			};
-			$scope.selectedDepTeamLeads = [];
-			$scope.depTeamLeads = [];
-			for (var i = 6; i < 15; i++)
-				$scope.depTeamLeads.push(User(i + 1, "Team", "Lead " + i, "0101010102", "teamLead@mail.com", "TL_User" + i, 2, 1, 1));
 
 			$scope.moveItems = utilitiesServices.moveItems;
 		}]);

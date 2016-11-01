@@ -1,8 +1,8 @@
 var app;
 (function (app) {
 	var mainApp = angular.module("IVRY-App");
-	mainApp.factory('myHttpInterceptor', ['$q', '$rootScope', '$injector', "$log",// "AuthService",
-    	function ($q, $rootScope, $injector, $log/*, AuthService*/) {
+	mainApp.factory('myHttpInterceptor', ['$q', '$rootScope', '$injector', "$log", // "AuthService",
+    	function ($q, $rootScope, $injector, $log /*, AuthService*/ ) {
 			$rootScope.showSpinner = false;
 			$rootScope.http = null;
 			return {
@@ -31,8 +31,13 @@ var app;
 						$rootScope.showSpinner = false;
 					}
 					if (rejection.status > 399 && rejection.status < 500) {
-//						AuthService.logout();
+						//						AuthService.logout();
 						$rootScope.$broadcast("redirect_login");
+						$rootScope.message = {
+							body: "You are LOGGED Out!!, to Access this location you MUST LOGIN !!",
+							type: "warning",
+							duration: 5000
+						}
 					}
 					$log.error("Response ERROR : ", rejection);
 					return $q.reject(rejection);

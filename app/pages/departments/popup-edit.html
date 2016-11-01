@@ -1,48 +1,48 @@
 <form ng-submit="ok()">
 	<div class="modal-header">
-		<h3 class="modal-title">{{obj.title || 'New Department'}}</h3>
+		<h3 class="modal-title">{{obj.department.departmentName || 'New Department'}}</h3>
 	</div>
 	<div class="modal-body">
 		<div class="row">
 			<div class="col-md-6">
 				<label>Deprtment Name:</label>
-				<input type="text" ng-model="obj.departmentName" class="form-control">
+				<input type="text" ng-model="obj.department.departmentName" class="form-control">
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-md-6">
 				<label>Maximum Number of Users:</label>
-				<input type="text" ng-model="obj.maxNoOfUsers" class="form-control">
+				<input type="text" ng-model="obj.department.maxNoOfUsers" class="form-control">
 			</div>
 			<div class="col-md-6">
 				<label>Maximum Number of Recording Lines:</label>
-				<input type="text" ng-model="obj.maxNoOfRecLines" class="form-control">
+				<input type="text" ng-model="obj.department.maxNoOfRecLines" class="form-control">
 			</div>
 		</div>
 		<div class="row">
 			<div class="col-md-12">
 				<label>Comment:</label>
-				<textarea ng-model="obj.comment" rows="3" class="form-control"></textarea>
+				<textarea ng-model="obj.department.comment" rows="3" class="form-control"></textarea>
 			</div>
 			<div class="col-md-12">
 				<fieldset>
 					<legend>Department Admins</legend>
 					<div class="row">
 						<div class="col-md-6">
-							<label for="">Assigned Department Admins</label>
-							<select multiple class="form-control" ng-options="x.firstName+ ' '+x.lastName for x in obj.teamLeads" ng-model="dummy"></select>
+							<label for="">Assigned Department Admins</label>dummy::{{dummy}},systemUsers::{{systemUsers}}
+							<select multiple class="form-control" ng-options="x.firstName+ ' '+x.lastName for x in systemUsers" ng-model="dummy"></select>
 						</div>
 						<div class="col-md-1">
 							<div class="row">
-								<button class="btn btn-default btn-sm btn-block" ng-click="moveItems(depTeamLeads,depTeamLeads,obj.data.teamLeads)"><i class="fa fa-angle-double-left"></i></button>
-								<button class="btn btn-default btn-sm btn-block" ng-click="moveItems(depTeamLeads,selectedDepTeamLeads,obj.data.teamLeads)"><i class="fa fa-angle-left"></i></button>
-								<button class="btn btn-default btn-sm btn-block" ng-click="moveItems(obj.data.teamLeads,dummy,depTeamLeads)"><i class="fa fa-angle-right"></i></button>
-								<button class="btn btn-default btn-sm btn-block" ng-click="moveItems(obj.data.teamLeads,obj.data.teamLeads,depTeamLeads)"><i class="fa fa-angle-double-right"></i></button>
+								<button type="button" class="btn btn-default btn-sm btn-block" ng-click="moveItems(depAdmins,depAdmins,systemUsers)"><i class="fa fa-angle-double-left"></i></button>
+								<button type="button" class="btn btn-default btn-sm btn-block" ng-click="moveItems(depAdmins,selectedDepAdmins,systemUsers)"><i class="fa fa-angle-left"></i></button>
+								<button type="button" class="btn btn-default btn-sm btn-block" ng-click="moveItems(systemUsers,dummy,depAdmins)"><i class="fa fa-angle-right"></i></button>
+								<button type="button" class="btn btn-default btn-sm btn-block" ng-click="moveItems(systemUsers,systemUsers,depAdmins)"><i class="fa fa-angle-double-right"></i></button>
 							</div>
 						</div>
 						<div class="col-md-5">
 							<label for="">Available Department Admins</label>
-							<select multiple class="form-control" ng-options="x.firstName+ ' '+x.lastName for x in depTeamLeads" ng-model="selectedDepTeamLeads"></select>
+							<select multiple class="form-control" ng-options="x.firstName+ ' '+x.lastName for x in depAdmins" ng-model="selectedDepAdmins"></select>
 						</div>
 					</div>
 				</fieldset>

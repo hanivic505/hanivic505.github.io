@@ -34,8 +34,8 @@
 								<span class="btn btn-link" ng-bind="x[col.prop]|date:'hh:mm'" ng-if="col.type=='time'"></span>
 							</td>
 							<td class="actions-bar">
-								<a href="" class="btn btn-link" tooltip-placement="top" uib-tooltip="Members" ng-click="openPopup(x,'/app/pages/teams/popup-members.html','TeamMembersCtrl','lg');"><i class="fa fa-street-view"></i></a>
-								<a href="" class="btn btn-link" tooltip-placement="top" uib-tooltip="Edit Record" ng-click="openPopup(x,'/app/pages/teams/popup-edit.html','TeamEditCtrl','lg')"><i class="fa fa-pencil"></i></a>
+								<a href="" class="btn btn-link" tooltip-placement="top" uib-tooltip="Members" ng-click="openPopup(x,'/app/pages/teams/popup-members.html','TeamMembersCtrl','lg',2);"><i class="fa fa-street-view"></i></a>
+								<a href="" class="btn btn-link" tooltip-placement="top" uib-tooltip="Edit Record" ng-click="openPopup(x,'/app/pages/teams/popup-edit.html','TeamEditCtrl','lg',1)"><i class="fa fa-pencil"></i></a>
 								<a href="" class="btn btn-link" tooltip-placement="top" uib-tooltip="Delete Record" ng-click="delete(x)"><i class="fa fa-trash"></i></a>
 							</td>
 						</tr>

@@ -10,10 +10,11 @@ var app;
 					orders: [],
 					pageSize: 10,
 					currentPage: 1,
-					get: function (pgNum, condition) {
+					get: function (pgNum, condition, pSize, resetCondition) {
 						console.info("usersService.get:before", this.currentPage, this.conditions, this.orders);
-						this.conditions = condition == undefined ? this.conditions : condition;
+						this.conditions = condition == undefined ? resetCondition || resetCondition == undefined ? [] : this.conditions : condition;
 						//this.orders = order;
+						this.pageSize = pSize == undefined ? this.pageSize : pSize;
 						this.currentPage = pgNum == undefined ? this.currentPage : pgNum;
 						console.info("usersService.get:after", this.currentPage, this.conditions, this.orders);
 						return $http.post(API_BASE_URL + "/user-list/search", {
@@ -93,7 +94,7 @@ var app;
 						}, function (error) {});
 					},
 					getUser: function (objID) {
-						return $http.get(API_BASE_URL + "/team/" + objID, {
+						return $http.get(API_BASE_URL + "/system-user/" + objID, {
 							headers: {
 								"X-Access-Token": store.get("token")
 							}
