@@ -143,7 +143,27 @@ var app;
 							}
 						}).then(function (response) {
 							$rootScope.message = {
-								body: "Record Inserted Successfuly",
+								body: "Recording Extended Successfuly",
+								type: 'success',
+								duration: 5000,
+							};
+							$rootScope.$broadcast("refresh_data");
+						}, function (error) {
+							$rootScope.message = {
+								body: error.data.data.message,
+								type: 'danger',
+								duration: 5000,
+							};
+						});
+					},
+					terminateRec:function(obj){
+						return $http.put(API_BASE_URL + "/line/terminate", obj, {
+							headers: {
+								"X-Access-Token": store.get("token")
+							}
+						}).then(function (response) {
+							$rootScope.message = {
+								body: "Recording Terminated Successfuly",
 								type: 'success',
 								duration: 5000,
 							};
